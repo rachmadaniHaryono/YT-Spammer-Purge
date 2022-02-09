@@ -30,7 +30,7 @@ if [[ -e /etc/debian_version ]]; then
 elif [[ -e /etc/fedora-release ]]; then
 	sudo dnf install python3-tkinter jq python3-pip
 elif [[ -e /etc/centos-release ]]; then
-	rpm -q epel-release &> /dev/null || EPEL=0 
+	rpm -q epel-release &> /dev/null || EPEL=0
 	sudo yum install -y python3-tkinter epel-release python3-pip
 	sudo yum install -y jq
 	[[ $EPEL -eq 0 ]] && sudo yum remove -y epel-release
