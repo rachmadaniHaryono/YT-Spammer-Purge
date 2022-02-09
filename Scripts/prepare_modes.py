@@ -499,6 +499,7 @@ def prepare_filter_mode_smart(scanMode, config, miscData, sensitive=False):
         "Cs",
         "Co",
         "Cn",
+        "Sk",
     ]  # Categories of unicode characters to strip during normalization
     lowAl = b"VPa!sWoBn+X=-b1ZEkOHadLBXb#`}nd3p"
 

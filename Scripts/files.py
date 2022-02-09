@@ -568,6 +568,7 @@ def load_config_file(
     forceDefault=False,
     skipConfigChoice=False,
     configFileName="SpamPurgeConfig.ini",
+    configFolder="configs",
 ):
     configDict = {}
 
@@ -578,17 +579,28 @@ def load_config_file(
             os.path.abspath("assets"), relative_path
         )  # If running as script, specifies resource folder as /assets
 
-    # If user config file exists, keep path. Otherwise use default config file path
-    if os.path.exists(configFileName) and forceDefault == False:
+    # First find where main config file is, if any
+    # First check in current directory
+    if forceDefault == False and os.path.exists(configFileName):
         default = False
-        configFileNameWithPath = str(configFileName)
+        currentConfigPath = os.path.dirname(configFileName)
+        currentConfigFileNameWithPath = os.path.abspath(configFileName)
+    # Otherwise check if config is in configFolder
+    elif forceDefault == False and os.path.exists(
+        os.path.join(configFolder, os.path.basename(configFileName))
+    ):
+        default = False
+        currentConfigPath = os.path.abspath(configFolder)
+        currentConfigFileNameWithPath = os.path.join(
+            currentConfigPath, os.path.basename(configFileName)
+        )
     else:
-        configFileNameWithPath = default_config_path("default_config.ini")
+        currentConfigFileNameWithPath = default_config_path("default_config.ini")
         default = True
 
     # Load Contents of config file
     try:
-        with open(configFileNameWithPath, "r", encoding="utf-8") as configFile:
+        with open(currentConfigFileNameWithPath, "r", encoding="utf-8") as configFile:
             configData = configFile.read()
             configFile.close()
     except:
@@ -621,6 +633,7 @@ def load_config_file(
         "channel_to_scan",
         "log_path",
         "this_config_description",
+        "configs_path",
     ]
     validWordVars = ["ask", "mine", "default"]
     for section in parser.sections():
@@ -653,12 +666,14 @@ def load_config_file(
         ):
             if configVersion != None:
                 configDict = check_update_config_file(
-                    configVersion, configDict, configFileName
+                    configVersion, configDict, currentConfigFileNameWithPath
                 )
             if configDict["use_this_config"] == True or skipConfigChoice == True:
                 pass
             else:
-                configDict = choose_config_file(configDict, configVersion)
+                configDict = choose_config_file(
+                    configDict, configVersion, currentConfigFileNameWithPath
+                )
 
         else:
             print(
@@ -671,7 +686,7 @@ def load_config_file(
 
 
 ############################# Check for Config Update ##############################
-def check_update_config_file(newVersion, existingConfig, configFileName):
+def check_update_config_file(newVersion, existingConfig, configFileNameWithPath):
     backupDestinationFolder = os.path.join(RESOURCES_FOLDER_NAME, "User_Config_Backups")
     try:
         existingConfigVersion = int(existingConfig["config_version"])
@@ -694,21 +709,23 @@ def check_update_config_file(newVersion, existingConfig, configFileName):
         return existingConfig
 
     # If user config file exists, keep path. Otherwise use default config file path
-    if os.path.exists(configFileName):
+    if os.path.exists(configFileNameWithPath):
         pass
     else:
         print("No existing config file found!")
         return False
 
     # Load data of old config file
-    with open(configFileName, "r", encoding="utf-8") as oldFile:
+    with open(configFileNameWithPath, "r", encoding="utf-8") as oldFile:
         oldConfigData = oldFile.readlines()
         oldFile.close()
 
     # Rename config to backup and copy to backup folder
     if not os.path.exists(backupDestinationFolder):
         os.mkdir(backupDestinationFolder)
-    backupConfigFileName = f"{configFileName}.backup_v{existingConfigVersion}"
+    backupConfigFileName = (
+        f"{os.path.basename(configFileNameWithPath)}.backup_v{existingConfigVersion}"
+    )
     backupNameAndPath = os.path.join(backupDestinationFolder, backupConfigFileName)
     if os.path.isfile(backupNameAndPath):
         print(
@@ -722,21 +739,21 @@ def check_update_config_file(newVersion, existingConfig, configFileName):
 
     # Attempt to copy backup to backup folder, otherwise just rename
     try:
-        copyfile(configFileName, os.path.abspath(backupNameAndPath))
+        copyfile(configFileNameWithPath, os.path.abspath(backupNameAndPath))
         print(
             f"\nOld config file renamed to {F.CYAN}{backupConfigFileName}{S.R} and placed in {F.CYAN}{backupDestinationFolder}{S.R}"
         )
     except:
-        os.rename(configFileName, backupConfigFileName)
+        os.rename(configFileNameWithPath, backupConfigFileName)
         print(
             f"\nOld config file renamed to {F.CYAN}{backupConfigFileName}{S.R}. Note: Backup file could not be moved to backup folder, so it was just renamed."
         )
 
     # Creates new config file from default
-    create_config_file(updating=True, configFileName=configFileName)
+    create_config_file(updating=True, configFileName=configFileNameWithPath)
 
     try:
-        with open(configFileName, "r", encoding="utf-8") as newFile:
+        with open(configFileNameWithPath, "r", encoding="utf-8") as newFile:
             newConfigData = newFile.readlines()
 
         newDataList = []
@@ -744,20 +761,31 @@ def check_update_config_file(newVersion, existingConfig, configFileName):
         for newLine in newConfigData:
             if (
                 not newLine.strip().startswith("#")
+                and not newLine.strip().startswith("[")
                 and not newLine.strip() == ""
                 and "version" not in newLine
             ):
                 for setting in existingConfig.keys():
                     # Check if any old settings are in new config file
-                    if newLine.startswith(setting):
+                    newLineStripped = newLine.strip().replace(" ", "")
+                    if (
+                        newLineStripped.startswith(setting)
+                        and newLineStripped[0 : newLineStripped.rindex("=")] == setting
+                    ):  # Avoids having to use startswith(), which messes up if setting names start the same
                         for oldLine in oldConfigData:
+                            oldLineStripped = oldLine.strip().replace(" ", "")
                             if (
                                 not oldLine.strip().startswith("#")
+                                and not newLine.strip().startswith("[")
                                 and not oldLine.strip() == ""
                                 and "version" not in oldLine
                             ):
                                 # Sets new line to be the old line
-                                if oldLine.startswith(setting):
+                                if (
+                                    oldLineStripped.startswith(setting)
+                                    and oldLineStripped[0 : oldLineStripped.rindex("=")]
+                                    == setting
+                                ):
                                     newLine = oldLine
                                     break
                         break
@@ -768,24 +796,26 @@ def check_update_config_file(newVersion, existingConfig, configFileName):
         while success == False:
             try:
                 attempts += 1
-                with open(configFileName, "w", encoding="utf-8") as newFile:
+                with open(configFileNameWithPath, "w", encoding="utf-8") as newFile:
                     newFile.writelines(newDataList)
                 success = True
             except PermissionError:
                 if attempts < 3:
                     print(
-                        f"\n{F.YELLOW}\nERROR!{S.R} Cannot write to {F.LIGHTCYAN_EX}{configFileName}{S.R}. Is it open? Try {F.YELLOW}closing the file{S.R} before continuing."
+                        f"\n{F.YELLOW}\nERROR!{S.R} Cannot write to {F.LIGHTCYAN_EX}{os.path.relpath(configFileNameWithPath)}{S.R}. Is it open? Try {F.YELLOW}closing the file{S.R} before continuing."
                     )
                     input("\n Press Enter to Try Again...")
                 else:
                     print(
-                        f"{F.LIGHTRED_EX}\nERROR! Still cannot write to {F.LIGHTCYAN_EX}{configFileName}{F.LIGHTRED_EX}. {F.YELLOW}Try again?{S.R} (Y) or {F.YELLOW}Skip Updating Config (May Cause Errors)?{S.R} (N)"
+                        f"{F.LIGHTRED_EX}\nERROR! Still cannot write to {F.LIGHTCYAN_EX}{os.path.relpath(configFileNameWithPath)}{F.LIGHTRED_EX}. {F.YELLOW}Try again?{S.R} (Y) or {F.YELLOW}Skip Updating Config (May Cause Errors)?{S.R} (N)"
                     )
                     if choice("Choice:") == False:
                         break
 
         return load_config_file(
-            configVersion=None, skipConfigChoice=True, configFileName=configFileName
+            configVersion=None,
+            skipConfigChoice=True,
+            configFileName=configFileNameWithPath,
         )
     except:
         traceback.print_exc()
@@ -800,56 +830,103 @@ def check_update_config_file(newVersion, existingConfig, configFileName):
 
 
 ############################# Get List of Files Matching Regex ##############################
-def list_config_files(relativePath=None):
+def list_config_files(configDict=None, configPath=None):
     configNumExpression = r"(?<=spampurgeconfig)(\d+?)(?=\.ini)"
-    fileList = list()
-    if relativePath == None:
+
+    if configDict:
+        altConfigPath = configDict["configs_path"]
+    else:
+        altConfigPath = None
+
+    # Check same folder as program
+    if configPath == None:
         path = os.getcwd()
     else:
-        path = os.path.abspath(relativePath)
+        if not os.path.isabs(configPath):
+            path = os.path.abspath(configPath)
+        else:
+            path = configPath
 
-    # Only get non-primary log files
-    for file in os.listdir(path):
-        if "spampurgeconfig" in file.lower() and file.lower() != "spampurgeconfig.ini":
-            try:
-                match = re.search(configNumExpression, file.lower()).group(0)
-                # Only exact matches, no backups
-                if file.lower() == "spampurgeconfig" + match + ".ini":
-                    fileList.append(file)
-            except AttributeError as ax:
-                if "NoneType" in str(ax):
-                    pass
-                else:
-                    traceback.print_exc()
-                    print(
-                        "--------------------------------------------------------------------------------"
-                    )
-                    print(
-                        "Something went wrong when getting list of config files. Check your regex."
-                    )
-                    input("\nPress Enter to exit...")
-                    sys.exit()
+    # Check path listed in config file
+    if altConfigPath and os.path.isdir(altConfigPath):
+        if not os.path.isabs(altConfigPath):
+            altPath = os.path.abspath(altConfigPath)
+        else:
+            altPath = altConfigPath
+    else:
+        altPath = None
 
-    return fileList
+    # List files in current directory, only get non-primary log files
+    def list_path_files(pathToSearch):
+        fileList = list()
+        if os.listdir(pathToSearch):
+            for file in os.listdir(pathToSearch):
+                if (
+                    "spampurgeconfig" in file.lower()
+                    and file.lower() != "spampurgeconfig.ini"
+                ):
+                    try:
+                        match = re.search(configNumExpression, file.lower()).group(0)
+                        # Only exact matches, no backups
+                        if file.lower() == "spampurgeconfig" + match + ".ini":
+                            fileList.append(file)
+                    except AttributeError as ax:
+                        if "NoneType" in str(ax):
+                            pass
+                        else:
+                            traceback.print_exc()
+                            print(
+                                "--------------------------------------------------------------------------------"
+                            )
+                            print(
+                                "Something went wrong when getting list of config files. Check your regex."
+                            )
+                            input("\nPress Enter to exit...")
+                            sys.exit()
+
+        return fileList
+
+    # First get list of configs from the directory in main config file
+    if altPath != None:
+        altDirFiles = list_path_files(altPath)
+        if altDirFiles:
+            return altDirFiles, altPath
+
+    # If no configs found in specified config path, check current directory
+    if path != None:
+        currentDirFiles = list_path_files(path)
+        if currentDirFiles:
+            return currentDirFiles, path
+
+    # Otherwise return nothing
+    return None, None
 
 
 ############################# Ask to use Config or Which One ##############################
 # Applies if not using default config, and if not set to 'not use' config
-def choose_config_file(configDict, newestConfigVersion):
+def choose_config_file(configDict, newestConfigVersion, configPathWithName):
     configNumExpression = r"(?<=spampurgeconfig)(\d+?)(?=\.ini)"
-    configFileList = list_config_files()
+    configPath = os.path.dirname(configPathWithName)
+    configFileList, configPath = list_config_files(configDict, configPath)
     # If only one config file exists, prompt to use
-    if len(configFileList) == 0:
+    if not configFileList or len(configFileList) == 0:
         if choice(f"\nFound {F.YELLOW}config file{S.R}, use those settings?") == False:
             return load_config_file(forceDefault=True)
         else:
             return configDict
 
+    if os.path.exists(os.path.join(configPath, "SpamPurgeConfig.ini")):
+        mainConfigPathWithName = os.path.join(configPath, "SpamPurgeConfig.ini")
+    elif os.path.exists("SpamPurgeConfig.ini"):
+        mainConfigPathWithName = "SpamPurgeConfig.ini"
+    else:
+        mainConfigPathWithName = None
+
     # If more than one config exists, list and ask which
-    if len(configFileList) > 0:
+    if configFileList and len(configFileList) > 0:
         configChoiceDict = {}
         print(f"\n=================== Found Multiple Config Files ===================")
-        if os.path.exists("SpamPurgeConfig.ini"):
+        if mainConfigPathWithName:
             print(
                 f"\n{F.YELLOW}------------- Use primary config file or another one? -------------{S.R}"
             )
@@ -866,7 +943,9 @@ def choose_config_file(configDict, newestConfigVersion):
         for file in configFileList:
             configNum = re.search(configNumExpression, file.lower()).group(0)
             configDescription = load_config_file(
-                configFileName=file, skipConfigChoice=True
+                configFileName=os.path.abspath(os.path.join(configPath, file)),
+                skipConfigChoice=True,
+                configFolder=configPath,
             )["this_config_description"]
             configChoiceDict[configNum] = file
             print(f"    {F.LIGHTCYAN_EX}{configNum}:{S.R} {configDescription}")
@@ -885,16 +964,21 @@ def choose_config_file(configDict, newestConfigVersion):
                 print(f"\n{F.YELLOW} Invalid Choice! Please enter a valid choice.{S.R}")
             else:
                 # Load an available config, update it, then return it
+                configChoiceFileNameWithPath = os.path.abspath(
+                    os.path.join(configPath, configChoiceDict[configChoice])
+                )
                 chosenConfigDict = load_config_file(
-                    skipConfigChoice=True, configFileName=configChoiceDict[configChoice]
+                    skipConfigChoice=True,
+                    configFileName=configChoiceFileNameWithPath,
+                    configFolder=configPath,
                 )
                 chosenConfigDict = check_update_config_file(
-                    newestConfigVersion,
-                    chosenConfigDict,
-                    configChoiceDict[configChoice],
+                    newestConfigVersion, chosenConfigDict, configChoiceFileNameWithPath
                 )
                 return load_config_file(
-                    skipConfigChoice=True, configFileName=configChoiceDict[configChoice]
+                    skipConfigChoice=True,
+                    configFileName=configChoiceFileNameWithPath,
+                    configFolder=configPath,
                 )
 
 
@@ -971,7 +1055,10 @@ def get_list_file_version(relativeFilePath):
 
 ############################# CONFIG FILE FUNCTIONS ##############################
 def create_config_file(
-    updating=False, dontWarn=False, configFileName="SpamPurgeConfig.ini"
+    updating=False,
+    dontWarn=False,
+    configFileName="SpamPurgeConfig.ini",
+    configDict=None,
 ):
     def config_path(relative_path):
         if hasattr(sys, "_MEIPASS"):  # If running as a pyinstaller bundle
@@ -980,12 +1067,16 @@ def create_config_file(
             os.path.abspath("assets"), relative_path
         )  # If running as script, specifies resource folder as /assets
 
-    if os.path.exists(configFileName):
+    dirPath = ""
+
+    if os.path.exists(configFileName) or os.path.exists(
+        os.path.join(configDict["configs_path"], configFileName)
+    ):
         if updating == False and dontWarn == False:
             # First get list of existing secondary config files, to know what to name the new one
             configNumExpression = r"(?<=spampurgeconfig)(\d+?)(?=\.ini)"
-            configFileList = list_config_files()
-            if len(configFileList) > 0:
+            configFileList, dirPath = list_config_files(configDict=configDict)
+            if configFileList and len(configFileList) > 0:
                 configNumList = list()
                 for file in configFileList:
                     configNum = re.search(configNumExpression, file.lower()).group(0)
@@ -993,6 +1084,7 @@ def create_config_file(
                 newConfigNum = max(configNumList) + 1
             else:
                 newConfigNum = 2
+                dirPath = configDict["configs_path"]
 
             print(
                 "-------------------------------------------------------------------------------------"
@@ -1050,12 +1142,17 @@ def create_config_file(
         sys.exit()
 
     # Create config file
+    if dirPath != None and dirPath != "":
+        configFilePathWithName = os.path.join(dirPath, configFileName)
+    else:
+        configFilePathWithName = configFileName
+
     attempts = 0
     success = False
     while success == False:
         try:
             attempts += 1
-            with open(configFileName, "w", encoding="utf-8") as configFile:
+            with open(configFilePathWithName, "w", encoding="utf-8") as configFile:
                 configFile.write(data)
                 configFile.close()
             success = True
@@ -1079,7 +1176,7 @@ def create_config_file(
             input("Press enter to Exit...")
             sys.exit()
 
-    if os.path.exists(configFileName):
+    if os.path.exists(configFilePathWithName):
         parser = ConfigParser()
         try:
             parser.read("SpamPurgeConfig.ini", encoding="utf-8")

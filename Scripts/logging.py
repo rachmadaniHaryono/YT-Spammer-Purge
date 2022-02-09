@@ -106,6 +106,17 @@ def print_comments(
     hasDuplicates = False
     hasSpamThreads = False
 
+    # Decide whether to write notice for spam threads based on video title
+    if current.spamThreadsDict and current.vidTitleDict:
+        keywords = ["invest", "crypto", "bitcoin", "ethereum", "nft", "market", "stock"]
+        if any(
+            word in str(list(current.vidTitleDict.values())).lower()
+            for word in keywords
+        ):
+            spamThreadNotice = True
+        else:
+            spamThreadNotice = False
+
     def print_and_write(value, writeValues, printValues):
         if loggingEnabled == True and logMode == "rtf":
             writeValues = (
@@ -158,6 +169,13 @@ def print_comments(
             print(
                 f"{S.BRIGHT}{F.MAGENTA}============================ Match Samples: Spam Bot Threads ============================{S.R}"
             )
+            if spamThreadNotice == True:
+                print(
+                    f"{F.YELLOW}{F.BLACK}{B.YELLOW} NOTE: {S.R}{F.YELLOW} If video is about investing/crypto, inspect these extra well for false positives{S.R}"
+                )
+                print(
+                    "-----------------------------------------------------------------------------------------"
+                )
     for value in current.matchSamplesDict.values():
         if value["matchReason"] == "Spam Bot Thread":
             (
@@ -203,6 +221,9 @@ def print_comments(
                     " \n \\line\\line ============================ Match Samples: Spam Bot Threads ============================ \\line\\line \n"
                     + spamThreadValuesPreparedToWrite
                 )
+                if spamThreadNotice == True:
+                    spamThreadSamplesContent += "->NOTE: If video is about investing/crypto, inspect these extra well for false positives<- \\line \n"
+                    spamThreadSamplesContent += "------------------------------------------------------------------------------------------ \\line\\line \n"
                 if doWritePrint:
                     write_rtf(current.logFileName, spamThreadSamplesContent)
             if hasDuplicates == True:
@@ -226,6 +247,9 @@ def print_comments(
                     "\n============================ Match Samples: Spam Bot Threads ============================\n"
                     + spamThreadValuesPreparedToWrite
                 )
+                if spamThreadNotice == True:
+                    spamThreadSamplesContent += "->NOTE: If video is about investing/crypto, inspect these extra well for false positives<-\n"
+                    spamThreadSamplesContent += "------------------------------------------------------------------------------------------\n"
                 if doWritePrint:
                     write_plaintext_log(current.logFileName, spamThreadSamplesContent)
             if hasDuplicates == True:
@@ -447,6 +471,9 @@ def print_prepared_comments(
         # Must use append here, not extend, or else it would add each character separately
         j += 1
 
+    # Sort samples by certain value
+    current = sort_samples(current)
+
     return j, commentsContents
 
 
@@ -629,7 +656,7 @@ def write_plaintext_log(fileName, newText=None, firstWrite=False, fullWrite=Fals
 
 
 ############################ JSON Log & File Handling ###############################
-def write_json_log(jsonSettingsDict, commentsDict, jsonDataDict=None):
+def write_json_log(current, config, jsonSettingsDict, commentsDict, jsonDataDict=None):
     success = False
     attempts = 0
     if jsonDataDict:
@@ -640,6 +667,20 @@ def write_json_log(jsonSettingsDict, commentsDict, jsonDataDict=None):
 
     fileName = jsonSettingsDict["jsonLogFileName"]
     jsonEncoding = jsonSettingsDict["encoding"]
+
+    # Marks comments as spam in dictionary before writing
+    if config["json_log_all_comments"] == True:
+        allCommentsDict = current.allScannedCommentsDict
+        for authorID in allCommentsDict:
+            for i, comment in enumerate(allCommentsDict[authorID]):
+                if (
+                    comment["commentID"] in dictionaryToWrite["Comments"]
+                ):  # If it's in the dictionary with spam comments
+                    commentID = comment["commentID"]
+                    allCommentsDict[authorID][i]["isSpam"] = "True"
+                    allCommentsDict[authorID][i]["matchReason"] = dictionaryToWrite[
+                        "Comments"
+                    ][commentID]["matchReason"]
 
     # If directory does not exist for desired log file path, create it
     logFolderPath = os.path.dirname(os.path.realpath(fileName))
@@ -658,8 +699,18 @@ def write_json_log(jsonSettingsDict, commentsDict, jsonDataDict=None):
         try:
             attempts += 1
             with open(fileName, "w", encoding=jsonEncoding) as file:
-                file.write(json.dumps(dictionaryToWrite, indent=4, ensure_ascii=False))
-                file.close()
+                if config["json_log_all_comments"] == True:
+                    # Dictionary format arranged by author ID, need to flatten to just comment info
+                    for authorCommentsList in allCommentsDict.values():
+                        for comment in authorCommentsList:
+                            json_record = json.dumps(comment, ensure_ascii=False)
+                            file.write(json_record + "\n")
+                    file.close()
+                else:
+                    file.write(
+                        json.dumps(dictionaryToWrite, indent=4, ensure_ascii=False)
+                    )
+                    file.close()
             success = True
         except PermissionError:
             if attempts < 3:
@@ -740,8 +791,10 @@ def get_extra_json_data(channelIDs, jsonSettingsDict):
             fetch_data(channelIDs[i * 50 : i * 50 + 50])
         if remainder > 0:
             fetch_data(channelIDs[numDivisions * 50 :])
-    else:
+    elif total > 0:
         fetch_data(channelIDs)
+    else:
+        pass
 
     # Get info about uploader
     response = (
@@ -824,36 +877,83 @@ def download_profile_pictures(pictureUrlsDict, jsonSettingsDict):
 
 # Adds a sample to current.matchSamplesDict and preps formatting
 def add_sample(current, authorID, authorNameRaw, commentText, matchReason):
+    def remove_unicode_categories(string):
+        unicodeStrip = ["Mn", "Cc", "Cf", "Cs", "Co", "Cn", "Sk"]
+        return "".join(
+            char for char in string if unicode_category(char) not in unicodeStrip
+        )
 
     # Make index number and string formatted version
-    index = len(current.matchSamplesDict) + 1
-    iString = f"{str(index)}. ".ljust(4)
+    # index = len(current.matchSamplesDict) + 1
+    # iString = f"{str(index)}. ".ljust(4)
     authorNumComments = current.authorMatchCountDict[authorID]
     cString = f"[x{str(authorNumComments)}] ".ljust(7)
 
     # Left Justify Author Name and Comment Text
-    if len(authorNameRaw) > 20:
-        authorName = authorNameRaw[0:17] + "..."
+    authorName = remove_unicode_categories(authorNameRaw)
+    if len(authorName) > 20:
+        authorName = authorName[0:17] + "..."
         authorName = authorName[0:20].ljust(20) + ": "
     else:
         authorName = authorNameRaw[0:20].ljust(20) + ": "
 
     commentText = str(commentText).replace("\n", " ").replace("\r", " ")
+    commentText = remove_unicode_categories(commentText)
     if len(commentText) > 82:
         commentText = commentText[0:79] + "..."
     commentText = commentText[0:82].ljust(82)
 
     # Add comment sample, author ID, name, and counter
     current.matchSamplesDict[authorID] = {
-        "index": index,
         "cString": cString,
-        "iString": iString,
         "count": authorNumComments,
         "authorID": authorID,
         "authorName": authorNameRaw,
         "nameAndText": authorName + commentText,
         "matchReason": matchReason,
     }
+
+
+# Sort match samples by count per author
+def sort_samples(current):
+    sortBy = "count"
+    dictToSort = current.matchSamplesDict
+    newDict = {}
+    # Takes dictionary, and sorts it by nested value within a value
+    # Returns list of tuples in format: [(key, {innerKey:innerValue}), ...]
+    sortedTupleList = list(
+        reversed(sorted(dictToSort.items(), key=lambda item: item[1][sortBy]))
+    )
+
+    # Use sorted tuple list to re-create dictionary, but sorted by sortBy, and grouped by match type
+    for item in sortedTupleList:
+        if item[1]["matchReason"] == "Filter Match":
+            newDict[item[0]] = item[1]
+    for item in sortedTupleList:
+        if item[1]["matchReason"] == "Spam Bot Thread":
+            newDict[item[0]] = item[1]
+    for item in sortedTupleList:
+        if item[1]["matchReason"] == "Duplicate":
+            newDict[item[0]] = item[1]
+
+    # # Assign Indexes and strings to print with index for each author
+    # def assign_index(author, i):
+    #   iString = f"{str(i)}. ".ljust(4)
+    #   current.matchSamplesDict[author]['index'] = i
+    #   current.matchSamplesDict[author]['iString'] = iString
+    #   i += 1
+    #   return i
+
+    i = 1
+    for author in newDict.keys():
+        iString = f"{str(i)}. ".ljust(4)
+        newDict[author]["index"] = i
+        newDict[author]["iString"] = iString
+        i += 1
+
+    current.matchSamplesDict = newDict
+
+    return current
 
 
 # -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -890,9 +990,7 @@ def prepare_logFile_settings(
             jsonSettingsDict["channelOwnerName"] = miscData.channelOwnerName
 
             # Encoding
-            allowedEncodingModes = ["utf-8", "utf-16", "utf-32", "rtfunicode"]
-            if config["json_encoding"] in allowedEncodingModes:
-                jsonSettingsDict["encoding"] = config["json_encoding"]
+            jsonSettingsDict["encoding"] = config["json_encoding"]
 
         elif config["json_log"] == False:
             jsonLogging = False
@@ -994,6 +1092,16 @@ def write_log_heading(
             2,
         )
 
+    # Write Scan Settings
+    if current.scannedThingsList:
+        write_func(
+            current.logFileName,
+            "Video(s) or Post(s) Scanned: " + ", ".join(current.scannedThingsList),
+            logMode,
+            2,
+        )
+
+    # Write Filter Settings
     if filterMode == "ID":
         write_func(
             current.logFileName,
@@ -1004,30 +1112,28 @@ def write_log_heading(
     elif filterMode == "Username":
         write_func(
             current.logFileName,
-            "Characters searched in Usernames: " + ", ".join(inputtedUsernameFilter),
+            "Searched in Usernames: " + ", ".join(inputtedUsernameFilter),
             logMode,
             2,
         )
     elif filterMode == "Text":
         write_func(
             current.logFileName,
-            "Characters searched in Comment Text: "
-            + ", ".join(inputtedCommentTextFilter),
+            "Searched in Comment Text: " + ", ".join(inputtedCommentTextFilter),
             logMode,
             2,
         )
     elif filterMode == "NameAndText":
         write_func(
             current.logFileName,
-            "Characters searched in Usernames and Comment Text: "
-            + ", ".join(filterSettings[1]),
+            "Searched in Usernames and Comment Text: " + ", ".join(filterSettings[1]),
             logMode,
             2,
         )
     elif filterMode == "AutoASCII":
         write_func(
             current.logFileName,
-            "Automatic Search Mode: " + str(filterSettings[1]),
+            "Auto-ASCII Username Search Mode: " + str(filterSettings[1]),
             logMode,
             2,
         )

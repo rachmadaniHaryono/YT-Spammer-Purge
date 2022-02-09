@@ -122,6 +122,14 @@ def get_comments(
             "commentID": parent_id,
             "videoID": videoID,
         }
+        if config["json_log_all_comments"] == True:
+            currentCommentDict["uploaderChannelID"] = miscData.channelOwnerID
+            currentCommentDict["uploaderChannelName"] = miscData.channelOwnerName
+            currentCommentDict["textUnsanitized"] = str(commentText)
+            currentCommentDict["videoTitle"] = utils.get_video_title(current, videoID)
+            currentCommentDict["matchReason"] = None
+            currentCommentDict["isSpam"] = "False"
+
         check_against_filter(
             current, filtersDict, miscData, config, currentCommentDict, videoID
         )
@@ -306,6 +314,14 @@ def get_replies(
             "commentID": replyID,
             "videoID": videoID,
         }
+        if config["json_log_all_comments"] == True:
+            currentCommentDict["uploaderChannelID"] = miscData.channelOwnerID
+            currentCommentDict["uploaderChannelName"] = miscData.channelOwnerName
+            currentCommentDict["textUnsanitized"] = str(commentText)
+            currentCommentDict["videoTitle"] = utils.get_video_title(current, videoID)
+            currentCommentDict["matchReason"] = None
+            currentCommentDict["isSpam"] = "False"
+
         if parentCommentDict:
             threadDict[replyID] = currentCommentDict
 
@@ -666,7 +682,8 @@ def add_spam(
     else:
         current.authorMatchCountDict[authorChannelID] = 1
 
-    if config["json_log"] == True and config["json_extra_data"] == True:
+    # If json_log_all_comments is enabled, this is not needed because this info is logged for all comments
+    if config["json_log"] == True and config["json_log_all_comments"] == False:
         dictToUse[commentID]["uploaderChannelID"] = miscData.channelOwnerID
         dictToUse[commentID]["uploaderChannelName"] = miscData.channelOwnerName
         dictToUse[commentID]["videoTitle"] = utils.get_video_title(current, videoID)
@@ -1659,14 +1676,17 @@ def exclude_authors(
 
     if addWhitelist == True:
         with open(
-            miscData.resources["Whitelist"]["PathWithName"], "a", encoding="utf-8"
+            miscData.resources["Whitelist"]["PathWithName"], "a+", encoding="utf-8"
         ) as f:
+            f.seek(0)
+            currentWhitelist = f.read()
             for author in authorsToExcludeSet:
-                f.write(
-                    f"# [Excluded]  Channel Name: {current.matchSamplesDict[author]['authorName']}  |  Channel ID: "
-                    + "\n"
-                )
-                f.write(f"{author}\n")
+                if not author in currentWhitelist:
+                    f.write(
+                        f"\n# [Excluded]  Channel Name: {current.matchSamplesDict[author]['authorName']}  |  Channel ID: "
+                        + "\n"
+                    )
+                    f.write(f"{author}\n")
 
     input("\nPress Enter to decide what to do with the rest...")
 
@@ -1682,7 +1702,7 @@ def exclude_authors(
 
 ################################# Get Most Recent Videos #####################################
 # Returns a list of lists
-def get_recent_videos(channel_id, numVideosTotal):
+def get_recent_videos(current, channel_id, numVideosTotal):
     def get_block_of_videos(nextPageToken, j, k, numVideosBlock=5):
         result = (
             auth.YOUTUBE.search()
@@ -1714,6 +1734,9 @@ def get_recent_videos(channel_id, numVideosTotal):
                 )
                 k += 1
                 continue
+
+            if videoID not in current.vidTitleDict:
+                current.vidTitleDict[videoID] = videoTitle
 
             recentVideos.append({})
             recentVideos[j]["videoID"] = videoID

@@ -36,10 +36,10 @@
 ### IMPORTANT:  I OFFER NO WARRANTY OR GUARANTEE FOR THIS SCRIPT. USE AT YOUR OWN RISK.
 ###             I tested it on my own and implemented some failsafes as best as I could,
 ###             but there could always be some kind of bug. You should inspect the code yourself.
-version = "2.15.1"
-configVersion = 26
+version = "2.16.0-Beta1"
+configVersion = 28
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
-
+print("Importing Script Modules...")
 # Import other module files
 from Scripts.shared_imports import *
 import Scripts.auth as auth
@@ -55,6 +55,7 @@ from Scripts.community_downloader import (
 import Scripts.community_downloader as community_downloader
 from Scripts.utils import choice
 
+print("Importing Standard Libraries...")
 # Standard Libraries
 import time
 import ast
@@ -65,6 +66,7 @@ import platform
 import json
 from pkg_resources import parse_version
 
+print("Importing Third-Party Modules...")
 # Other Libraries
 from googleapiclient.errors import HttpError
 
@@ -383,21 +385,21 @@ def main():
     # Declare Classes
     @dataclass
     class ScanInstance:
-        matchedCommentsDict: dict
-        duplicateCommentsDict: dict
-        otherCommentsByMatchedAuthorsDict: dict
-        spamThreadsDict: dict
-        allScannedCommentsDict: dict
-        vidIdDict: dict
-        vidTitleDict: dict
-        matchSamplesDict: dict
-        authorMatchCountDict: dict
-        scannedRepliesCount: int
-        scannedCommentsCount: int
-        logTime: str
-        logFileName: str
-        errorOccurred: bool
-        # matchTypeCount:dict
+        matchedCommentsDict: dict  # Comments flagged by the filter
+        duplicateCommentsDict: dict  # Comments flagged as duplicates
+        otherCommentsByMatchedAuthorsDict: dict  # Comments not matched, but are by a matched author
+        scannedThingsList: list  # List of posts or videos that were scanned
+        spamThreadsDict: dict  # Comments flagged as parent of spam threads
+        allScannedCommentsDict: dict  # All comments scanned for this instance
+        vidIdDict: dict  # Contains the video ID on which each comment is found
+        vidTitleDict: dict  # Contains the titles of each video ID
+        matchSamplesDict: dict  # Contains sample info for every flagged comment of all types
+        authorMatchCountDict: dict  # The number of flagged comments per author
+        scannedRepliesCount: int  # The current number of replies scanned so far
+        scannedCommentsCount: int  # The current number of comments scanned so far
+        logTime: str  # The time at which the scan was started
+        logFileName: str  # Contains a string of the current date/time to be used as a log file name or anything else
+        errorOccurred: bool  # True if an error occurred during the scan
 
     ##############################################
     ######### PRIMARY INSTANCE FUNCTION ##########
@@ -412,6 +414,7 @@ def main():
             matchedCommentsDict={},
             duplicateCommentsDict={},
             otherCommentsByMatchedAuthorsDict={},
+            scannedThingsList=[],
             spamThreadsDict={},
             allScannedCommentsDict={},
             vidIdDict={},
@@ -429,6 +432,8 @@ def main():
         maxScanNumber = 999999999
         scanVideoID = None
         videosToScan = []
+        recentPostsListofDicts = []
+        postURL = ""
         loggingEnabled = False
         userNotChannelOwner = False
 
@@ -621,6 +626,10 @@ def main():
                         videosToScan[i]["channelOwnerID"] = str(videoListResult[i][4])
                         videosToScan[i]["channelOwnerName"] = str(videoListResult[i][5])
                         miscData.totalCommentCount += int(videoListResult[i][3])
+                        if str(videoListResult[i][1]) not in current.vidTitleDict:
+                            current.vidTitleDict[videoListResult[i][1]] = str(
+                                videoListResult[i][2]
+                            )
                     else:
                         print(
                             f"\nInvalid Video: {enteredVideosList[i]}  |  Video ID = {videoListResult[1]}"
@@ -667,13 +676,14 @@ def main():
                         i += 1
                         if i == 6 and len(enteredVideosList) > 5:
                             remainingCount = str(len(enteredVideosList) - 5)
-                            userChoice = choice(
-                                f"You have entered many videos, do you need to see the rest (x{remainingCount})?"
-                            )
-                            if userChoice == False:
-                                break
-                            elif userChoice == None:
-                                return True  # Return to main menu
+                            if config["skip_confirm_video"] == False:
+                                userChoice = choice(
+                                    f"You have entered many videos, do you need to see the rest (x{remainingCount})?"
+                                )
+                                if userChoice == False:
+                                    break
+                                elif userChoice == None:
+                                    return True  # Return to main menu
                         print(f" {i}. {video['videoTitle']}")
                     print("")
 
@@ -709,7 +719,7 @@ def main():
                             print(
                                 f"        > Read more about the quota limits for this app here: {F.YELLOW}TJoe.io/api-limit-info{S.R}"
                             )
-                            if userNotChannelOwner == True or moderator_mode == True:
+                            if userNotChannelOwner == False or moderator_mode == True:
                                 print(
                                     f"{F.LIGHTCYAN_EX}> Note:{S.R} You may want to disable 'check_deletion_success' in the config, as this doubles the API cost! (So a 5K limit)"
                                 )
@@ -824,7 +834,9 @@ def main():
 
                 if validEntry == True:
                     # Fetch recent videos and print titles to user for confirmation
-                    videosToScan = operations.get_recent_videos(channelID, numVideos)
+                    videosToScan = operations.get_recent_videos(
+                        current, channelID, numVideos
+                    )
                     if str(videosToScan) == "MainMenu":
                         return True  # Return to main menu
                     if len(videosToScan) == 0:
@@ -1107,6 +1119,7 @@ def main():
             )
             print(f"\n  Post Content Samples:")
             for i in range(len(recentPostsListofDicts)):
+                # recentPostsListofDicts = {post id : post text} - Below prints sample of post text
                 print(
                     f"    {i+1}.".ljust(9, " ")
                     + f"{list(recentPostsListofDicts[i].values())[0][0:50]}"
@@ -1152,7 +1165,7 @@ def main():
 
         # Create config file
         elif scanMode == "makeConfig":
-            result = files.create_config_file()
+            result = files.create_config_file(configDict=config)
             if str(result) == "MainMenu":
                 return True
 
@@ -1178,33 +1191,61 @@ def main():
         # ====================================================================================================================================================================================================
         # ====================================================================================================================================================================================================
 
+        # Set Menu Colors
+        autoSmartColor = F.YELLOW
+        sensitiveColor = F.YELLOW
+        IDColor = F.LIGHTRED_EX
+        usernameColor = F.LIGHTBLUE_EX
+        textColor = F.CYAN
+        usernameTextColor = F.LIGHTBLUE_EX
+        asciiColor = F.LIGHTMAGENTA_EX
+        styleID = S.BRIGHT
+        styleOther = S.BRIGHT
+        a1 = ""
+        a2 = ""
+
+        # Change menu display & colors of some options depending on privileges
+        if userNotChannelOwner:
+            styleOther = S.DIM
+            a2 = f"{F.LIGHTRED_EX}*{S.R}"  # a = asterisk
+
+        if not moderator_mode and userNotChannelOwner:
+            styleID = S.DIM
+            a1 = f"{F.LIGHTRED_EX}*{S.R}"
+
         # User inputs filtering mode
         print("\n-------------------------------------------------------")
         print(f"~~~~~~~~~~~ Choose how to identify spammers ~~~~~~~~~~~")
         print("-------------------------------------------------------")
         print(
-            f" 1. {F.BLACK}{B.LIGHTGREEN_EX}(RECOMMENDED):{S.R} {F.YELLOW}Auto-Smart Mode{S.R}: Automatically detects multiple spammer techniques"
+            f"{S.BRIGHT} 1. {S.R}{F.BLACK}{B.LIGHTGREEN_EX}(RECOMMENDED):{S.R} {S.BRIGHT}{autoSmartColor}Auto-Smart Mode{F.R}: Automatically detects multiple spammer techniques{S.R}"
         )
         print(
-            f" 2. {F.YELLOW}Sensitive-Smart Mode{S.R}: Much more likely to catch all spammers, but with significantly more false positives"
-        )
-        print(f" 3. Enter Spammer's {F.LIGHTRED_EX}channel ID(s) or link(s){S.R}")
-        print(f" 4. Scan {F.LIGHTBLUE_EX}usernames{S.R} for criteria you choose")
-        print(f" 5. Scan {F.CYAN}comment text{S.R} for criteria you choose")
-        print(
-            f" 6. Scan both {F.LIGHTBLUE_EX}usernames{S.R} and {F.CYAN}comment text{S.R} for criteria you choose"
+            f"{S.BRIGHT} 2. {sensitiveColor}Sensitive-Smart Mode{F.R}: Much more likely to catch all spammers, but with significantly more false positives{S.R}"
         )
         print(
-            f" 7. ASCII Mode: Scan usernames for {F.LIGHTMAGENTA_EX}ANY non-ASCII special characters{S.R} (May cause collateral damage!)"
+            f"{a1}{styleID} 3. Enter Spammer's {IDColor}channel ID(s) or link(s){F.R}{S.R}"
+        )
+        print(
+            f"{a2}{styleOther} 4. Scan {usernameColor}usernames{F.R} for criteria you choose{S.R}"
+        )
+        print(
+            f"{a2}{styleOther} 5. Scan {textColor}comment text{F.R} for criteria you choose{S.R}"
+        )
+        print(
+            f"{a2}{styleOther} 6. Scan both {usernameTextColor}usernames{F.R} and {textColor}comment text{F.R} for criteria you choose{S.R}"
+        )
+        print(
+            f"{a2}{styleOther} 7. ASCII Mode: Scan usernames for {asciiColor}ANY non-ASCII special characters{F.R} (May cause collateral damage!){S.R}"
         )
 
         if userNotChannelOwner == True and moderator_mode == False:
             print(
-                f" {F.LIGHTRED_EX}Note: With 'Not Your Channel Mode' enabled, you can only report matched comments while using 'Auto-Smart Mode' \n or 'Sensitive-Smart Mode'.{S.R}"
+                f" {F.LIGHTRED_EX}*Note: With 'Not Your Channel Mode' enabled, you can only report matched comments while using 'Auto-Smart Mode' \n        or 'Sensitive-Smart Mode'.{S.R}"
             )  # Based on filterModesAllowedforNonOwners
         elif userNotChannelOwner == True and moderator_mode == True:
             print(
-                f" {F.LIGHTRED_EX}Note: With 'Moderator Mode', you can hold for review using: 'Auto-Smart', 'Sensitive-Smart', and Channel ID modes.{S.R}"
+                f" {F.LIGHTRED_EX}*Note: With 'Moderator Mode', you can Hold and/or Report using: 'Auto-Smart', 'Sensitive-Smart', and Channel ID modes.{S.R}"
             )
         # Make sure input is valid, if not ask again
         validFilterMode = False
@@ -1364,6 +1405,18 @@ def main():
                 inputtedUsernameFilter = filterSettings[0]
                 inputtedCommentTextFilter = filterSettings[0]
 
+        # Prepare scan mode info dictionary
+        if videosToScan:
+            current.scannedThingsList = list(item["videoID"] for item in videosToScan)
+        elif recentPostsListofDicts:
+            current.scannedThingsList = list(
+                list(post.keys())[0] for post in recentPostsListofDicts
+            )[0:numRecentPosts]
+        elif postURL:
+            current.scannedThingsList = [postURL]
+        else:
+            current.scannedThingsList = []
+
         ##################### START SCANNING #####################
         filtersDict = {
             "filterSettings": filterSettings,
@@ -1479,8 +1532,12 @@ def main():
 
                 for post in recentPostsListofDicts:
                     postScanProgressDict["scanned"] += 1
-                    id = list(post.keys())[0]  # Each dict only has one key/value pair
-                    postText = list(post.values())[0]
+                    id = list(post.keys())[
+                        0
+                    ]  # Each dict only has one key/value pair, so makes list of length 1, so id is in index 0
+                    postText = list(post.values())[
+                        0
+                    ]  # Same as above but applies to values
                     current.vidTitleDict[id] = f"[Community Post]: {postText}"
 
                     scan_community_post(
@@ -1629,6 +1686,25 @@ def main():
             print(
                 f"If you see missed spam or false positives, you can submit a filter suggestion here: {F.YELLOW}TJoe.io/filter-feedback{S.R}"
             )
+
+            # Can still log to json even though no comments
+            if (
+                config["json_log_all_comments"]
+                and config["json_log"]
+                and config["enable_logging"] != False
+            ):
+                print(
+                    f"Because you enabled '{F.LIGHTCYAN_EX}json_log_all_comments{S.R}' in config, {F.LIGHTCYAN_EX}continuing on to log anyway{S.R}."
+                )
+                jsonSettingsDict = {}
+                current, logMode, jsonSettingsDict = logging.prepare_logFile_settings(
+                    current, config, miscData, jsonSettingsDict, filtersDict, bypass
+                )
+                jsonDataDict = logging.get_extra_json_data([], jsonSettingsDict)
+                logging.write_json_log(
+                    current, config, jsonSettingsDict, {}, jsonDataDict
+                )
+
             if config["auto_close"] == False:
                 input("\nPress Enter to return to main menu...")
                 return True
@@ -1685,23 +1761,12 @@ def main():
             current, config, scanVideoID, loggingEnabled, scanMode, logMode
         )
 
-        if loggingEnabled:
-            logInfo = {
-                "logMode": logMode,
-                "logFileContents": logFileContents,
-                "jsonSettingsDict": jsonSettingsDict,
-                "filtersDict": filtersDict,
-            }
-        else:
-            logInfo = None
-
         print(
             f"\n{F.WHITE}{B.RED} NOTE: {S.R} Check that all comments listed above are indeed spam."
         )
         print(
             f" > If you see missed spam or false positives, you can submit a filter suggestion here: {F.YELLOW}TJoe.io/filter-feedback{S.R}"
         )
-
         print()
 
         ### ---------------- Decide whether to skip deletion ----------------
@@ -2152,14 +2217,20 @@ def main():
                             list(current.matchSamplesDict.keys()), jsonSettingsDict
                         )
                         logging.write_json_log(
-                            jsonSettingsDict, combinedCommentDict, jsonDataDict
+                            current,
+                            config,
+                            jsonSettingsDict,
+                            combinedCommentDict,
+                            jsonDataDict,
                         )
                     else:
                         print(
                             f"\n{F.LIGHTRED_EX}NOTE:{S.R} Extra JSON data collection disabled due to error during scanning"
                         )
                 else:
-                    logging.write_json_log(jsonSettingsDict, combinedCommentDict)
+                    logging.write_json_log(
+                        current, config, jsonSettingsDict, combinedCommentDict
+                    )
                 if returnToMenu == True:
                     print("\nJSON Operation Finished.")
         ### ---------------- Reporting / Deletion Begin  ----------------
@@ -2252,7 +2323,7 @@ if __name__ == "__main__":
     #   p.sort_stats("calls").print_stats()
 
     # -------------------------------------------------------------------------------------------------------------------------------------------------
-
+    print("Running Main Program...")
     try:
         # remind()
         main()
