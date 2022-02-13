@@ -90,14 +90,15 @@ def get_comments(
         parent_id = item["snippet"]["topLevelComment"]["id"]
         numReplies = item["snippet"]["totalReplyCount"]
 
-        # On rare occasions a comment will be there but the channel name will be empty, so this allows placeholders
-        try:
+        # In case there are no replies
+        if "replies" in item and "comments" in item["replies"]:
             limitedRepliesList = item["replies"][
                 "comments"
             ]  # API will return a limited number of replies (~5), but to get all, need to make separate call
-        except KeyError:
+        else:
             limitedRepliesList = []
-            pass
+
+        # On rare occasions a comment will be there but the channel name will be empty, so this allows placeholders
         try:
             parentAuthorChannelID = comment["snippet"]["authorChannelId"]["value"]
         except KeyError:
@@ -108,6 +109,7 @@ def get_comments(
             authorChannelName = comment["snippet"]["authorDisplayName"]
         except KeyError:
             authorChannelName = "[Deleted Channel]"
+
         try:
             commentText = comment["snippet"]["textDisplay"]  # Remove Return carriages
         except KeyError:
@@ -137,10 +139,11 @@ def get_comments(
 
         # Log All Comments
         try:
-            allVideoCommentsDict[parentAuthorChannelID].append(currentCommentDict)
-        except KeyError:
-            allVideoCommentsDict[parentAuthorChannelID] = [currentCommentDict]
-        except TypeError:
+            if parentAuthorChannelID in allVideoCommentsDict:
+                allVideoCommentsDict[parentAuthorChannelID].append(currentCommentDict)
+            else:
+                allVideoCommentsDict[parentAuthorChannelID] = [currentCommentDict]
+        except TypeError:  # This might not be necessary, might remove later if not
             pass
 
         # If there are more replies than in the limited list
@@ -337,10 +340,11 @@ def get_replies(
 
         # Log All Comments
         try:
-            allVideoCommentsDict[authorChannelID].append(currentCommentDict)
-        except KeyError:
-            allVideoCommentsDict[authorChannelID] = [currentCommentDict]
-        except TypeError:
+            if authorChannelID in allVideoCommentsDict:
+                allVideoCommentsDict[authorChannelID].append(currentCommentDict)
+            else:
+                allVideoCommentsDict[authorChannelID] = [currentCommentDict]
+        except TypeError:  # Again, might not be necessary, might remove later
             pass
 
         # Update latest stats
@@ -359,23 +363,24 @@ def get_replies(
 def check_spam_threads(
     current, filtersDict, miscData, config, parentCommentDict, threadDict
 ):
-    threadWords = filtersDict["CustomCommentTextFilter"]["threadFiltersDict"][
-        "threadWords"
+    # Note For Debugging: Parent Comment Author ID = parentCommentDict['authorChannelID']
+    threadWordsRegex = filtersDict["CustomCommentTextFilter"]["threadFiltersDict"][
+        "threadWordsRegex"
     ]
-    threadPhrases = filtersDict["CustomCommentTextFilter"]["threadFiltersDict"][
-        "threadPhrases"
+    threadPhrasesRegex = filtersDict["CustomCommentTextFilter"]["threadFiltersDict"][
+        "threadPhrasesRegex"
     ]
-    monetWords = filtersDict["CustomCommentTextFilter"]["threadFiltersDict"][
-        "monetWords"
-    ]
-    monetStrings = filtersDict["CustomCommentTextFilter"]["threadFiltersDict"][
-        "monetStrings"
+    monetWordsRegex = filtersDict["CustomCommentTextFilter"]["threadFiltersDict"][
+        "monetWordsRegex"
     ]
     nameRegex = filtersDict["CustomCommentTextFilter"]["threadFiltersDict"]["nameRegex"]
     nakedNameRegex = filtersDict["CustomCommentTextFilter"]["threadFiltersDict"][
         "nakedNameRegex"
     ]
     cashRegex = filtersDict["CustomCommentTextFilter"]["threadFiltersDict"]["cashRegex"]
+    salutationRegex = filtersDict["CustomCommentTextFilter"]["threadFiltersDict"][
+        "salutationRegex"
+    ]
     ignoreList = ["earn", "trade", "invest", "signal", "crypto", " is", " she", " he"]
     spam = False
     threadAnalysisDict = {}
@@ -404,11 +409,12 @@ def check_spam_threads(
             matchReason="Spam Bot Thread",
         )
         return current
-
     # Preliminary Analysis
-    for word in threadWords:
-        if word in parentCommentDict["commentText"].lower():
-            preliminaryCount += 1
+    matchCount = threadWordsRegex.findall(parentCommentDict["commentText"].lower())
+    if matchCount:
+        preliminaryCount += len(matchCount)
+    if salutationRegex.search(parentCommentDict["commentText"].lower()):
+        preliminaryCount += 1
     if preliminaryCount < 2:
         return current
 
@@ -418,15 +424,17 @@ def check_spam_threads(
             threadAnalysisDict[data["authorChannelID"]] = (
                 threadAnalysisDict[data["authorChannelID"]]
                 + " "
-                + re.sub(" +", " ", data["commentText"].lower())
+                + re.sub(" +", " ", data["commentText"])
                 .replace("\n", " ")
                 .replace("\r", " ")
+                .lower()
             )
         else:
             threadAnalysisDict[data["authorChannelID"]] = (
-                re.sub(" +", " ", data["commentText"].lower())
+                re.sub(" +", " ", data["commentText"])
                 .replace("\n", " ")
                 .replace("\r", " ")
+                .lower()
             )
 
     # When all authors have one combined comment text, put each into list
@@ -434,18 +442,27 @@ def check_spam_threads(
 
     # -------------------------------------------------------------------------------
     def processResult(regResult, naked):
-        len1 = len(regResult.group(1))
-        len2 = len(regResult.group(2))
-        len3 = len(regResult.group(3))
+        if naked:
+            g1 = 1
+            g2 = 20
+            g3 = 21
+        else:
+            g1 = 1
+            g2 = 11
+            g3 = 12
 
-        if not (naked and len1 > 2 and len3 > 2) or (naked and len2 >= 4 and len3 >= 5):
-            name = regResult.group(2).strip() + " " + regResult.group(3).strip()
+        len1 = len(regResult.group(g1))
+        len2 = len(regResult.group(g2))
+        len3 = len(regResult.group(g3))
+
+        if (not naked and len3 > 3) or (naked and len2 >= 4 and len3 >= 5):
+            name = regResult.group(g2).strip() + " " + regResult.group(g3).strip()
             name = re.sub(" +", " ", name)
         else:
             name = ""
 
         if not naked:
-            partialName = regResult.group(1).strip() + " " + regResult.group(2).strip()
+            partialName = regResult.group(1).strip() + " " + regResult.group(g2).strip()
             partialName = re.sub(" +", " ", partialName)
         else:
             partialName = ""
@@ -550,14 +567,14 @@ def check_spam_threads(
             elif partialName and partialName in comment:
                 partialNameCount += 1
         susMention = False
-        if any(word in comment for word in threadWords):
+        if threadWordsRegex.search(comment):
             yellowCount += 1
             susMention = True
-        if any(phrase in comment for phrase in threadPhrases):
+        if threadPhrasesRegex.search(comment):
             redCount += 1
             susMention = True
-        if re.search(cashRegex, comment):
-            if any(word in comment for word in monetWords):
+        if cashRegex.search(comment):
+            if monetWordsRegex.search(comment):
                 redCount += 1
             else:
                 yellowCount += 1
@@ -972,6 +989,8 @@ def check_against_filter(
             smartFilter = filtersDict["CustomCommentTextFilter"]
             # Receive Variables
             compiledRegexDict = smartFilter["compiledRegexDict"]
+            compiledObfuRegexDict = smartFilter["compiledObfuRegexDict"]
+            basicFilterDict = smartFilter["basicFilterDict"]
             numberFilterSet = smartFilter["spammerNumbersSet"]
             compiledNumRegex = smartFilter["compiledNumRegex"]
             minNumbersMatchCount = smartFilter["minNumbersMatchCount"]
@@ -997,21 +1016,22 @@ def check_against_filter(
                 rootDomainRegex = smartFilter["sensitiveRootDomainRegex"]
 
             # Functions --------------------------------------------------------------
-            def findOnlyObfuscated(regexExpression, originalWord, stringToSearch):
+            def findObf(expression, chars, stringToSearch):
                 # Confusable thinks s and f look similar, have to compensate to avoid false positive
                 ignoredConfusablesConverter = {ord("f"): ord("s"), ord("s"): ord("f")}
-                result = re.findall(regexExpression, stringToSearch.lower())
+                result = expression.findall(stringToSearch.lower())
                 if not result:
                     return False
                 else:
                     for match in result:
-                        lowerWord = originalWord.lower()
-                        for char in compiledRegexDict["bufferChars"]:
-                            match = match.strip(char)
-                        if (
-                            match.lower() != lowerWord
-                            and match.lower()
-                            != lowerWord.translate(ignoredConfusablesConverter)
+                        lowerChars = chars.lower()
+                        for bufferChar in compiledRegexDict["bufferChars"]:
+                            match = match.strip(bufferChar)
+                        # if match.lower() != lowerWord and match.lower() != lowerWord.translate(ignoredConfusablesConverter):
+                        if any(char not in lowerChars for char in match) and any(
+                            char
+                            not in lowerChars.translate(ignoredConfusablesConverter)
+                            for char in match
                         ):
                             return True
 
@@ -1064,42 +1084,35 @@ def check_against_filter(
             # Black Tests
             # elif usernameBlackCharsSet.intersection(usernameSet):
             #  add_spam(current, config, miscData, currentCommentDict, videoID)
-            elif any(
-                re.search(expression[1], authorChannelName)
-                for expression in compiledRegexDict["usernameBlackWords"]
-            ):
+            elif compiledRegexDict["usernameBlackWords"].search(authorChannelName):
                 add_spam(current, config, miscData, currentCommentDict, videoID)
-            elif config["detect_sub_challenge_spam"] and any(
-                re.search(expression[1], authorChannelName)
-                for expression in compiledRegexDict["usernameNovidBlackWords"]
-            ):
+            elif config["detect_sub_challenge_spam"] and compiledRegexDict[
+                "usernameNovidBlackWords"
+            ].search(authorChannelName):
+                add_spam(current, config, miscData, currentCommentDict, videoID)
+            elif compiledRegexDict["blackAdWords"].search(authorChannelName):
                 add_spam(current, config, miscData, currentCommentDict, videoID)
             elif any(
-                findOnlyObfuscated(expression[1], expression[0], combinedString)
-                for expression in compiledRegexDict["blackAdWords"]
-            ):
-                add_spam(current, config, miscData, currentCommentDict, videoID)
-            elif any(
-                findOnlyObfuscated(expression[1], expression[0], commentText)
-                for expression in compiledRegexDict["textObfuBlackWords"]
+                findObf(expressionPair[0], expressionPair[1], commentText)
+                for expressionPair in compiledObfuRegexDict["textObfuBlackWords"]
             ):
                 add_spam(current, config, miscData, currentCommentDict, videoID)
             elif any(
                 word in commentText.lower()
-                for word in compiledRegexDict["textExactBlackWords"]
+                for word in basicFilterDict["textExactBlackWords"]
             ):
                 add_spam(current, config, miscData, currentCommentDict, videoID)
             elif any(
                 (word in commentText and not upLowTextSet.intersection(lowAlSet))
-                for word in compiledRegexDict["textUpLowBlackWords"]
+                for word in basicFilterDict["textUpLowBlackWords"]
             ):
                 add_spam(current, config, miscData, currentCommentDict, videoID)
             elif any(
-                findOnlyObfuscated(expression[1], expression[0], authorChannelName)
-                for expression in compiledRegexDict["usernameObfuBlackWords"]
+                findObf(expressionPair[0], expressionPair[1], commentText)
+                for expressionPair in compiledObfuRegexDict["usernameObfuBlackWords"]
             ):
                 add_spam(current, config, miscData, currentCommentDict, videoID)
-            elif re.search(spamListCombinedRegex, combinedString):
+            elif spamListCombinedRegex.search(combinedString.lower()):
                 add_spam(current, config, miscData, currentCommentDict, videoID)
             elif config["detect_link_spam"] and check_if_only_link(commentText.strip()):
                 add_spam(current, config, miscData, currentCommentDict, videoID)
@@ -1108,9 +1121,9 @@ def check_against_filter(
             ):
                 add_spam(current, config, miscData, currentCommentDict, videoID)
             elif not sensitive and (
-                findOnlyObfuscated(
+                findObf(
                     smartFilter["usernameConfuseRegex"],
-                    miscData.channelOwnerName,
+                    list(miscData.channelOwnerName),
                     authorChannelName,
                 )
                 or authorChannelName == miscData.channelOwnerName
@@ -1128,10 +1141,7 @@ def check_against_filter(
                         languageCount += 1
 
                 # Yellow Tests
-                if any(
-                    findOnlyObfuscated(expression[1], expression[0], combinedString)
-                    for expression in compiledRegexDict["yellowAdWords"]
-                ):
+                if compiledRegexDict["yellowAdWords"].search(combinedString):
                     yellowCount += 1
 
                 hrtTest = len(hrtSet.intersection(combinedSet))
@@ -1146,8 +1156,15 @@ def check_against_filter(
                 if yellowAdEmojiSet.intersection(combinedSet):
                     yellowCount += 1
 
-                if not sensitive and spamGenEmojiSet.intersection(combinedSet):
+                if not sensitive and any(
+                    emoji in commentText for emoji in spamGenEmojiSet
+                ):
                     yellowCount += 1
+
+                if not sensitive and any(
+                    emoji in authorChannelName for emoji in spamGenEmojiSet
+                ):
+                    redCount += 1
 
                 if combinedString.count("#") >= 5:
                     yellowCount += 1
@@ -1158,20 +1175,17 @@ def check_against_filter(
                 if languageCount >= 2:
                     yellowCount += 1
 
-                if re.search(rootDomainRegex, combinedString.lower()):
+                if rootDomainRegex.search(combinedString.lower()):
                     yellowCount += 1
 
                 # Red Tests
                 # if any(foundObfuscated(re.findall(expression[1], combinedString), expression[0]) for expression in compiledRegexDict['redAdWords']):
-                if any(
-                    findOnlyObfuscated(expression[1], expression[0], combinedString)
-                    for expression in compiledRegexDict["redAdWords"]
-                ):
+                if compiledRegexDict["redAdWords"].search(combinedString):
                     redCount += 1
 
                 if any(
-                    re.search(expression[1], combinedString)
-                    for expression in compiledRegexDict["exactRedAdWords"]
+                    word in combinedString.lower()
+                    for word in basicFilterDict["exactRedAdWords"]
                 ):
                     redCount += 1
 
@@ -1181,9 +1195,8 @@ def check_against_filter(
                 if sensitive and spamGenEmojiSet.intersection(combinedSet):
                     redCount += 1
 
-                if any(
-                    re.search(expression[1], authorChannelName)
-                    for expression in compiledRegexDict["usernameRedWords"]
+                if compiledRegexDict["usernameRedWords"].search(
+                    authorChannelName.lower()
                 ):
                     redCount += 1
 
@@ -1192,7 +1205,7 @@ def check_against_filter(
                     add_spam(current, config, miscData, currentCommentDict, videoID)
                 elif redCount >= 2:
                     add_spam(current, config, miscData, currentCommentDict, videoID)
-                elif redCount >= 1 and yellowCount >= 1:
+                elif redCount >= 1 and yellowCount >= 2:
                     add_spam(current, config, miscData, currentCommentDict, videoID)
                 elif sensitive and redCount >= 1:
                     add_spam(current, config, miscData, currentCommentDict, videoID)
@@ -1669,9 +1682,9 @@ def exclude_authors(
             f"\nAdd these {F.LIGHTGREEN_EX}excluded{S.R} users to the {F.LIGHTGREEN_EX}whitelist{S.R} for future scans?"
         )
         addWhitelist = choice("Whitelist Users?")
-    elif config["whitelist_excluded"] == "True":
+    elif config["whitelist_excluded"] == True:
         addWhitelist = True
-    elif config["whitelist_excluded"] == "False":
+    elif config["whitelist_excluded"] == False:
         addWhitelist = False
 
     if addWhitelist == True:

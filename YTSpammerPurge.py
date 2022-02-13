@@ -36,7 +36,7 @@
 ### IMPORTANT:  I OFFER NO WARRANTY OR GUARANTEE FOR THIS SCRIPT. USE AT YOUR OWN RISK.
 ###             I tested it on my own and implemented some failsafes as best as I could,
 ###             but there could always be some kind of bug. You should inspect the code yourself.
-version = "2.16.0-Beta1"
+version = "2.16.0-Beta2"
 configVersion = 28
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 print("Importing Script Modules...")
@@ -166,6 +166,7 @@ def main():
                 "\nError: Could not create folder. To update the spam lists, try creating a folder called 'SpamPurge_Resources',"
             )
             print("       then inside that, create another folder called 'Spam_Lists'.")
+            input("Press Enter to continue...")
 
     if os.path.isdir(resourceFolder) and not os.path.isdir(spamListFolder):
         try:
@@ -192,7 +193,9 @@ def main():
 
         listVersion = files.get_list_file_version(spamList["Path"])
         spamList["Version"] = listVersion
-        if parse_version(listVersion) > parse_version(latestLocalSpamListVersion):
+        if listVersion and parse_version(listVersion) > parse_version(
+            latestLocalSpamListVersion
+        ):
             latestLocalSpamListVersion = listVersion
 
     spamListDict["Meta"]["VersionInfo"][
@@ -295,9 +298,10 @@ def main():
         channelOwnerName="",
     )
 
+    miscData.resources = resourcesDict
     rootDomainListAssetFile = "rootZoneDomainList.txt"
     rootDomainList = files.ingest_asset_file(rootDomainListAssetFile)
-    miscData.resources = rootDomainList
+    miscData.resources["rootDomainList"] = rootDomainList
     miscData.spamLists["spamDomainsList"] = spamListDict["Lists"]["Domains"][
         "FilterContents"
     ]
@@ -307,7 +311,6 @@ def main():
     miscData.spamLists["spamThreadsList"] = spamListDict["Lists"]["Threads"][
         "FilterContents"
     ]
-    miscData.resources = resourcesDict
 
     # Create Whitelist if it doesn't exist,
     if not os.path.exists(whitelistPathWithName):
@@ -1927,7 +1930,7 @@ def main():
                     )
                 if exclude == False:
                     print(
-                        f"{F.YELLOW}How do you want to handle the matched comments above?{S.R}"
+                        f"{F.YELLOW}How do you want to {F.BLACK}{B.YELLOW} ALL {S.R}{F.YELLOW} the listed comments above?{S.R} (Including Non-Matched Duplicates)"
                     )
                 elif exclude == True:
                     print(
@@ -2208,7 +2211,11 @@ def main():
             if (
                 config["json_log"] == True
                 and loggingEnabled
-                and current.matchedCommentsDict
+                and (
+                    current.matchedCommentsDict
+                    or current.duplicateCommentsDict
+                    or current.spamThreadsDict
+                )
             ):
                 print("\nWriting JSON log file...")
                 if config["json_extra_data"] == True:

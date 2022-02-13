@@ -1126,7 +1126,8 @@ def write_log_heading(
     elif filterMode == "NameAndText":
         write_func(
             current.logFileName,
-            "Searched in Usernames and Comment Text: " + ", ".join(filterSettings[1]),
+            "Characters searched in Usernames and Comment Text: "
+            + ", ".join(inputtedCommentTextFilter),
             logMode,
             2,
         )
