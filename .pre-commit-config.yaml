@@ -1,0 +1,29 @@
+repos:
+- hooks:
+  - id: check-added-large-files
+  - id: check-toml
+  - id: check-yaml
+  - id: end-of-file-fixer
+  - id: trailing-whitespace
+  repo: https://github.com/pre-commit/pre-commit-hooks
+  rev: v4.1.0
+- hooks:
+  - id: black
+  repo: https://github.com/psf/black
+  rev: 22.1.0
+- hooks:
+  - args:
+    - --autofix
+    id: pretty-format-toml
+  - args:
+    - --autofix
+    exclude: .copier-answers.yml
+    id: pretty-format-yaml
+  repo: https://github.com/macisamuele/language-formatters-pre-commit-hooks
+  rev: v2.2.0
+- hooks:
+  - id: commitizen
+    stages:
+    - commit-msg
+  repo: https://github.com/commitizen-tools/commitizen
+  rev: v2.20.3
