@@ -517,6 +517,7 @@ def validate_config_settings(config):
         "skip_confirm_video": (True, False),
         "moderator_mode": (True, False),
         "auto_close": (True, False),
+        "colors_enabled": (True, False),
         "scan_mode": (
             "ask",
             "chosenvideos",

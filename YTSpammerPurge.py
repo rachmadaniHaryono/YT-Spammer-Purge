@@ -37,7 +37,7 @@
 ###             I tested it on my own and implemented some failsafes as best as I could,
 ###             but there could always be some kind of bug. You should inspect the code yourself.
 version = "2.16.0-Beta2"
-configVersion = 28
+configVersion = 29
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 print("Importing Script Modules...")
 # Import other module files
@@ -79,6 +79,11 @@ from googleapiclient.errors import HttpError
 
 
 def main():
+    # Fix issue with unassigned variables
+    global S
+    global B
+    global F
+
     # Run check on python version, must be 3.6 or higher because of f strings
     if sys.version_info[0] < 3 or sys.version_info[1] < 6:
         print(
@@ -106,17 +111,7 @@ def main():
     clear_command = "cls" if platform.system() == "Windows" else "clear"
     os.system(clear_command)
 
-    # Initiates colorama and creates shorthand variables for resetting colors
-    init(autoreset=True)
-    S.R = S.RESET_ALL
-    F.R = F.RESET
-    B.R = B.RESET
-
     print("\nLoading YT Spammer Purge @ " + str(version) + "...")
-
-    # Authenticate with the Google API - If token expired and invalid, deletes and re-authenticates
-
-    YOUTUBE = auth.first_authentication()
 
     #### Prepare Resources ####
     resourceFolder = RESOURCES_FOLDER_NAME
@@ -223,6 +218,14 @@ def main():
     config = files.load_config_file(configVersion)
     validation.validate_config_settings(config)
     os.system(clear_command)
+
+    # Disable colors before they are used anywhere
+    if config["colors_enabled"] == False:
+        # Disables colors entirely
+        init(autoreset=True, strip=True, convert=False)
+    else:
+        # Initiates colorama and creates shorthand variables for resetting colors
+        init(autoreset=True)
 
     # Check for program and list updates if auto updates enabled in config
     try:
@@ -338,7 +341,14 @@ def main():
     else:
         moderator_mode = False
 
-    os.system(clear_command)
+    if config:
+        moderator_mode = config["moderator_mode"]
+    else:
+        moderator_mode = False
+
+    # Authenticate with the Google API - If token expired and invalid, deletes and re-authenticates
+    YOUTUBE = auth.first_authentication()
+
     # ----------------------------------- Begin Showing Program ---------------------------------
     print(
         f"{F.LIGHTYELLOW_EX}\n===================== YOUTUBE SPAMMER PURGE v"
@@ -1900,7 +1910,7 @@ def main():
                 "Possible Cause: You're scanning someone elses video with a non-supported filter mode.\n"
             )
             print(
-                "If you think this is a bug, you may report it on this project's GitHub page: https://github.com/ThioJoe/YT-Spammer-Purge/issues"
+                f"If you think this is a bug, you may report it on this project's GitHub page: {F.YELLOW}TJoe.io/bug-report{S.R}"
             )
             if config["auto_close"] == True:
                 print("\nAuto-close enabled in config. Exiting in 5 seconds...")
