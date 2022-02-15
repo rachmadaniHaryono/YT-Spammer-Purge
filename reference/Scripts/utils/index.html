@@ -1,0 +1,1607 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Easily scan for and delete scam comments on your YouTube channel.">
+      
+      
+      
+        <link rel="canonical" href="https://ThioJoe.github.io/YT-Spammer-Purge/reference/Scripts/utils/">
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.2.3, mkdocs-material-8.1.11">
+    
+    
+      
+        <title>utils - Youtube Spammer Purge</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.50e68009.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.e6a45f82.min.css">
+        
+          
+          
+          <meta name="theme-color" content="#009485">
+        
+      
+    
+    
+    
+      
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/_mkdocstrings.css">
+    
+      <link rel="stylesheet" href="../../../css/mkdocstrings.css">
+    
+    <script>__md_scope=new URL("../../..",location),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="teal" data-md-color-accent="purple">
+  
+    
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#Scripts.utils" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../.." title="Youtube Spammer Purge" class="md-header__button md-logo" aria-label="Youtube Spammer Purge" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Youtube Spammer Purge
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              utils
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" aria-label="Clear" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/ThioJoe/YT-Spammer-Purge/" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    ThioJoe/YT-Spammer-Purge
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-tabs__inner md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../.." class="md-tabs__link">
+        Home
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+    
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../YTSpammerPurge/" class="md-tabs__link md-tabs__link--active">
+        Code Reference
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../contributing/" class="md-tabs__link">
+        Development
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="Youtube Spammer Purge" class="md-nav__button md-logo" aria-label="Youtube Spammer Purge" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    Youtube Spammer Purge
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/ThioJoe/YT-Spammer-Purge/" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    ThioJoe/YT-Spammer-Purge
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_1" type="checkbox" id="__nav_1" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_1">
+          Home
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Home" data-md-level="1">
+        <label class="md-nav__title" for="__nav_1">
+          <span class="md-nav__icon md-icon"></span>
+          Home
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        Overview
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../credits/" class="md-nav__link">
+        Credits
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../license/" class="md-nav__link">
+        License
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2" type="checkbox" id="__nav_2" checked>
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_2">
+          Code Reference
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Code Reference" data-md-level="1">
+        <label class="md-nav__title" for="__nav_2">
+          <span class="md-nav__icon md-icon"></span>
+          Code Reference
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../YTSpammerPurge/" class="md-nav__link">
+        YTSpammerPurge
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2_2" type="checkbox" id="__nav_2_2" checked>
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_2_2">
+          Scripts
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Scripts" data-md-level="2">
+        <label class="md-nav__title" for="__nav_2_2">
+          <span class="md-nav__icon md-icon"></span>
+          Scripts
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../auth/" class="md-nav__link">
+        auth
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../community_downloader/" class="md-nav__link">
+        community_downloader
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../files/" class="md-nav__link">
+        files
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../gui/" class="md-nav__link">
+        gui
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../logging/" class="md-nav__link">
+        logging
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../operations/" class="md-nav__link">
+        operations
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../prepare_modes/" class="md-nav__link">
+        prepare_modes
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../shared_imports/" class="md-nav__link">
+        shared_imports
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          utils
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        utils
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#Scripts.utils" class="md-nav__link">
+    Scripts.utils
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#Scripts.utils.check_list_against_string" class="md-nav__link">
+    check_list_against_string()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#Scripts.utils.choice" class="md-nav__link">
+    choice()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#Scripts.utils.expand_ranges" class="md-nav__link">
+    expand_ranges()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#Scripts.utils.get_video_title" class="md-nav__link">
+    get_video_title()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#Scripts.utils.make_char_set" class="md-nav__link">
+    make_char_set()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#Scripts.utils.print_break_finished" class="md-nav__link">
+    print_break_finished()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#Scripts.utils.print_error_title_fetch" class="md-nav__link">
+    print_error_title_fetch()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#Scripts.utils.print_exception_during_scan" class="md-nav__link">
+    print_exception_during_scan()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#Scripts.utils.print_exception_reason" class="md-nav__link">
+    print_exception_reason()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#Scripts.utils.print_http_error_during_scan" class="md-nav__link">
+    print_http_error_during_scan()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#Scripts.utils.process_spammer_ids" class="md-nav__link">
+    process_spammer_ids()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#Scripts.utils.string_to_list" class="md-nav__link">
+    string_to_list()
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../validation/" class="md-nav__link">
+        validation
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3" type="checkbox" id="__nav_3" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_3">
+          Development
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Development" data-md-level="1">
+        <label class="md-nav__title" for="__nav_3">
+          <span class="md-nav__icon md-icon"></span>
+          Development
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../contributing/" class="md-nav__link">
+        Contributing
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#Scripts.utils" class="md-nav__link">
+    Scripts.utils
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#Scripts.utils.check_list_against_string" class="md-nav__link">
+    check_list_against_string()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#Scripts.utils.choice" class="md-nav__link">
+    choice()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#Scripts.utils.expand_ranges" class="md-nav__link">
+    expand_ranges()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#Scripts.utils.get_video_title" class="md-nav__link">
+    get_video_title()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#Scripts.utils.make_char_set" class="md-nav__link">
+    make_char_set()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#Scripts.utils.print_break_finished" class="md-nav__link">
+    print_break_finished()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#Scripts.utils.print_error_title_fetch" class="md-nav__link">
+    print_error_title_fetch()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#Scripts.utils.print_exception_during_scan" class="md-nav__link">
+    print_exception_during_scan()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#Scripts.utils.print_exception_reason" class="md-nav__link">
+    print_exception_reason()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#Scripts.utils.print_http_error_during_scan" class="md-nav__link">
+    print_http_error_during_scan()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#Scripts.utils.process_spammer_ids" class="md-nav__link">
+    process_spammer_ids()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#Scripts.utils.string_to_list" class="md-nav__link">
+    string_to_list()
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content" data-md-component="content">
+            <article class="md-content__inner md-typeset">
+              
+                
+<a href="https://github.com/ThioJoe/YT-Spammer-Purge/edit/master/docs/Scripts/utils.py" title="Edit this page" class="md-content__button md-icon">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25z"/></svg>
+</a>
+
+
+  <h1>utils</h1>
+
+<div class="doc doc-object doc-module">
+
+<a id="Scripts.utils"></a>
+    <div class="doc doc-contents first">
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+  <div class="doc doc-object doc-function">
+
+
+
+<h2 id="Scripts.utils.check_list_against_string" class="doc doc-heading">
+check_list_against_string
+
+
+<a href="#Scripts.utils.check_list_against_string" class="headerlink" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><span class="n">check_list_against_string</span><span class="p">(</span><span class="n">listInput</span><span class="p">,</span> <span class="n">stringInput</span><span class="p">,</span> <span class="n">caseSensitive</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+
+        <details class="quote">
+          <summary>Source code in <code>Scripts/utils.py</code></summary>
+          <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">82</span>
+<span class="normal">83</span>
+<span class="normal">84</span>
+<span class="normal">85</span>
+<span class="normal">86</span>
+<span class="normal">87</span>
+<span class="normal">88</span>
+<span class="normal">89</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">check_list_against_string</span><span class="p">(</span><span class="n">listInput</span><span class="p">,</span> <span class="n">stringInput</span><span class="p">,</span> <span class="n">caseSensitive</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+  <span class="k">if</span> <span class="n">caseSensitive</span> <span class="o">==</span> <span class="kc">False</span><span class="p">:</span>
+    <span class="n">stringInput</span> <span class="o">=</span> <span class="n">stringInput</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+    <span class="n">listInput</span> <span class="o">=</span> <span class="p">[</span><span class="n">item</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">listInput</span><span class="p">]</span>
+  <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">x</span> <span class="ow">in</span> <span class="n">stringInput</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">listInput</span><span class="p">):</span>
+    <span class="k">return</span> <span class="kc">True</span>
+  <span class="k">else</span><span class="p">:</span>
+    <span class="k">return</span> <span class="kc">False</span>
+</code></pre></div>
+</td></tr></table>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-function">
+
+
+
+<h2 id="Scripts.utils.choice" class="doc doc-heading">
+choice
+
+
+<a href="#Scripts.utils.choice" class="headerlink" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><span class="n">choice</span><span class="p">(</span><span class="n">message</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">bypass</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+
+        <details class="quote">
+          <summary>Source code in <code>Scripts/utils.py</code></summary>
+          <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">151</span>
+<span class="normal">152</span>
+<span class="normal">153</span>
+<span class="normal">154</span>
+<span class="normal">155</span>
+<span class="normal">156</span>
+<span class="normal">157</span>
+<span class="normal">158</span>
+<span class="normal">159</span>
+<span class="normal">160</span>
+<span class="normal">161</span>
+<span class="normal">162</span>
+<span class="normal">163</span>
+<span class="normal">164</span>
+<span class="normal">165</span>
+<span class="normal">166</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">choice</span><span class="p">(</span><span class="n">message</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">bypass</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+  <span class="k">if</span> <span class="n">bypass</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span>
+    <span class="k">return</span> <span class="kc">True</span>
+
+  <span class="c1"># While loop until valid input</span>
+  <span class="n">valid</span> <span class="o">=</span> <span class="kc">False</span>
+  <span class="k">while</span> <span class="n">valid</span> <span class="o">==</span> <span class="kc">False</span><span class="p">:</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="n">message</span> <span class="o">+</span> <span class="sa">f</span><span class="s2">&quot; (</span><span class="si">{</span><span class="n">F</span><span class="o">.</span><span class="n">LIGHTCYAN_EX</span><span class="si">}</span><span class="s2">y</span><span class="si">{</span><span class="n">S</span><span class="o">.</span><span class="n">R</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">F</span><span class="o">.</span><span class="n">LIGHTRED_EX</span><span class="si">}</span><span class="s2">n</span><span class="si">{</span><span class="n">S</span><span class="o">.</span><span class="n">R</span><span class="si">}</span><span class="s2">): &quot;</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">response</span> <span class="o">==</span> <span class="s2">&quot;Y&quot;</span> <span class="ow">or</span> <span class="n">response</span> <span class="o">==</span> <span class="s2">&quot;y&quot;</span><span class="p">:</span>
+      <span class="k">return</span> <span class="kc">True</span>
+    <span class="k">elif</span> <span class="n">response</span> <span class="o">==</span> <span class="s2">&quot;N&quot;</span> <span class="ow">or</span> <span class="n">response</span> <span class="o">==</span> <span class="s2">&quot;n&quot;</span><span class="p">:</span>
+      <span class="k">return</span> <span class="kc">False</span>
+    <span class="k">elif</span> <span class="n">response</span> <span class="o">==</span> <span class="s2">&quot;X&quot;</span> <span class="ow">or</span> <span class="n">response</span> <span class="o">==</span> <span class="s2">&quot;x&quot;</span><span class="p">:</span>
+      <span class="k">return</span> <span class="kc">None</span>
+    <span class="k">else</span><span class="p">:</span>
+      <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Invalid Input. Enter Y or N  --  Or enter X to return to main menu.&quot;</span><span class="p">)</span>  
+</code></pre></div>
+</td></tr></table>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-function">
+
+
+
+<h2 id="Scripts.utils.expand_ranges" class="doc doc-heading">
+expand_ranges
+
+
+<a href="#Scripts.utils.expand_ranges" class="headerlink" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><span class="n">expand_ranges</span><span class="p">(</span><span class="n">stringInput</span><span class="p">)</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+
+        <details class="quote">
+          <summary>Source code in <code>Scripts/utils.py</code></summary>
+          <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">133</span>
+<span class="normal">134</span>
+<span class="normal">135</span>
+<span class="normal">136</span>
+<span class="normal">137</span>
+<span class="normal">138</span>
+<span class="normal">139</span>
+<span class="normal">140</span>
+<span class="normal">141</span>
+<span class="normal">142</span>
+<span class="normal">143</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">expand_ranges</span><span class="p">(</span><span class="n">stringInput</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span>
+        <span class="sa">r</span><span class="s1">&#39;(\d+)-(\d+)&#39;</span><span class="p">,</span>
+        <span class="k">lambda</span> <span class="n">match</span><span class="p">:</span> <span class="s1">&#39;,&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+            <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span>
+                <span class="nb">int</span><span class="p">(</span><span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)),</span>
+                <span class="nb">int</span><span class="p">(</span><span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span> <span class="o">+</span> <span class="mi">1</span>
+            <span class="p">)</span>   
+        <span class="p">),</span>  
+        <span class="n">stringInput</span>
+    <span class="p">)</span>
+</code></pre></div>
+</td></tr></table>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-function">
+
+
+
+<h2 id="Scripts.utils.get_video_title" class="doc doc-heading">
+get_video_title
+
+
+<a href="#Scripts.utils.get_video_title" class="headerlink" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><span class="n">get_video_title</span><span class="p">(</span><span class="n">current</span><span class="p">,</span> <span class="n">video_id</span><span class="p">)</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+
+        <details class="quote">
+          <summary>Source code in <code>Scripts/utils.py</code></summary>
+          <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span>
+<span class="normal">20</span>
+<span class="normal">21</span>
+<span class="normal">22</span>
+<span class="normal">23</span>
+<span class="normal">24</span>
+<span class="normal">25</span>
+<span class="normal">26</span>
+<span class="normal">27</span>
+<span class="normal">28</span>
+<span class="normal">29</span>
+<span class="normal">30</span>
+<span class="normal">31</span>
+<span class="normal">32</span>
+<span class="normal">33</span>
+<span class="normal">34</span>
+<span class="normal">35</span>
+<span class="normal">36</span>
+<span class="normal">37</span>
+<span class="normal">38</span>
+<span class="normal">39</span>
+<span class="normal">40</span>
+<span class="normal">41</span>
+<span class="normal">42</span>
+<span class="normal">43</span>
+<span class="normal">44</span>
+<span class="normal">45</span>
+<span class="normal">46</span>
+<span class="normal">47</span>
+<span class="normal">48</span>
+<span class="normal">49</span>
+<span class="normal">50</span>
+<span class="normal">51</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">get_video_title</span><span class="p">(</span><span class="n">current</span><span class="p">,</span> <span class="n">video_id</span><span class="p">):</span>
+  <span class="k">if</span> <span class="n">video_id</span> <span class="ow">in</span> <span class="n">current</span><span class="o">.</span><span class="n">vidTitleDict</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+    <span class="n">title</span> <span class="o">=</span> <span class="n">current</span><span class="o">.</span><span class="n">vidTitleDict</span><span class="p">[</span><span class="n">video_id</span><span class="p">]</span>
+  <span class="k">elif</span> <span class="n">current</span><span class="o">.</span><span class="n">errorOccurred</span> <span class="o">==</span> <span class="kc">False</span><span class="p">:</span>
+    <span class="k">try</span><span class="p">:</span>
+      <span class="n">results</span> <span class="o">=</span> <span class="n">auth</span><span class="o">.</span><span class="n">YOUTUBE</span><span class="o">.</span><span class="n">videos</span><span class="p">()</span><span class="o">.</span><span class="n">list</span><span class="p">(</span>
+        <span class="n">part</span><span class="o">=</span><span class="s2">&quot;snippet&quot;</span><span class="p">,</span>
+        <span class="nb">id</span><span class="o">=</span><span class="n">video_id</span><span class="p">,</span>
+        <span class="n">fields</span><span class="o">=</span><span class="s2">&quot;items/snippet/title&quot;</span><span class="p">,</span>
+        <span class="n">maxResults</span><span class="o">=</span><span class="mi">1</span>
+      <span class="p">)</span><span class="o">.</span><span class="n">execute</span><span class="p">()</span>
+    <span class="k">except</span> <span class="n">HttpError</span> <span class="k">as</span> <span class="n">hx</span><span class="p">:</span>
+      <span class="n">traceback</span><span class="o">.</span><span class="n">print_exc</span><span class="p">()</span>
+      <span class="n">print_http_error_during_scan</span><span class="p">(</span><span class="n">hx</span><span class="p">)</span>
+      <span class="n">print_error_title_fetch</span><span class="p">()</span>
+      <span class="n">current</span><span class="o">.</span><span class="n">errorOccurred</span> <span class="o">=</span> <span class="kc">True</span>
+      <span class="k">return</span> <span class="s2">&quot;[Unavailable]&quot;</span>
+
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">ex</span><span class="p">:</span>
+      <span class="n">traceback</span><span class="o">.</span><span class="n">print_exc</span><span class="p">()</span>
+      <span class="n">print_exception_during_scan</span><span class="p">(</span><span class="n">ex</span><span class="p">)</span>
+      <span class="n">print_error_title_fetch</span><span class="p">()</span>
+      <span class="n">current</span><span class="o">.</span><span class="n">errorOccurred</span> <span class="o">=</span> <span class="kc">True</span>
+      <span class="k">return</span> <span class="s2">&quot;[Unavailable]&quot;</span>
+
+    <span class="k">if</span> <span class="n">results</span><span class="p">[</span><span class="s1">&#39;items&#39;</span><span class="p">]:</span>
+      <span class="n">title</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="s2">&quot;items&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;snippet&quot;</span><span class="p">][</span><span class="s2">&quot;title&quot;</span><span class="p">]</span>
+      <span class="n">current</span><span class="o">.</span><span class="n">vidTitleDict</span><span class="p">[</span><span class="n">video_id</span><span class="p">]</span> <span class="o">=</span> <span class="n">title</span>
+    <span class="k">elif</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">video_id</span><span class="p">)</span> <span class="o">==</span> <span class="mi">26</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">video_id</span><span class="p">)</span> <span class="o">==</span> <span class="mi">36</span><span class="p">)</span> <span class="ow">and</span> <span class="n">video_id</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;Ug&quot;</span><span class="p">:</span>
+      <span class="n">title</span> <span class="o">=</span> <span class="s2">&quot;[Community Post - No Title]&quot;</span>
+      <span class="n">current</span><span class="o">.</span><span class="n">vidTitleDict</span><span class="p">[</span><span class="n">video_id</span><span class="p">]</span> <span class="o">=</span> <span class="n">title</span>
+    <span class="k">else</span><span class="p">:</span>
+      <span class="n">title</span> <span class="o">=</span> <span class="s2">&quot;[Title Unavailable]&quot;</span>
+      <span class="n">current</span><span class="o">.</span><span class="n">vidTitleDict</span><span class="p">[</span><span class="n">video_id</span><span class="p">]</span> <span class="o">=</span> <span class="n">title</span>
+  <span class="k">else</span><span class="p">:</span>
+    <span class="n">title</span> <span class="o">=</span> <span class="s2">&quot;[Title Unavailable]&quot;</span>
+
+  <span class="k">return</span> <span class="n">title</span>
+</code></pre></div>
+</td></tr></table>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-function">
+
+
+
+<h2 id="Scripts.utils.make_char_set" class="doc doc-heading">
+make_char_set
+
+
+<a href="#Scripts.utils.make_char_set" class="headerlink" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><span class="n">make_char_set</span><span class="p">(</span><span class="n">stringInput</span><span class="p">,</span> <span class="n">stripLettersNumbers</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">stripKeyboardSpecialChars</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">stripPunctuation</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+
+        <details class="quote">
+          <summary>Source code in <code>Scripts/utils.py</code></summary>
+          <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">55</span>
+<span class="normal">56</span>
+<span class="normal">57</span>
+<span class="normal">58</span>
+<span class="normal">59</span>
+<span class="normal">60</span>
+<span class="normal">61</span>
+<span class="normal">62</span>
+<span class="normal">63</span>
+<span class="normal">64</span>
+<span class="normal">65</span>
+<span class="normal">66</span>
+<span class="normal">67</span>
+<span class="normal">68</span>
+<span class="normal">69</span>
+<span class="normal">70</span>
+<span class="normal">71</span>
+<span class="normal">72</span>
+<span class="normal">73</span>
+<span class="normal">74</span>
+<span class="normal">75</span>
+<span class="normal">76</span>
+<span class="normal">77</span>
+<span class="normal">78</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">make_char_set</span><span class="p">(</span><span class="n">stringInput</span><span class="p">,</span> <span class="n">stripLettersNumbers</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">stripKeyboardSpecialChars</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">stripPunctuation</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="c1"># Optional lists of characters to strip from string</span>
+    <span class="n">translateDict</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">charsToStrip</span> <span class="o">=</span> <span class="s2">&quot; &quot;</span>
+    <span class="k">if</span> <span class="n">stripLettersNumbers</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span>
+      <span class="n">numbersLettersChars</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ&quot;</span><span class="p">)</span>
+      <span class="n">charsToStrip</span> <span class="o">+=</span> <span class="n">numbersLettersChars</span>
+    <span class="k">if</span> <span class="n">stripKeyboardSpecialChars</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span>
+      <span class="n">keyboardSpecialChars</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;!@#$%^&amp;*()_+-=[]\{\}|;&#39;:,./&lt;&gt;?`~&quot;</span><span class="p">)</span>
+      <span class="n">charsToStrip</span> <span class="o">+=</span> <span class="n">keyboardSpecialChars</span>
+    <span class="k">if</span> <span class="n">stripPunctuation</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span>
+      <span class="n">punctuationChars</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;!?</span><span class="se">\&quot;</span><span class="s2">.,;:&#39;-/()&quot;</span><span class="p">)</span>
+      <span class="n">charsToStrip</span> <span class="o">+=</span> <span class="n">punctuationChars</span>
+
+    <span class="c1"># Adds characters to dictionary to use with translate to remove these characters</span>
+    <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">charsToStrip</span><span class="p">:</span>
+      <span class="n">translateDict</span><span class="p">[</span><span class="nb">ord</span><span class="p">(</span><span class="n">c</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">translateDict</span><span class="p">[</span><span class="nb">ord</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\ufe0f</span><span class="s2">&quot;</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span> <span class="c1"># Strips invisible varation selector for emojis</span>
+
+    <span class="c1"># Removes charsToStrip from string</span>
+    <span class="n">stringInput</span> <span class="o">=</span> <span class="n">stringInput</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">translateDict</span><span class="p">)</span>
+    <span class="n">listedInput</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">stringInput</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="nb">set</span><span class="p">(</span><span class="nb">filter</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">listedInput</span><span class="p">))</span>
+</code></pre></div>
+</td></tr></table>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-function">
+
+
+
+<h2 id="Scripts.utils.print_break_finished" class="doc doc-heading">
+print_break_finished
+
+
+<a href="#Scripts.utils.print_break_finished" class="headerlink" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><span class="n">print_break_finished</span><span class="p">(</span><span class="n">scanMode</span><span class="p">)</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+
+        <details class="quote">
+          <summary>Source code in <code>Scripts/utils.py</code></summary>
+          <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">199</span>
+<span class="normal">200</span>
+<span class="normal">201</span>
+<span class="normal">202</span>
+<span class="normal">203</span>
+<span class="normal">204</span>
+<span class="normal">205</span>
+<span class="normal">206</span>
+<span class="normal">207</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">print_break_finished</span><span class="p">(</span><span class="n">scanMode</span><span class="p">):</span>
+  <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;------------------------------------------------&quot;</span><span class="p">)</span>
+  <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="si">{</span><span class="n">F</span><span class="o">.</span><span class="n">LIGHTRED_EX</span><span class="si">}</span><span class="s2">[!] Fatal Error Occurred During Scan! </span><span class="si">{</span><span class="n">F</span><span class="o">.</span><span class="n">BLACK</span><span class="si">}{</span><span class="n">B</span><span class="o">.</span><span class="n">LIGHTRED_EX</span><span class="si">}</span><span class="s2"> Read the important info below! </span><span class="si">{</span><span class="n">S</span><span class="o">.</span><span class="n">R</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+  <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Program must skip the rest of the scan. </span><span class="si">{</span><span class="n">F</span><span class="o">.</span><span class="n">LIGHTGREEN_EX</span><span class="si">}</span><span class="s2">Comments already scanned can still be used to create a log file (if you choose)</span><span class="si">{</span><span class="n">S</span><span class="o">.</span><span class="n">R</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+  <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  &gt; You won&#39;t be able to delete/hide any comments like usual, but you can </span><span class="si">{</span><span class="n">F</span><span class="o">.</span><span class="n">LIGHTMAGENTA_EX</span><span class="si">}</span><span class="s2">exclude users before saving the log file</span><span class="si">{</span><span class="n">S</span><span class="o">.</span><span class="n">R</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+  <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  &gt; Then, you can </span><span class="si">{</span><span class="n">F</span><span class="o">.</span><span class="n">LIGHTGREEN_EX</span><span class="si">}</span><span class="s2">delete the comments later</span><span class="si">{</span><span class="n">S</span><span class="o">.</span><span class="n">R</span><span class="si">}</span><span class="s2"> using the </span><span class="si">{</span><span class="n">F</span><span class="o">.</span><span class="n">YELLOW</span><span class="si">}</span><span class="s2">mode that removes comments using a pre-existing list</span><span class="si">{</span><span class="n">S</span><span class="o">.</span><span class="n">R</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+  <span class="k">if</span> <span class="n">scanMode</span> <span class="o">==</span> <span class="s2">&quot;entireChannel&quot;</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">F</span><span class="o">.</span><span class="n">RED</span><span class="si">}</span><span class="s2">NOTE: </span><span class="si">{</span><span class="n">S</span><span class="o">.</span><span class="n">R</span><span class="si">}</span><span class="s2"> Because of the scanning mode (entire channel) the log will be missing the video IDs and video names.&quot;</span><span class="p">)</span>
+  <span class="nb">input</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2"> Press Enter to continue...&quot;</span><span class="p">)</span>
+</code></pre></div>
+</td></tr></table>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-function">
+
+
+
+<h2 id="Scripts.utils.print_error_title_fetch" class="doc doc-heading">
+print_error_title_fetch
+
+
+<a href="#Scripts.utils.print_error_title_fetch" class="headerlink" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><span class="n">print_error_title_fetch</span><span class="p">()</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+
+        <details class="quote">
+          <summary>Source code in <code>Scripts/utils.py</code></summary>
+          <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">209</span>
+<span class="normal">210</span>
+<span class="normal">211</span>
+<span class="normal">212</span>
+<span class="normal">213</span>
+<span class="normal">214</span>
+<span class="normal">215</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">print_error_title_fetch</span><span class="p">():</span>
+  <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;--------------------------------------------------------------------------------------------------------------------------&quot;</span><span class="p">)</span>
+  <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="si">{</span><span class="n">F</span><span class="o">.</span><span class="n">BLACK</span><span class="si">}{</span><span class="n">B</span><span class="o">.</span><span class="n">RED</span><span class="si">}</span><span class="s2"> ERROR OCCURRED </span><span class="si">{</span><span class="n">S</span><span class="o">.</span><span class="n">R</span><span class="si">}</span><span class="s2"> While Fetching Video Title... </span><span class="si">{</span><span class="n">F</span><span class="o">.</span><span class="n">BLACK</span><span class="si">}{</span><span class="n">B</span><span class="o">.</span><span class="n">LIGHTRED_EX</span><span class="si">}</span><span class="s2"> READ THE INFO BELOW </span><span class="si">{</span><span class="n">S</span><span class="o">.</span><span class="n">R</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+  <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Program will </span><span class="si">{</span><span class="n">F</span><span class="o">.</span><span class="n">LIGHTGREEN_EX</span><span class="si">}</span><span class="s2">attempt to continue</span><span class="si">{</span><span class="n">S</span><span class="o">.</span><span class="n">R</span><span class="si">}</span><span class="s2">, but the </span><span class="si">{</span><span class="n">F</span><span class="o">.</span><span class="n">YELLOW</span><span class="si">}</span><span class="s2">video title may not be available</span><span class="si">{</span><span class="n">S</span><span class="o">.</span><span class="n">R</span><span class="si">}</span><span class="s2"> in the log file.&quot;</span><span class="p">)</span>
+  <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  &gt; You won&#39;t be able to delete/hide any comments like usual, but you can </span><span class="si">{</span><span class="n">F</span><span class="o">.</span><span class="n">LIGHTMAGENTA_EX</span><span class="si">}</span><span class="s2">exclude users before saving the log file</span><span class="si">{</span><span class="n">S</span><span class="o">.</span><span class="n">R</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+  <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  &gt; Then, you can </span><span class="si">{</span><span class="n">F</span><span class="o">.</span><span class="n">LIGHTGREEN_EX</span><span class="si">}</span><span class="s2">delete the comments later</span><span class="si">{</span><span class="n">S</span><span class="o">.</span><span class="n">R</span><span class="si">}</span><span class="s2"> using the </span><span class="si">{</span><span class="n">F</span><span class="o">.</span><span class="n">YELLOW</span><span class="si">}</span><span class="s2">mode that removes comments using a pre-existing log file</span><span class="si">{</span><span class="n">S</span><span class="o">.</span><span class="n">R</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+  <span class="nb">input</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2"> Press Enter to continue...&quot;</span><span class="p">)</span>
+</code></pre></div>
+</td></tr></table>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-function">
+
+
+
+<h2 id="Scripts.utils.print_exception_during_scan" class="doc doc-heading">
+print_exception_during_scan
+
+
+<a href="#Scripts.utils.print_exception_during_scan" class="headerlink" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><span class="n">print_exception_during_scan</span><span class="p">(</span><span class="n">ex</span><span class="p">)</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+
+        <details class="quote">
+          <summary>Source code in <code>Scripts/utils.py</code></summary>
+          <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">195</span>
+<span class="normal">196</span>
+<span class="normal">197</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">print_exception_during_scan</span><span class="p">(</span><span class="n">ex</span><span class="p">):</span>
+  <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;------------------------------------------------&quot;</span><span class="p">)</span>
+  <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">B</span><span class="o">.</span><span class="n">RED</span><span class="si">}{</span><span class="n">F</span><span class="o">.</span><span class="n">WHITE</span><span class="si">}</span><span class="s2"> ERROR! </span><span class="si">{</span><span class="n">S</span><span class="o">.</span><span class="n">R</span><span class="si">}</span><span class="s2">  Error Message: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">ex</span><span class="p">))</span>
+</code></pre></div>
+</td></tr></table>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-function">
+
+
+
+<h2 id="Scripts.utils.print_exception_reason" class="doc doc-heading">
+print_exception_reason
+
+
+<a href="#Scripts.utils.print_exception_reason" class="headerlink" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><span class="n">print_exception_reason</span><span class="p">(</span><span class="n">reason</span><span class="p">)</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+
+        <details class="quote">
+          <summary>Source code in <code>Scripts/utils.py</code></summary>
+          <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">171</span>
+<span class="normal">172</span>
+<span class="normal">173</span>
+<span class="normal">174</span>
+<span class="normal">175</span>
+<span class="normal">176</span>
+<span class="normal">177</span>
+<span class="normal">178</span>
+<span class="normal">179</span>
+<span class="normal">180</span>
+<span class="normal">181</span>
+<span class="normal">182</span>
+<span class="normal">183</span>
+<span class="normal">184</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">print_exception_reason</span><span class="p">(</span><span class="n">reason</span><span class="p">):</span>
+  <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;    Reason: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">reason</span><span class="p">))</span>
+  <span class="k">if</span> <span class="n">reason</span> <span class="o">==</span> <span class="s2">&quot;processingFailure&quot;</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2"> </span><span class="si">{</span><span class="n">F</span><span class="o">.</span><span class="n">LIGHTRED_EX</span><span class="si">}</span><span class="s2">[!!] Processing Error</span><span class="si">{</span><span class="n">S</span><span class="o">.</span><span class="n">R</span><span class="si">}</span><span class="s2"> - Sometimes this error fixes itself. Try just running the program again. !!&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;This issue is often on YouTube&#39;s side, so if it keeps happening try again later.&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;(This also occurs if you try deleting comments on someone elses video, which is not possible.)&quot;</span><span class="p">)</span>
+  <span class="k">elif</span> <span class="n">reason</span> <span class="o">==</span> <span class="s2">&quot;commentsDisabled&quot;</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="si">{</span><span class="n">F</span><span class="o">.</span><span class="n">LIGHTRED_EX</span><span class="si">}</span><span class="s2">[!] Error:</span><span class="si">{</span><span class="n">S</span><span class="o">.</span><span class="n">R</span><span class="si">}</span><span class="s2"> Comments are disabled on this video. This error can also occur if scanning a live stream.&quot;</span><span class="p">)</span>
+  <span class="k">elif</span> <span class="n">reason</span> <span class="o">==</span> <span class="s2">&quot;quotaExceeded&quot;</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="si">{</span><span class="n">F</span><span class="o">.</span><span class="n">LIGHTRED_EX</span><span class="si">}</span><span class="s2">Error:</span><span class="si">{</span><span class="n">S</span><span class="o">.</span><span class="n">R</span><span class="si">}</span><span class="s2"> You have exceeded the YouTube API quota. To do more scanning you must wait until the quota resets.&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot; &gt; There is a daily limit of 10,000 units/day, which works out to around reporting 10,000 comments/day.&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot; &gt; You can check your quota by searching &#39;quota&#39; in the google cloud console.&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">F</span><span class="o">.</span><span class="n">YELLOW</span><span class="si">}</span><span class="s2">Solutions: Either wait until tomorrow, or create additional projects in the cloud console.</span><span class="si">{</span><span class="n">S</span><span class="o">.</span><span class="n">R</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  &gt; Read more about the quota limits for this app here: </span><span class="si">{</span><span class="n">F</span><span class="o">.</span><span class="n">YELLOW</span><span class="si">}</span><span class="s2">TJoe.io/api-limit-info</span><span class="si">{</span><span class="n">S</span><span class="o">.</span><span class="n">R</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</code></pre></div>
+</td></tr></table>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-function">
+
+
+
+<h2 id="Scripts.utils.print_http_error_during_scan" class="doc doc-heading">
+print_http_error_during_scan
+
+
+<a href="#Scripts.utils.print_http_error_during_scan" class="headerlink" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><span class="n">print_http_error_during_scan</span><span class="p">(</span><span class="n">hx</span><span class="p">)</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+
+        <details class="quote">
+          <summary>Source code in <code>Scripts/utils.py</code></summary>
+          <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">186</span>
+<span class="normal">187</span>
+<span class="normal">188</span>
+<span class="normal">189</span>
+<span class="normal">190</span>
+<span class="normal">191</span>
+<span class="normal">192</span>
+<span class="normal">193</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">print_http_error_during_scan</span><span class="p">(</span><span class="n">hx</span><span class="p">):</span>
+  <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;------------------------------------------------&quot;</span><span class="p">)</span>
+  <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">B</span><span class="o">.</span><span class="n">RED</span><span class="si">}{</span><span class="n">F</span><span class="o">.</span><span class="n">WHITE</span><span class="si">}</span><span class="s2"> ERROR! </span><span class="si">{</span><span class="n">S</span><span class="o">.</span><span class="n">R</span><span class="si">}</span><span class="s2">  Error Message: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">hx</span><span class="p">))</span>
+  <span class="k">if</span> <span class="n">hx</span><span class="o">.</span><span class="n">status_code</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Status Code: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">hx</span><span class="o">.</span><span class="n">status_code</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">hx</span><span class="o">.</span><span class="n">error_details</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;reason&quot;</span><span class="p">]:</span> <span class="c1"># If error reason is available, print it</span>
+        <span class="n">reason</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">hx</span><span class="o">.</span><span class="n">error_details</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;reason&quot;</span><span class="p">])</span>
+        <span class="n">print_exception_reason</span><span class="p">(</span><span class="n">reason</span><span class="p">)</span>
+</code></pre></div>
+</td></tr></table>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-function">
+
+
+
+<h2 id="Scripts.utils.process_spammer_ids" class="doc doc-heading">
+process_spammer_ids
+
+
+<a href="#Scripts.utils.process_spammer_ids" class="headerlink" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><span class="n">process_spammer_ids</span><span class="p">(</span><span class="n">rawString</span><span class="p">)</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+
+        <details class="quote">
+          <summary>Source code in <code>Scripts/utils.py</code></summary>
+          <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">111</span>
+<span class="normal">112</span>
+<span class="normal">113</span>
+<span class="normal">114</span>
+<span class="normal">115</span>
+<span class="normal">116</span>
+<span class="normal">117</span>
+<span class="normal">118</span>
+<span class="normal">119</span>
+<span class="normal">120</span>
+<span class="normal">121</span>
+<span class="normal">122</span>
+<span class="normal">123</span>
+<span class="normal">124</span>
+<span class="normal">125</span>
+<span class="normal">126</span>
+<span class="normal">127</span>
+<span class="normal">128</span>
+<span class="normal">129</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">process_spammer_ids</span><span class="p">(</span><span class="n">rawString</span><span class="p">):</span>
+  <span class="n">inputList</span> <span class="o">=</span> <span class="p">[]</span> <span class="c1"># For list of unvalidated inputted items</span>
+  <span class="n">IDList</span> <span class="o">=</span> <span class="p">[]</span> <span class="c1"># For list of validated channel IDs, converted from inputList of spammer IDs - Separate to allow printing original invalid input if necessary</span>
+  <span class="n">inputList</span> <span class="o">=</span> <span class="n">rawString</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">)</span> <span class="c1"># Split spammer IDs / Links by commas</span>
+
+  <span class="c1"># Remove whitespace from each list item</span>
+  <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">inputList</span><span class="p">)):</span>
+     <span class="n">inputList</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span>  <span class="n">inputList</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+  <span class="n">inputList</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">filter</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">inputList</span><span class="p">))</span> <span class="c1"># Remove empty strings from list</span>
+  <span class="n">IDList</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">inputList</span><span class="p">)</span>  <span class="c1"># Need to use list() instead of just setting equal so each list is separately affected, otherwise same pointer</span>
+
+  <span class="c1"># Validate each ID in list</span>
+  <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">inputList</span><span class="p">)):</span>
+    <span class="n">valid</span><span class="p">,</span> <span class="n">IDList</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">channelTitle</span> <span class="o">=</span> <span class="n">validation</span><span class="o">.</span><span class="n">validate_channel_id</span><span class="p">(</span><span class="n">inputList</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+    <span class="k">if</span> <span class="n">valid</span> <span class="o">==</span> <span class="kc">False</span><span class="p">:</span>
+      <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">B</span><span class="o">.</span><span class="n">RED</span><span class="si">}{</span><span class="n">F</span><span class="o">.</span><span class="n">BLACK</span><span class="si">}</span><span class="s2">Invalid</span><span class="si">{</span><span class="n">S</span><span class="o">.</span><span class="n">R</span><span class="si">}</span><span class="s2"> Channel ID or Link: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">inputList</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+      <span class="k">return</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">None</span>
+
+  <span class="k">return</span> <span class="kc">True</span><span class="p">,</span> <span class="n">IDList</span>  
+</code></pre></div>
+</td></tr></table>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-function">
+
+
+
+<h2 id="Scripts.utils.string_to_list" class="doc doc-heading">
+string_to_list
+
+
+<a href="#Scripts.utils.string_to_list" class="headerlink" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><span class="n">string_to_list</span><span class="p">(</span><span class="n">rawString</span><span class="p">,</span> <span class="n">lower</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+
+        <details class="quote">
+          <summary>Source code in <code>Scripts/utils.py</code></summary>
+          <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 94</span>
+<span class="normal"> 95</span>
+<span class="normal"> 96</span>
+<span class="normal"> 97</span>
+<span class="normal"> 98</span>
+<span class="normal"> 99</span>
+<span class="normal">100</span>
+<span class="normal">101</span>
+<span class="normal">102</span>
+<span class="normal">103</span>
+<span class="normal">104</span>
+<span class="normal">105</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">string_to_list</span><span class="p">(</span><span class="n">rawString</span><span class="p">,</span> <span class="n">lower</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+  <span class="k">if</span> <span class="n">lower</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span>
+    <span class="n">rawString</span> <span class="o">=</span> <span class="n">rawString</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+
+  <span class="c1"># Remove whitespace</span>
+  <span class="n">newList</span> <span class="o">=</span> <span class="n">rawString</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">)</span>
+  <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">newList</span><span class="p">)):</span>
+    <span class="n">newList</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span>  <span class="n">newList</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+
+  <span class="c1"># Remove empty strings from list</span>
+  <span class="n">newList</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">filter</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">newList</span><span class="p">))</span> 
+  <span class="k">return</span> <span class="n">newList</span>
+</code></pre></div>
+</td></tr></table>
+        </details>
+    </div>
+
+  </div>
+
+
+
+
+
+  </div>
+
+    </div>
+
+  </div>
+
+              
+            </article>
+          </div>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    <nav class="md-footer__inner md-grid" aria-label="Footer">
+      
+        
+        <a href="../shared_imports/" class="md-footer__link md-footer__link--prev" aria-label="Previous: shared_imports" rel="prev">
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+          </div>
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              shared_imports
+            </div>
+          </div>
+        </a>
+      
+      
+        
+        <a href="../validation/" class="md-footer__link md-footer__link--next" aria-label="Next: validation" rel="next">
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              validation
+            </div>
+          </div>
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4z"/></svg>
+          </div>
+        </a>
+      
+    </nav>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    <script id="__config" type="application/json">{"base": "../../..", "features": ["navigation.tabs"], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../../../assets/javascripts/workers/search.092fa1f6.min.js"}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.5a9542cf.min.js"></script>
+      
+    
+  </body>
+</html>
