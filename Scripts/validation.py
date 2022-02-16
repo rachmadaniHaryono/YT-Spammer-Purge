@@ -284,7 +284,7 @@ def validate_config_settings(config):
             f"\n{B.RED}{F.WHITE} ERROR! {S.R} Invalid value for config setting '{setting}': {str(value)}"
         )
         print(
-            "It should probably be an integer. Check the possible values listed in the config file for that setting."
+            "It must be a whole number greater than zero, or another possible value listed in the config for that setting."
         )
         print_quit_and_report()
 
@@ -559,8 +559,20 @@ def validate_config_settings(config):
             "autosmart",
             "sensitivesmart",
         ),
+        "stolen_comments_check_modes": (
+            "none",
+            "id",
+            "username",
+            "text",
+            "nameandtext",
+            "autoascii",
+            "autosmart",
+            "sensitivesmart",
+        ),
         #'levenshtein_distance': (),
         #'minimum_duplicates': None,
+        #'minimum_duplicate_length'
+        "fuzzy_stolen_comment_detection": (True, False),
         "skip_deletion": (True, False),
         "delete_without_reviewing": (True, False),
         "enable_ban": ("ask", False),
@@ -587,6 +599,8 @@ def validate_config_settings(config):
         "minimum_duplicates",
         "quota_limit",
         "config_version",
+        "stolen_minimum_text_length",
+        "minimum_duplicate_length",
     ]
 
     # Dictionary of settings requiring specific checks, and the functions to validate them
@@ -617,13 +631,14 @@ def validate_config_settings(config):
             if settingValue != "ask":
                 try:
                     int(settingValue)
-                    continue
                 except ValueError:
                     # Check if there is another valid value besides an integer
                     if simple_settings_check(settingName, settingValue) == True:
                         continue
                     else:
                         print_int_fail(settingName, settingValue)
+                if int(settingValue) <= 0:
+                    print_int_fail(settingName, settingValue)
             else:
                 # Check if 'ask' is a valid value
                 if simple_settings_check(settingName, settingValue) == True:

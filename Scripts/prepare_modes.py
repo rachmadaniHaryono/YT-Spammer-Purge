@@ -10,7 +10,7 @@ import Scripts.operations as operations
 import Scripts.files as files
 import Scripts.filter_variables as filter
 
-from confusables import confusable_regex, normalize
+from Scripts.confusablesCustom import confusable_regex, normalize
 from base64 import b85decode as b64decode
 import pathlib
 
@@ -412,18 +412,18 @@ def prepare_filter_mode_smart(scanMode, config, miscData, sensitive=False):
         "redAdWords": filter.redAdWordsCompiled,
         "yellowAdWords": filter.yellowAdWordsCompiled,
         "usernameRedWords": filter.usernameRedWordsCompiled,
+        "textBlackWords": filter.textBlackWordsCompiled,
+    }
+
+    preciseRegexDict = {
+        "textExactBlackWords": re.compile(filter.textExactBlackWords),
+        "textUpLowBlackWords": re.compile(filter.textUpLowBlackWords),
+        "exactRedAdWords": re.compile(filter.exactRedAdWords),
     }
 
     compiledObfuRegexDict = {
         "textObfuBlackWords": filter.textObfuBlackWordsCompiledPairs,
         "usernameObfuBlackWords": filter.usernameObfuBlackWordsCompiledPairs,
-    }
-
-    basicFilterDict = {
-        "textExactBlackWords": filter.textExactBlackWords,
-        "textUpLowBlackWords": filter.textUpLowBlackWords,
-        "usernameRedWords": filter.usernameRedWordsCompiled,
-        "exactRedAdWords": filter.exactRedAdWords,
     }
 
     # General Settings
@@ -565,7 +565,7 @@ def prepare_filter_mode_smart(scanMode, config, miscData, sensitive=False):
         "rootDomainRegex": rootDomainRegex,
         "compiledRegexDict": compiledRegexDict,
         "compiledObfuRegexDict": compiledObfuRegexDict,
-        "basicFilterDict": basicFilterDict,
+        "preciseRegexDict": preciseRegexDict,
         "usernameConfuseRegex": usernameConfuseRegex,
         "languages": languages,
         "sensitive": sensitive,
@@ -796,7 +796,7 @@ def delete_comment_list(config):
             print(f"{F.RED}Invalid input, try again.{S.R}")
     if removalMode == "rejected":
         banChoice = choice(f"Also {F.RED}ban{S.R} the commenters?")
-        if banChoice.lower() == "x":
+        if str(banChoice).lower() == "x":
             return "MainMenu"
 
     # Set limit based on quota

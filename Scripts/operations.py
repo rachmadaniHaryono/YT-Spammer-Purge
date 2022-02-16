@@ -11,6 +11,7 @@ from Scripts.utils import choice
 import unicodedata
 import time
 import itertools
+from datetime import datetime
 
 # from collections import Counter
 from Levenshtein import ratio
@@ -36,7 +37,7 @@ def get_comments(
     commentText = None
     parentAuthorChannelID = None
 
-    fieldsToFetch = "nextPageToken,items/snippet/topLevelComment/id,items/replies/comments,items/snippet/totalReplyCount,items/snippet/topLevelComment/snippet/videoId,items/snippet/topLevelComment/snippet/authorChannelId/value,items/snippet/topLevelComment/snippet/authorDisplayName,items/snippet/topLevelComment/snippet/textDisplay"
+    fieldsToFetch = "nextPageToken,items/snippet/topLevelComment/id,items/replies/comments,items/snippet/totalReplyCount,items/snippet/topLevelComment/snippet/videoId,items/snippet/topLevelComment/snippet/authorChannelId/value,items/snippet/topLevelComment/snippet/authorDisplayName,items/snippet/topLevelComment/snippet/textDisplay,items/snippet/topLevelComment/snippet/publishedAt"
 
     try:
         # Gets all comment threads for a specific video
@@ -89,6 +90,7 @@ def get_comments(
         videoID = comment["snippet"]["videoId"]
         parent_id = item["snippet"]["topLevelComment"]["id"]
         numReplies = item["snippet"]["totalReplyCount"]
+        timestamp = item["snippet"]["topLevelComment"]["snippet"]["publishedAt"]
 
         # In case there are no replies
         if "replies" in item and "comments" in item["replies"]:
@@ -123,6 +125,8 @@ def get_comments(
             "commentText": commentText,
             "commentID": parent_id,
             "videoID": videoID,
+            "timestamp": timestamp,
+            "originalCommentID": None,
         }
         if config["json_log_all_comments"] == True:
             currentCommentDict["uploaderChannelID"] = miscData.channelOwnerID
@@ -207,6 +211,19 @@ def get_comments(
                 end="\r",
             )
             check_duplicates(current, config, miscData, allVideoCommentsDict, videoID)
+            print(
+                "                                                                                                                       "
+            )
+        repostCheckModes = utils.string_to_list(config["stolen_comments_check_modes"])
+        if filtersDict["filterMode"].lower() in repostCheckModes:
+            print(
+                " Analyzing For Reposts                                                                                           ",
+                end="\r",
+            )
+            check_reposts(current, config, miscData, allVideoCommentsDict, videoID)
+            print(
+                "                                                                                                                       "
+            )
 
     current.allScannedCommentsDict.update(allVideoCommentsDict)
     return RetrievedNextPageToken, allVideoCommentsDict
@@ -236,7 +253,7 @@ def get_replies(
     threadDict = {}
 
     if repliesList == None:
-        fieldsToFetch = "nextPageToken,items/snippet/authorChannelId/value,items/id,items/snippet/authorDisplayName,items/snippet/textDisplay"
+        fieldsToFetch = "nextPageToken,items/snippet/authorChannelId/value,items/id,items/snippet/authorDisplayName,items/snippet/textDisplay,items/snippet/publishedAt"
         replies = []
         replyPageToken = None
 
@@ -268,9 +285,9 @@ def get_replies(
             replies.extend(results["items"])
 
             # Get token for next page
-            try:
+            if "nextPageToken" in results:
                 replyPageToken = results["nextPageToken"]
-            except KeyError:
+            else:
                 replyPageToken = "End"
 
     else:
@@ -284,6 +301,7 @@ def get_replies(
     # Need individual tries because not all are fetched for each mode
     for reply in replies:
         replyID = reply["id"]
+        timestamp = reply["snippet"]["publishedAt"]
         try:
             authorChannelID = reply["snippet"]["authorChannelId"]["value"]
         except KeyError:
@@ -316,6 +334,8 @@ def get_replies(
             "commentText": commentText,
             "commentID": replyID,
             "videoID": videoID,
+            "timestamp": timestamp,
+            "originalCommentID": None,
         }
         if config["json_log_all_comments"] == True:
             currentCommentDict["uploaderChannelID"] = miscData.channelOwnerID
@@ -351,6 +371,7 @@ def get_replies(
         current.scannedRepliesCount += 1
         print_count_stats(current, miscData, videosToScan, final=False)
 
+    # This won't exist if spam thread detection isn't enabled, because of check in get_comments function
     if parentCommentDict:
         current = check_spam_threads(
             current, filtersDict, miscData, config, parentCommentDict, threadDict
@@ -672,6 +693,8 @@ def add_spam(
         dictToUse = current.otherCommentsByMatchedAuthorsDict
     elif matchReason == "Spam Bot Thread":
         dictToUse = current.spamThreadsDict
+    elif matchReason == "Repost":
+        dictToUse = current.repostedCommentsDict
 
     commentID = currentCommentDict["commentID"]
     authorChannelName = currentCommentDict["authorChannelName"]
@@ -681,6 +704,16 @@ def add_spam(
     )  # Use str() to ensure not pointing to same place in memory
     commentText = str(currentCommentDict["commentText"]).replace("\r", "")
 
+    if "originalCommentID" in currentCommentDict:
+        originalCommentID = currentCommentDict["originalCommentID"]
+    else:
+        originalCommentID = "Unavailable or N/A"
+
+    if "timestamp" in currentCommentDict:
+        timestamp = currentCommentDict["timestamp"]
+    else:
+        timestamp = "Unavailable"
+
     dictToUse[commentID] = {
         "text": commentText,
         "textUnsanitized": commentTextRaw,
@@ -688,6 +721,8 @@ def add_spam(
         "authorID": authorChannelID,
         "videoID": videoID,
         "matchReason": matchReason,
+        "originalCommentID": originalCommentID,
+        "timestamp": timestamp,
     }
     current.vidIdDict[
         commentID
@@ -742,35 +777,22 @@ def get_all_author_comments(current, config, miscData, allCommentsDict):
 
 ############################## Check Duplicates ######################################
 def check_duplicates(current, config, miscData, allVideoCommentsDict, videoID):
-    # Get Lenvenshtein Distance Setting
-    try:
-        levenshtein = float(config["levenshtein_distance"])
-        if levenshtein < 0 or levenshtein > 1:
-            print(
-                "\nError: Levenshtein_distance config setting must be between 0 and 1. Defaulting to 0.9"
-            )
-            input("\nPress Enter to continue...")
-            levenshtein = 0.9
-    except ValueError:
+    domainList = miscData.resources["rootDomainList"]
+
+    # Get Lenvenshtein Distance Setting - Does not need to be validated here, because that happens at beginning of program
+    levenshtein = float(config["levenshtein_distance"])
+
+    # Get duplicate count setting - Does not need to be validated as int here, because that happens at beginning of program
+    minimum_duplicates = int(config["minimum_duplicates"])
+    if minimum_duplicates < 2:
+        minimum_duplicates = 4
         print(
-            "\nError: Levenshtein_distance config setting must be a number between 0 and 1. Defaulting to 0.9"
+            "\nError: minimum_duplicates config setting must be greater than 1. Defaulting to 8."
         )
         input("\nPress Enter to continue...")
-        levenshtein = 0.9
 
-    # Get duplicate count setting
-    try:
-        minimum_duplicates = int(config["minimum_duplicates"])
-        if minimum_duplicates < 2:
-            minimum_duplicates = 4
-            print(
-                "\nError: Minimum_Duplicates config setting must be greater than 1. Defaulting to 4."
-            )
-            input("\nPress Enter to continue...")
-    except ValueError:
-        minimum_duplicates = 4
-        print("\nError: Minimum_Duplicates config setting is invalid. Defaulting to 4.")
-        input("\nPress Enter to continue...")
+    # Get minimum duplicate length setting - Does not need to be validated as int here, because that happens at beginning of program
+    minimum_duplicate_length = int(config["minimum_duplicate_length"])
 
     # Calculate number of authors to check, for progress
     authorCount = len(allVideoCommentsDict)
@@ -790,7 +812,7 @@ def check_duplicates(current, config, miscData, allVideoCommentsDict, videoID):
         ):
             scannedCount += 1
             print(
-                f" Analyzing For Duplicates: [ {scannedCount/authorCount*100:.2f}% ]   (Can be disabled & customized in config)".ljust(
+                f" Analyzing For Duplicates: [ {scannedCount/authorCount*100:.2f}% ]   (Can be Disabled & Customized With Config File)".ljust(
                     75, " "
                 ),
                 end="\r",
@@ -800,18 +822,35 @@ def check_duplicates(current, config, miscData, allVideoCommentsDict, videoID):
             commentTextList = []
             matchedIndexes = []
             for commentDict in authorCommentsList:
-                commentTextList.append(commentDict["commentText"])
+                # Adding to use as lower case, because levenshtein is case sensitive. Also, root domain list is ingested as lower case, so necessary to compare
+                commentTextList.append(commentDict["commentText"].lower())
 
             # Count number of comments that are similar to at least one other comment
             if len(commentTextList) > 1:
                 for i, x in enumerate(commentTextList):
-                    for j in range(i + 1, len(commentTextList)):
-                        y = commentTextList[j]
-                        if ratio(x, y) > levenshtein:
-                            # List the indexes of the matched comments in the list
-                            matchedIndexes.append(i)
-                            matchedIndexes.append(j)
-                            break
+                    # Check length of comment against minimum, but override if a domain is detected
+                    if len(x) >= minimum_duplicate_length or (
+                        len(x) >= 6 and any(f".{domain}" in x for domain in domainList)
+                    ):
+                        for j in range(i + 1, len(commentTextList)):
+                            y = commentTextList[j]
+                            # If Levenshtein distance is 1.0, then only check if comment text is exactly the same
+                            if levenshtein == 1.0 and x == y:
+                                matchedIndexes.append(i)
+                                matchedIndexes.append(j)
+                                break
+                            # If Levenshtein distance is 0, don't check at all, just count number of comments by user
+                            elif levenshtein == 0.0:
+                                matchedIndexes.append(i)
+                                matchedIndexes.append(j)
+                                break
+                            elif ratio(x, y) > levenshtein:
+                                # List the indexes of the matched comments in the list
+                                matchedIndexes.append(i)
+                                matchedIndexes.append(j)
+                                break
+                    else:
+                        break
 
                 # Only count each comment once by counting number of unique indexes in matchedIndexes
                 uniqueMatches = len(set(matchedIndexes))
@@ -829,11 +868,111 @@ def check_duplicates(current, config, miscData, allVideoCommentsDict, videoID):
                     )
             scannedCount += 1
             print(
-                f" Analyzing For Duplicates: [ {scannedCount/authorCount*100:.2f}% ]   (Can be disabled & customized in config)".ljust(
+                f" Analyzing For Duplicates: [ {scannedCount/authorCount*100:.2f}% ]   (Can be Disabled & Customized With Config File)".ljust(
                     75, " "
                 ),
                 end="\r",
             )
+
+    print("".ljust(90, " "))  # Erase line
+
+
+############################# Check Text Reposts #####################################
+def check_reposts(current, config, miscData, allVideoCommentsDict, videoID):
+    # Get Lenvenshtein Distance Setting
+    if config["fuzzy_stolen_comment_detection"] == True:
+        try:
+            levenshtein = float(config["levenshtein_distance"])
+            if levenshtein < 0 or levenshtein > 1:
+                print(
+                    "\nError: Levenshtein_distance config setting must be between 0 and 1. Defaulting to 0.9"
+                )
+                input("\nPress Enter to continue...")
+                levenshtein = 0.9
+        except ValueError:
+            print(
+                "\nError: Levenshtein_distance config setting must be a number between 0 and 1. Defaulting to 0.9"
+            )
+            input("\nPress Enter to continue...")
+            levenshtein = 0.9
+        fuzzy = True
+    else:
+        fuzzy = False
+
+    # Get duplicate count setting
+    try:
+        minLength = int(config["stolen_minimum_text_length"])
+        if minLength < 1:
+            minLength = 25
+            print(
+                "\nError: stolen_minimum_text_length config setting must be greater than 0. Defaulting to 25."
+            )
+            input("\nPress Enter to continue...")
+    except ValueError:
+        minLength = 25
+        print(
+            "\nError: stolen_minimum_text_length config setting is invalid. Defaulting to 25."
+        )
+        input("\nPress Enter to continue...")
+
+    flatCommentList = []
+
+    # Calculate number of authors to check, for progress
+    scannedCount = 0
+
+    # Create time-sorted list of all comments
+    for authorID, authorCommentsList in allVideoCommentsDict.items():
+        for commentDict in authorCommentsList:
+            if not commentDict[
+                "parentAuthorChannelID"
+            ]:  # Only bother checking top level comments
+                flatCommentList.append(commentDict)
+
+    flatCommentList.sort(
+        key=lambda x: datetime.strptime(x["timestamp"], "%Y-%m-%dT%H:%M:%SZ")
+    )
+    totalComments = len(flatCommentList)
+
+    # Run Duplicate Check
+    for i, x in enumerate(
+        flatCommentList[1:], start=1
+    ):  # x is comment dictionary. Enumerate starting with second comment (1:), because nothing came before it. Use start=1 so i-1 refers to correct index in flatCommentList
+        scrutinizedText = x["commentText"]
+        scrutinizedAuthorID = x["authorChannelID"]
+        if (
+            scrutinizedAuthorID == auth.CURRENTUSER.id
+            or scrutinizedAuthorID == miscData.channelOwnerID
+            or scrutinizedAuthorID
+            == miscData.resources["Whitelist"]["WhitelistContents"]
+        ):
+            pass
+        else:
+            for j in range(
+                0, i - 1
+            ):  # Only need to check against comments that came before it, so have index less than current
+                olderCommentText = flatCommentList[j]["commentText"]
+                if (
+                    len(scrutinizedText) >= minLength
+                    and flatCommentList[j]["authorChannelID"] != scrutinizedAuthorID
+                    and x["commentID"] not in current.matchedCommentsDict
+                    and x["commentID"] not in current.duplicateCommentsDict
+                ):
+                    if (not fuzzy and scrutinizedText == olderCommentText) or (
+                        fuzzy and ratio(scrutinizedText, olderCommentText) > levenshtein
+                    ):
+                        # List the indexes of the matched comments in the list
+                        x["originalCommentID"] = flatCommentList[j]["commentID"]
+                        add_spam(
+                            current, config, miscData, x, videoID, matchReason="Repost"
+                        )
+                        break
+        scannedCount += 1
+        print(
+            f" Analyzing For Stolen / Reposted Comments: [ {scannedCount/totalComments*100:.2f}% ]   (Can be Disabled & Customized With Config File)".ljust(
+                75, " "
+            ),
+            end="\r",
+        )
 
     print("".ljust(90, " "))  # Erase line
 
@@ -990,7 +1129,7 @@ def check_against_filter(
             # Receive Variables
             compiledRegexDict = smartFilter["compiledRegexDict"]
             compiledObfuRegexDict = smartFilter["compiledObfuRegexDict"]
-            basicFilterDict = smartFilter["basicFilterDict"]
+            preciseRegexDict = smartFilter["preciseRegexDict"]
             numberFilterSet = smartFilter["spammerNumbersSet"]
             compiledNumRegex = smartFilter["compiledNumRegex"]
             minNumbersMatchCount = smartFilter["minNumbersMatchCount"]
@@ -1025,9 +1164,19 @@ def check_against_filter(
                 else:
                     for match in result:
                         lowerChars = chars.lower()
+                        # Strips off buffer characters and specified unicode categories
                         for bufferChar in compiledRegexDict["bufferChars"]:
                             match = match.strip(bufferChar)
-                        # if match.lower() != lowerWord and match.lower() != lowerWord.translate(ignoredConfusablesConverter):
+                        while (
+                            unicodedata.category(match[0])
+                            in smartFilter["unicodeCategoriesStrip"]
+                        ):
+                            match = match[1:]
+                        while (
+                            unicodedata.category(match[-1])
+                            in smartFilter["unicodeCategoriesStrip"]
+                        ):
+                            match = match[:-1]
                         if any(char not in lowerChars for char in match) and any(
                             char
                             not in lowerChars.translate(ignoredConfusablesConverter)
@@ -1055,13 +1204,13 @@ def check_against_filter(
             # ------------------------------------------------------------------------
 
             # Normalize usernames and text, remove multiple whitespace and invisible chars
-            commentText = re.sub(" +", " ", commentText)
+            commentTextNormalized = re.sub(" +", " ", commentText)
             # https://stackoverflow.com/a/49695605/17312053
-            commentText = "".join(
+            commentTextNormalized = "".join(
                 k if k in bufferChars else "".join(v)
                 for k, v in itertools.groupby(commentText, lambda c: c)
             )
-            commentText = remove_unicode_categories(commentText)
+            commentTextNormalized = remove_unicode_categories(commentText)
 
             authorChannelName = re.sub(" +", " ", authorChannelName)
             authorChannelName = remove_unicode_categories(authorChannelName)
@@ -1071,8 +1220,15 @@ def check_against_filter(
             combinedSet = utils.make_char_set(
                 combinedString, stripLettersNumbers=True, stripPunctuation=True
             )
-            upLowTextSet = set(commentText.replace(miscData.channelOwnerName, ""))
-            # usernameSet = utils.make_char_set(authorChannelName)
+            # UpLow Text Set
+            index = commentText.lower().rfind(miscData.channelOwnerName.lower())
+            if index != -1:
+                processedText = commentText.replace(
+                    commentText[index : index + len(miscData.channelOwnerName)], ""
+                )
+            else:
+                processedText = commentText
+            upLowTextSet = set(processedText)
 
             # Run Checks
             if authorChannelID == parentAuthorChannelID:
@@ -1092,29 +1248,31 @@ def check_against_filter(
                 add_spam(current, config, miscData, currentCommentDict, videoID)
             elif compiledRegexDict["blackAdWords"].search(authorChannelName):
                 add_spam(current, config, miscData, currentCommentDict, videoID)
+            elif compiledRegexDict["textBlackWords"].search(commentTextNormalized):
+                add_spam(current, config, miscData, currentCommentDict, videoID)
             elif any(
                 findObf(expressionPair[0], expressionPair[1], commentText)
                 for expressionPair in compiledObfuRegexDict["textObfuBlackWords"]
             ):
                 add_spam(current, config, miscData, currentCommentDict, videoID)
-            elif any(
-                word in commentText.lower()
-                for word in basicFilterDict["textExactBlackWords"]
+            elif preciseRegexDict["textExactBlackWords"].search(
+                commentTextNormalized.lower()
             ):
                 add_spam(current, config, miscData, currentCommentDict, videoID)
-            elif any(
-                (word in commentText and not upLowTextSet.intersection(lowAlSet))
-                for word in basicFilterDict["textUpLowBlackWords"]
-            ):
+            elif preciseRegexDict["textUpLowBlackWords"].search(
+                commentTextNormalized
+            ) and not upLowTextSet.intersection(lowAlSet):
                 add_spam(current, config, miscData, currentCommentDict, videoID)
             elif any(
-                findObf(expressionPair[0], expressionPair[1], commentText)
+                findObf(expressionPair[0], expressionPair[1], authorChannelName)
                 for expressionPair in compiledObfuRegexDict["usernameObfuBlackWords"]
             ):
                 add_spam(current, config, miscData, currentCommentDict, videoID)
             elif spamListCombinedRegex.search(combinedString.lower()):
                 add_spam(current, config, miscData, currentCommentDict, videoID)
-            elif config["detect_link_spam"] and check_if_only_link(commentText.strip()):
+            elif config["detect_link_spam"] and check_if_only_link(
+                commentTextNormalized.strip()
+            ):
                 add_spam(current, config, miscData, currentCommentDict, videoID)
             elif sensitive and re.search(
                 smartFilter["usernameConfuseRegex"], authorChannelName
@@ -1123,7 +1281,7 @@ def check_against_filter(
             elif not sensitive and (
                 findObf(
                     smartFilter["usernameConfuseRegex"],
-                    list(miscData.channelOwnerName),
+                    miscData.channelOwnerName,
                     authorChannelName,
                 )
                 or authorChannelName == miscData.channelOwnerName
@@ -1157,7 +1315,7 @@ def check_against_filter(
                     yellowCount += 1
 
                 if not sensitive and any(
-                    emoji in commentText for emoji in spamGenEmojiSet
+                    emoji in commentTextNormalized for emoji in spamGenEmojiSet
                 ):
                     yellowCount += 1
 
@@ -1183,10 +1341,7 @@ def check_against_filter(
                 if compiledRegexDict["redAdWords"].search(combinedString):
                     redCount += 1
 
-                if any(
-                    word in combinedString.lower()
-                    for word in basicFilterDict["exactRedAdWords"]
-                ):
+                if preciseRegexDict["exactRedAdWords"].search(combinedString.lower()):
                     redCount += 1
 
                 if redAdEmojiSet.intersection(combinedSet):
@@ -1616,6 +1771,9 @@ def exclude_authors(
     for comment, metadata in current.spamThreadsDict.items():
         if metadata["authorID"] in authorsToExcludeSet:
             commentIDExcludeSet.add(comment)
+    for comment, metadata in current.repostedCommentsDict.items():
+        if metadata["authorID"] in authorsToExcludeSet:
+            commentIDExcludeSet.add(comment)
 
     # Remove all comments by selected authors from dictionary of comments
     for comment in commentIDExcludeSet:
@@ -1629,6 +1787,8 @@ def exclude_authors(
             ] = current.otherCommentsByMatchedAuthorsDict.pop(comment)
         if comment in current.spamThreadsDict.keys():
             excludedCommentsDict[comment] = current.spamThreadsDict.pop(comment)
+        if comment in current.repostedCommentsDict.keys():
+            excludedCommentsDict[comment] = current.repostedCommentsDict.pop(comment)
 
     # Create strings that can be used in log files
 

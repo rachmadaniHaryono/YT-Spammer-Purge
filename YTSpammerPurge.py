@@ -36,8 +36,8 @@
 ### IMPORTANT:  I OFFER NO WARRANTY OR GUARANTEE FOR THIS SCRIPT. USE AT YOUR OWN RISK.
 ###             I tested it on my own and implemented some failsafes as best as I could,
 ###             but there could always be some kind of bug. You should inspect the code yourself.
-version = "2.16.0-Beta2"
-configVersion = 29
+version = "2.16.0"
+configVersion = 31
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 print("Importing Script Modules...")
 # Import other module files
@@ -287,7 +287,6 @@ def main():
     class MiscDataStore:
         resources: dict
         spamLists: dict
-        rootDomainsList: list
         totalCommentCount: int
         channelOwnerID: str
         channelOwnerName: str
@@ -295,7 +294,6 @@ def main():
     miscData = MiscDataStore(
         resources={},
         spamLists={},
-        rootDomainsList=[],
         totalCommentCount=0,
         channelOwnerID="",
         channelOwnerName="",
@@ -400,6 +398,7 @@ def main():
     class ScanInstance:
         matchedCommentsDict: dict  # Comments flagged by the filter
         duplicateCommentsDict: dict  # Comments flagged as duplicates
+        repostedCommentsDict: dict  # Comments stolen from other users
         otherCommentsByMatchedAuthorsDict: dict  # Comments not matched, but are by a matched author
         scannedThingsList: list  # List of posts or videos that were scanned
         spamThreadsDict: dict  # Comments flagged as parent of spam threads
@@ -426,6 +425,7 @@ def main():
         current = ScanInstance(
             matchedCommentsDict={},
             duplicateCommentsDict={},
+            repostedCommentsDict={},
             otherCommentsByMatchedAuthorsDict={},
             scannedThingsList=[],
             spamThreadsDict={},
@@ -1471,16 +1471,18 @@ def main():
                         "authorChannelName": value["authorName"],
                         "commentText": value["commentText"],
                         "commentID": key,
+                        #'originalCommentID': None
                     }
                     try:
-                        authorKeyAllCommentsDict[value["authorChannelID"]].append(
-                            currentCommentDict
-                        )
-                    except KeyError:
-                        authorKeyAllCommentsDict[value["authorChannelID"]] = [
-                            currentCommentDict
-                        ]
-                    except TypeError:
+                        if value["authorChannelID"] in authorKeyAllCommentsDict:
+                            authorKeyAllCommentsDict[value["authorChannelID"]].append(
+                                currentCommentDict
+                            )
+                        else:
+                            authorKeyAllCommentsDict[value["authorChannelID"]] = [
+                                currentCommentDict
+                            ]
+                    except TypeError:  # Try/Except might not be necessary, might remove later
                         pass
                     operations.check_against_filter(
                         current,
@@ -1492,11 +1494,16 @@ def main():
                     )
 
                     # Scam for spam threads
-                    if config["detect_spam_threads"] == True:
+                    if (
+                        filtersDict["filterMode"] == "AutoSmart"
+                        or filtersDict["filterMode"] == "SensitiveSmart"
+                    ) and config["detect_spam_threads"] == True:
                         threadDict = operations.make_community_thread_dict(
                             key, allCommunityCommentsDict
                         )
-                        if threadDict:
+                        if (
+                            threadDict and len(threadDict) > 7
+                        ):  # Only if more than 7 replies
                             parentCommentDict = dict(currentCommentDict)
                             parentCommentDict["videoID"] = communityPostID
                             current = operations.check_spam_threads(
@@ -1533,6 +1540,9 @@ def main():
                         authorKeyAllCommentsDict,
                         communityPostID,
                     )
+                    # repostCheckModes = utils.string_to_list(config['stolen_comments_check_modes'])
+                    # if filtersDict['filterMode'].lower() in repostCheckModes:
+                    #   operations.check_reposts(current, config, miscData, allCommunityCommentsDict, communityPostID)
                     print(
                         "                                                                                                                       "
                     )
@@ -1692,6 +1702,7 @@ def main():
             not current.matchedCommentsDict
             and not current.duplicateCommentsDict
             and not current.spamThreadsDict
+            and not current.repostedCommentsDict
         ):  # If no spam comments found, exits
             print(
                 f"{B.RED}{F.BLACK} No matched comments or users found! {F.R}{B.R}{S.R}\n"
@@ -1735,6 +1746,10 @@ def main():
         if current.duplicateCommentsDict:
             print(
                 f"\nNumber of {S.BRIGHT}{F.LIGHTBLUE_EX}Non-Matched But Duplicate{S.R} Comments Found: {S.BRIGHT}{F.WHITE}{B.BLUE} {str(len(current.duplicateCommentsDict))} {F.R}{B.R}{S.R}"
+            )
+        if current.repostedCommentsDict:
+            print(
+                f"\nNumber of {S.BRIGHT}{F.LIGHTBLUE_EX}Non-Matched But Stolen & Reposted{S.R} Comments Found: {S.BRIGHT}{F.WHITE}{B.BLUE} {str(len(current.repostedCommentsDict))} {F.R}{B.R}{S.R}"
             )
 
         # If spam comments were found, continue
@@ -2083,6 +2098,7 @@ def main():
                         not current.matchedCommentsDict
                         and not current.duplicateCommentsDict
                         and not current.spamThreadsDict
+                        and not current.repostedCommentsDict
                     ):
                         print(
                             f"\n{F.YELLOW}All authors excluded, no comments left to remove!{S.R}"
@@ -2105,6 +2121,7 @@ def main():
         combinedCommentDict = dict(current.matchedCommentsDict)
         combinedCommentDict.update(current.duplicateCommentsDict)
         combinedCommentDict.update(current.spamThreadsDict)
+        combinedCommentDict.update(current.repostedCommentsDict)
         includeOtherAuthorComments = False
 
         banChoice = False
@@ -2225,6 +2242,7 @@ def main():
                     current.matchedCommentsDict
                     or current.duplicateCommentsDict
                     or current.spamThreadsDict
+                    or current.repostedCommentsDict
                 )
             ):
                 print("\nWriting JSON log file...")
