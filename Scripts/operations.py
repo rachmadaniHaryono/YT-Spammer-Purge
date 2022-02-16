@@ -874,7 +874,7 @@ def check_duplicates(current, config, miscData, allVideoCommentsDict, videoID):
                 end="\r",
             )
 
-    print("".ljust(90, " "))  # Erase line
+    print("".ljust(110, " "))  # Erase line
 
 
 ############################# Check Text Reposts #####################################
@@ -974,7 +974,7 @@ def check_reposts(current, config, miscData, allVideoCommentsDict, videoID):
             end="\r",
         )
 
-    print("".ljust(90, " "))  # Erase line
+    print("".ljust(110, " "))  # Erase line
 
 
 ##########################################################################################
