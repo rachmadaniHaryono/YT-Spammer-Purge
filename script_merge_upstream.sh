@@ -6,5 +6,5 @@ pre-commit run --all-files
 git add -u
 git commit -m 'refactor: autoformat'
 git checkout main
-git merge tmp -m 'refactor: merge tmp' --strategy-options theirs
+git merge tmp -m 'refactor: merge tmp' --strategy-option theirs
 git push --force
