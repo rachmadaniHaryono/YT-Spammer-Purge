@@ -13,7 +13,7 @@
         <link rel="canonical" href="https://ThioJoe.github.io/YT-Spammer-Purge/reference/YTSpammerPurge/">
       
       <link rel="icon" href="../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.2.3, mkdocs-material-8.1.11">
+      <meta name="generator" content="mkdocs-1.2.3, mkdocs-material-8.2.1">
     
     
       
@@ -21,7 +21,7 @@
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.50e68009.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.e8d9bf0c.min.css">
       
         
         <link rel="stylesheet" href="../../assets/stylesheets/palette.e6a45f82.min.css">
@@ -869,6 +869,20 @@
   
   
     <li class="md-nav__item">
+      <a href="../Scripts/filter_variables/" class="md-nav__link">
+        filter_variables
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../Scripts/gui/" class="md-nav__link">
         gui
       </a>
@@ -1098,6 +1112,7 @@
 </a>
 
 
+
   <h1>YTSpammerPurge</h1>
 
 <div class="doc doc-object doc-module">
@@ -1127,7 +1142,7 @@ configVersion
   </span>
 
 <a href="#YTSpammerPurge.configVersion" class="headerlink" title="Permanent link">&para;</a></h2>
-<div class="highlight"><pre><span></span><code><span class="n">configVersion</span> <span class="o">=</span> <span class="mi">26</span>
+<div class="highlight"><pre><span></span><code><span class="n">configVersion</span> <span class="o">=</span> <span class="mi">31</span>
 </code></pre></div>
 
     <div class="doc doc-contents ">
@@ -1173,7 +1188,7 @@ version
   </span>
 
 <a href="#YTSpammerPurge.version" class="headerlink" title="Permanent link">&para;</a></h2>
-<div class="highlight"><pre><span></span><code><span class="n">version</span> <span class="o">=</span> <span class="s1">&#39;2.15.4&#39;</span>
+<div class="highlight"><pre><span></span><code><span class="n">version</span> <span class="o">=</span> <span class="s1">&#39;2.16.0&#39;</span>
 </code></pre></div>
 
     <div class="doc doc-contents ">
@@ -1203,10 +1218,7 @@ main
 
         <details class="quote">
           <summary>Source code in <code>YT-Spammer-Purge/YTSpammerPurge.py</code></summary>
-          <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">  77</span>
-<span class="normal">  78</span>
-<span class="normal">  79</span>
-<span class="normal">  80</span>
+          <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">  80</span>
 <span class="normal">  81</span>
 <span class="normal">  82</span>
 <span class="normal">  83</span>
@@ -2715,7 +2727,68 @@ main
 <span class="normal">1586</span>
 <span class="normal">1587</span>
 <span class="normal">1588</span>
-<span class="normal">1589</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+<span class="normal">1589</span>
+<span class="normal">1590</span>
+<span class="normal">1591</span>
+<span class="normal">1592</span>
+<span class="normal">1593</span>
+<span class="normal">1594</span>
+<span class="normal">1595</span>
+<span class="normal">1596</span>
+<span class="normal">1597</span>
+<span class="normal">1598</span>
+<span class="normal">1599</span>
+<span class="normal">1600</span>
+<span class="normal">1601</span>
+<span class="normal">1602</span>
+<span class="normal">1603</span>
+<span class="normal">1604</span>
+<span class="normal">1605</span>
+<span class="normal">1606</span>
+<span class="normal">1607</span>
+<span class="normal">1608</span>
+<span class="normal">1609</span>
+<span class="normal">1610</span>
+<span class="normal">1611</span>
+<span class="normal">1612</span>
+<span class="normal">1613</span>
+<span class="normal">1614</span>
+<span class="normal">1615</span>
+<span class="normal">1616</span>
+<span class="normal">1617</span>
+<span class="normal">1618</span>
+<span class="normal">1619</span>
+<span class="normal">1620</span>
+<span class="normal">1621</span>
+<span class="normal">1622</span>
+<span class="normal">1623</span>
+<span class="normal">1624</span>
+<span class="normal">1625</span>
+<span class="normal">1626</span>
+<span class="normal">1627</span>
+<span class="normal">1628</span>
+<span class="normal">1629</span>
+<span class="normal">1630</span>
+<span class="normal">1631</span>
+<span class="normal">1632</span>
+<span class="normal">1633</span>
+<span class="normal">1634</span>
+<span class="normal">1635</span>
+<span class="normal">1636</span>
+<span class="normal">1637</span>
+<span class="normal">1638</span>
+<span class="normal">1639</span>
+<span class="normal">1640</span>
+<span class="normal">1641</span>
+<span class="normal">1642</span>
+<span class="normal">1643</span>
+<span class="normal">1644</span>
+<span class="normal">1645</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+  <span class="c1"># Fix issue with unassigned variables</span>
+  <span class="k">global</span> <span class="n">S</span>
+  <span class="k">global</span> <span class="n">B</span>
+  <span class="k">global</span> <span class="n">F</span>
+
   <span class="c1"># Run check on python version, must be 3.6 or higher because of f strings</span>
   <span class="k">if</span> <span class="n">sys</span><span class="o">.</span><span class="n">version_info</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">3</span> <span class="ow">or</span> <span class="n">sys</span><span class="o">.</span><span class="n">version_info</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">6</span><span class="p">:</span>
     <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Error Code U-2: This program requires running python 3.6 or higher! You are running&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">version_info</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">+</span> <span class="s2">&quot;.&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">version_info</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
@@ -2738,17 +2811,7 @@ main
   <span class="n">clear_command</span> <span class="o">=</span> <span class="s2">&quot;cls&quot;</span> <span class="k">if</span> <span class="n">platform</span><span class="o">.</span><span class="n">system</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;Windows&quot;</span> <span class="k">else</span> <span class="s2">&quot;clear&quot;</span>
   <span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="n">clear_command</span><span class="p">)</span>
 
-  <span class="c1"># Initiates colorama and creates shorthand variables for resetting colors</span>
-  <span class="n">init</span><span class="p">(</span><span class="n">autoreset</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-  <span class="n">S</span><span class="o">.</span><span class="n">R</span> <span class="o">=</span> <span class="n">S</span><span class="o">.</span><span class="n">RESET_ALL</span>
-  <span class="n">F</span><span class="o">.</span><span class="n">R</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">RESET</span>
-  <span class="n">B</span><span class="o">.</span><span class="n">R</span> <span class="o">=</span> <span class="n">B</span><span class="o">.</span><span class="n">RESET</span>
-
   <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Loading YT Spammer Purge @ &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">version</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;...&quot;</span><span class="p">)</span>
-
-  <span class="c1"># Authenticate with the Google API - If token expired and invalid, deletes and re-authenticates</span>
-
-  <span class="n">YOUTUBE</span> <span class="o">=</span> <span class="n">auth</span><span class="o">.</span><span class="n">first_authentication</span><span class="p">()</span>
 
            <span class="c1">#### Prepare Resources ####</span>
   <span class="n">resourceFolder</span> <span class="o">=</span> <span class="n">RESOURCES_FOLDER_NAME</span>
@@ -2833,6 +2896,14 @@ main
   <span class="n">validation</span><span class="o">.</span><span class="n">validate_config_settings</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
   <span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="n">clear_command</span><span class="p">)</span>
 
+  <span class="c1"># Disable colors before they are used anywhere</span>
+  <span class="k">if</span> <span class="n">config</span><span class="p">[</span><span class="s1">&#39;colors_enabled&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="kc">False</span><span class="p">:</span>
+    <span class="c1"># Disables colors entirely</span>
+    <span class="n">init</span><span class="p">(</span><span class="n">autoreset</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">strip</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">convert</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+  <span class="k">else</span><span class="p">:</span>
+    <span class="c1"># Initiates colorama and creates shorthand variables for resetting colors</span>
+    <span class="n">init</span><span class="p">(</span><span class="n">autoreset</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
   <span class="c1"># Check for program and list updates if auto updates enabled in config</span>
   <span class="k">try</span><span class="p">:</span>
     <span class="k">if</span> <span class="n">config</span><span class="p">[</span><span class="s1">&#39;release_channel&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;all&quot;</span><span class="p">:</span>
@@ -2876,7 +2947,6 @@ main
   <span class="k">class</span> <span class="nc">MiscDataStore</span><span class="p">:</span>
     <span class="n">resources</span><span class="p">:</span><span class="nb">dict</span>
     <span class="n">spamLists</span><span class="p">:</span><span class="nb">dict</span>
-    <span class="n">rootDomainsList</span><span class="p">:</span><span class="nb">list</span>
     <span class="n">totalCommentCount</span><span class="p">:</span><span class="nb">int</span>
     <span class="n">channelOwnerID</span><span class="p">:</span><span class="nb">str</span>
     <span class="n">channelOwnerName</span><span class="p">:</span><span class="nb">str</span>
@@ -2884,19 +2954,19 @@ main
   <span class="n">miscData</span> <span class="o">=</span> <span class="n">MiscDataStore</span><span class="p">(</span>
     <span class="n">resources</span> <span class="o">=</span> <span class="p">{},</span> 
     <span class="n">spamLists</span> <span class="o">=</span> <span class="p">{},</span> 
-    <span class="n">rootDomainsList</span> <span class="o">=</span> <span class="p">[],</span> 
     <span class="n">totalCommentCount</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> 
     <span class="n">channelOwnerID</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> 
     <span class="n">channelOwnerName</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
     <span class="p">)</span>
 
+  <span class="n">miscData</span><span class="o">.</span><span class="n">resources</span> <span class="o">=</span> <span class="n">resourcesDict</span>
   <span class="n">rootDomainListAssetFile</span> <span class="o">=</span> <span class="s2">&quot;rootZoneDomainList.txt&quot;</span>
   <span class="n">rootDomainList</span> <span class="o">=</span> <span class="n">files</span><span class="o">.</span><span class="n">ingest_asset_file</span><span class="p">(</span><span class="n">rootDomainListAssetFile</span><span class="p">)</span>
-  <span class="n">miscData</span><span class="o">.</span><span class="n">resources</span> <span class="o">=</span> <span class="n">rootDomainList</span>
+  <span class="n">miscData</span><span class="o">.</span><span class="n">resources</span><span class="p">[</span><span class="s1">&#39;rootDomainList&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">rootDomainList</span>
   <span class="n">miscData</span><span class="o">.</span><span class="n">spamLists</span><span class="p">[</span><span class="s1">&#39;spamDomainsList&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">spamListDict</span><span class="p">[</span><span class="s1">&#39;Lists&#39;</span><span class="p">][</span><span class="s1">&#39;Domains&#39;</span><span class="p">][</span><span class="s1">&#39;FilterContents&#39;</span><span class="p">]</span>
   <span class="n">miscData</span><span class="o">.</span><span class="n">spamLists</span><span class="p">[</span><span class="s1">&#39;spamAccountsList&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">spamListDict</span><span class="p">[</span><span class="s1">&#39;Lists&#39;</span><span class="p">][</span><span class="s1">&#39;Accounts&#39;</span><span class="p">][</span><span class="s1">&#39;FilterContents&#39;</span><span class="p">]</span>
   <span class="n">miscData</span><span class="o">.</span><span class="n">spamLists</span><span class="p">[</span><span class="s1">&#39;spamThreadsList&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">spamListDict</span><span class="p">[</span><span class="s1">&#39;Lists&#39;</span><span class="p">][</span><span class="s1">&#39;Threads&#39;</span><span class="p">][</span><span class="s1">&#39;FilterContents&#39;</span><span class="p">]</span>
-  <span class="n">miscData</span><span class="o">.</span><span class="n">resources</span> <span class="o">=</span> <span class="n">resourcesDict</span>
+
 
   <span class="c1"># Create Whitelist if it doesn&#39;t exist, </span>
   <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">whitelistPathWithName</span><span class="p">):</span>
@@ -2915,6 +2985,10 @@ main
     <span class="n">moderator_mode</span> <span class="o">=</span> <span class="kc">False</span>
 
   <span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="n">clear_command</span><span class="p">)</span>
+
+  <span class="c1"># Authenticate with the Google API - If token expired and invalid, deletes and re-authenticates</span>
+  <span class="n">YOUTUBE</span> <span class="o">=</span> <span class="n">auth</span><span class="o">.</span><span class="n">first_authentication</span><span class="p">()</span>
+
   <span class="c1">#----------------------------------- Begin Showing Program ---------------------------------</span>
   <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">F</span><span class="o">.</span><span class="n">LIGHTYELLOW_EX</span><span class="si">}</span><span class="se">\n</span><span class="s2">===================== YOUTUBE SPAMMER PURGE v&quot;</span> <span class="o">+</span> <span class="n">version</span> <span class="o">+</span> <span class="sa">f</span><span class="s2">&quot; =====================</span><span class="si">{</span><span class="n">S</span><span class="o">.</span><span class="n">R</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
   <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;=========== https://github.com/ThioJoe/YT-Spammer-Purge ===========&quot;</span><span class="p">)</span>
@@ -2945,21 +3019,22 @@ main
   <span class="c1"># Declare Classes</span>
   <span class="nd">@dataclass</span>
   <span class="k">class</span> <span class="nc">ScanInstance</span><span class="p">:</span>
-    <span class="n">matchedCommentsDict</span><span class="p">:</span> <span class="nb">dict</span>
-    <span class="n">duplicateCommentsDict</span><span class="p">:</span> <span class="nb">dict</span>
-    <span class="n">otherCommentsByMatchedAuthorsDict</span><span class="p">:</span> <span class="nb">dict</span>
-    <span class="n">spamThreadsDict</span><span class="p">:</span> <span class="nb">dict</span>
-    <span class="n">allScannedCommentsDict</span><span class="p">:</span> <span class="nb">dict</span>
-    <span class="n">vidIdDict</span><span class="p">:</span> <span class="nb">dict</span>
-    <span class="n">vidTitleDict</span><span class="p">:</span> <span class="nb">dict</span>
-    <span class="n">matchSamplesDict</span><span class="p">:</span> <span class="nb">dict</span>
-    <span class="n">authorMatchCountDict</span><span class="p">:</span> <span class="nb">dict</span>
-    <span class="n">scannedRepliesCount</span><span class="p">:</span> <span class="nb">int</span>
-    <span class="n">scannedCommentsCount</span><span class="p">:</span> <span class="nb">int</span>
-    <span class="n">logTime</span><span class="p">:</span> <span class="nb">str</span>
-    <span class="n">logFileName</span><span class="p">:</span> <span class="nb">str</span>
-    <span class="n">errorOccurred</span><span class="p">:</span><span class="nb">bool</span>
-    <span class="c1"># matchTypeCount:dict</span>
+    <span class="n">matchedCommentsDict</span><span class="p">:</span> <span class="nb">dict</span>         <span class="c1">#Comments flagged by the filter</span>
+    <span class="n">duplicateCommentsDict</span><span class="p">:</span> <span class="nb">dict</span>       <span class="c1">#Comments flagged as duplicates</span>
+    <span class="n">repostedCommentsDict</span><span class="p">:</span> <span class="nb">dict</span>          <span class="c1">#Comments stolen from other users</span>
+    <span class="n">otherCommentsByMatchedAuthorsDict</span><span class="p">:</span> <span class="nb">dict</span> <span class="c1">#Comments not matched, but are by a matched author</span>
+    <span class="n">scannedThingsList</span><span class="p">:</span> <span class="nb">list</span>           <span class="c1">#List of posts or videos that were scanned</span>
+    <span class="n">spamThreadsDict</span><span class="p">:</span> <span class="nb">dict</span>             <span class="c1">#Comments flagged as parent of spam threads</span>
+    <span class="n">allScannedCommentsDict</span><span class="p">:</span> <span class="nb">dict</span>      <span class="c1">#All comments scanned for this instance</span>
+    <span class="n">vidIdDict</span><span class="p">:</span> <span class="nb">dict</span>                   <span class="c1">#Contains the video ID on which each comment is found</span>
+    <span class="n">vidTitleDict</span><span class="p">:</span> <span class="nb">dict</span>                <span class="c1">#Contains the titles of each video ID</span>
+    <span class="n">matchSamplesDict</span><span class="p">:</span> <span class="nb">dict</span>            <span class="c1">#Contains sample info for every flagged comment of all types</span>
+    <span class="n">authorMatchCountDict</span><span class="p">:</span> <span class="nb">dict</span>        <span class="c1">#The number of flagged comments per author</span>
+    <span class="n">scannedRepliesCount</span><span class="p">:</span> <span class="nb">int</span>          <span class="c1">#The current number of replies scanned so far</span>
+    <span class="n">scannedCommentsCount</span><span class="p">:</span> <span class="nb">int</span>         <span class="c1">#The current number of comments scanned so far</span>
+    <span class="n">logTime</span><span class="p">:</span> <span class="nb">str</span>                      <span class="c1">#The time at which the scan was started</span>
+    <span class="n">logFileName</span><span class="p">:</span> <span class="nb">str</span>                  <span class="c1">#Contains a string of the current date/time to be used as a log file name or anything else</span>
+    <span class="n">errorOccurred</span><span class="p">:</span><span class="nb">bool</span>                <span class="c1">#True if an error occurred during the scan</span>
 
 
   <span class="c1">##############################################</span>
@@ -2974,7 +3049,9 @@ main
     <span class="n">current</span> <span class="o">=</span> <span class="n">ScanInstance</span><span class="p">(</span>
       <span class="n">matchedCommentsDict</span><span class="o">=</span><span class="p">{},</span>
       <span class="n">duplicateCommentsDict</span><span class="o">=</span><span class="p">{},</span>
+      <span class="n">repostedCommentsDict</span><span class="o">=</span><span class="p">{},</span>
       <span class="n">otherCommentsByMatchedAuthorsDict</span><span class="o">=</span><span class="p">{},</span>
+      <span class="n">scannedThingsList</span><span class="o">=</span><span class="p">[],</span>
       <span class="n">spamThreadsDict</span> <span class="o">=</span> <span class="p">{},</span>
       <span class="n">allScannedCommentsDict</span><span class="o">=</span><span class="p">{},</span>
       <span class="n">vidIdDict</span><span class="o">=</span><span class="p">{},</span> 
@@ -2992,6 +3069,8 @@ main
     <span class="n">maxScanNumber</span> <span class="o">=</span> <span class="mi">999999999</span>
     <span class="n">scanVideoID</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="n">videosToScan</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">recentPostsListofDicts</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">postURL</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
     <span class="n">loggingEnabled</span> <span class="o">=</span> <span class="kc">False</span>
     <span class="n">userNotChannelOwner</span> <span class="o">=</span> <span class="kc">False</span>
 
@@ -3134,6 +3213,8 @@ main
             <span class="n">videosToScan</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;channelOwnerID&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">videoListResult</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">4</span><span class="p">])</span>
             <span class="n">videosToScan</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;channelOwnerName&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">videoListResult</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">5</span><span class="p">])</span>
             <span class="n">miscData</span><span class="o">.</span><span class="n">totalCommentCount</span> <span class="o">+=</span> <span class="nb">int</span><span class="p">(</span><span class="n">videoListResult</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">3</span><span class="p">])</span>
+            <span class="k">if</span> <span class="nb">str</span><span class="p">(</span><span class="n">videoListResult</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">1</span><span class="p">])</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">current</span><span class="o">.</span><span class="n">vidTitleDict</span><span class="p">:</span>
+              <span class="n">current</span><span class="o">.</span><span class="n">vidTitleDict</span><span class="p">[</span><span class="n">videoListResult</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">1</span><span class="p">]]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">videoListResult</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">2</span><span class="p">])</span>
           <span class="k">else</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Invalid Video: </span><span class="si">{</span><span class="n">enteredVideosList</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="si">}</span><span class="s2">  |  Video ID = </span><span class="si">{</span><span class="n">videoListResult</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
             <span class="n">validConfigSetting</span> <span class="o">=</span> <span class="kc">False</span>
@@ -3167,11 +3248,12 @@ main
             <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
             <span class="k">if</span> <span class="n">i</span><span class="o">==</span><span class="mi">6</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">enteredVideosList</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">5</span><span class="p">:</span>
               <span class="n">remainingCount</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">enteredVideosList</span><span class="p">)</span> <span class="o">-</span> <span class="mi">5</span><span class="p">)</span>
-              <span class="n">userChoice</span> <span class="o">=</span> <span class="n">choice</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;You have entered many videos, do you need to see the rest (x</span><span class="si">{</span><span class="n">remainingCount</span><span class="si">}</span><span class="s2">)?&quot;</span><span class="p">)</span>
-              <span class="k">if</span> <span class="n">userChoice</span> <span class="o">==</span> <span class="kc">False</span><span class="p">:</span>
-                <span class="k">break</span>
-              <span class="k">elif</span> <span class="n">userChoice</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="k">return</span> <span class="kc">True</span> <span class="c1"># Return to main menu</span>
+              <span class="k">if</span> <span class="n">config</span><span class="p">[</span><span class="s1">&#39;skip_confirm_video&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="kc">False</span><span class="p">:</span>
+                <span class="n">userChoice</span> <span class="o">=</span> <span class="n">choice</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;You have entered many videos, do you need to see the rest (x</span><span class="si">{</span><span class="n">remainingCount</span><span class="si">}</span><span class="s2">)?&quot;</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">userChoice</span> <span class="o">==</span> <span class="kc">False</span><span class="p">:</span>
+                  <span class="k">break</span>
+                <span class="k">elif</span> <span class="n">userChoice</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
+                  <span class="k">return</span> <span class="kc">True</span> <span class="c1"># Return to main menu</span>
             <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot; </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">. </span><span class="si">{</span><span class="n">video</span><span class="p">[</span><span class="s1">&#39;videoTitle&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
           <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
 
@@ -3194,7 +3276,7 @@ main
               <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="si">{</span><span class="n">B</span><span class="o">.</span><span class="n">YELLOW</span><span class="si">}{</span><span class="n">F</span><span class="o">.</span><span class="n">BLACK</span><span class="si">}</span><span class="s2"> WARNING: </span><span class="si">{</span><span class="n">S</span><span class="o">.</span><span class="n">R</span><span class="si">}</span><span class="s2"> You have chosen to scan a large amount of comments. The default API quota limit ends up&quot;</span><span class="p">)</span>
               <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot; around </span><span class="si">{</span><span class="n">F</span><span class="o">.</span><span class="n">YELLOW</span><span class="si">}</span><span class="s2">10,000 comment deletions per day</span><span class="si">{</span><span class="n">S</span><span class="o">.</span><span class="n">R</span><span class="si">}</span><span class="s2">. If you find more spam than that you will go over the limit.&quot;</span><span class="p">)</span>
               <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;        &gt; Read more about the quota limits for this app here: </span><span class="si">{</span><span class="n">F</span><span class="o">.</span><span class="n">YELLOW</span><span class="si">}</span><span class="s2">TJoe.io/api-limit-info</span><span class="si">{</span><span class="n">S</span><span class="o">.</span><span class="n">R</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-              <span class="k">if</span> <span class="n">userNotChannelOwner</span> <span class="o">==</span> <span class="kc">True</span> <span class="ow">or</span> <span class="n">moderator_mode</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span>
+              <span class="k">if</span> <span class="n">userNotChannelOwner</span> <span class="o">==</span> <span class="kc">False</span> <span class="ow">or</span> <span class="n">moderator_mode</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span>
                 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">F</span><span class="o">.</span><span class="n">LIGHTCYAN_EX</span><span class="si">}</span><span class="s2">&gt; Note:</span><span class="si">{</span><span class="n">S</span><span class="o">.</span><span class="n">R</span><span class="si">}</span><span class="s2"> You may want to disable &#39;check_deletion_success&#39; in the config, as this doubles the API cost! (So a 5K limit)&quot;</span><span class="p">)</span>
             <span class="n">confirm</span> <span class="o">=</span> <span class="n">choice</span><span class="p">(</span><span class="s2">&quot;Is this video list correct?&quot;</span><span class="p">,</span> <span class="n">bypass</span><span class="o">=</span><span class="n">validConfigSetting</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">confirm</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
@@ -3259,24 +3341,24 @@ main
             <span class="k">return</span> <span class="kc">True</span> <span class="c1"># Return to main menu</span>
         <span class="k">try</span><span class="p">:</span>
           <span class="n">numVideos</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">numVideos</span><span class="p">)</span>
-          <span class="k">if</span> <span class="n">numVideos</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">numVideos</span> <span class="o">&lt;=</span> <span class="mi">500</span><span class="p">:</span>
+          <span class="k">if</span> <span class="n">numVideos</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">numVideos</span> <span class="o">&lt;=</span> <span class="mi">5000</span><span class="p">:</span>
             <span class="n">validEntry</span> <span class="o">=</span> <span class="kc">True</span>
             <span class="n">validConfigSetting</span> <span class="o">=</span> <span class="kc">True</span>
           <span class="k">else</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Error: Entry must be from 1 to 500 (the YouTube API Limit)&quot;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Error: Entry must be from 1 to 5000 (the YouTube API Limit)&quot;</span><span class="p">)</span>
             <span class="n">validEntry</span> <span class="o">=</span> <span class="kc">False</span>
             <span class="n">validConfigSetting</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
           <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">F</span><span class="o">.</span><span class="n">LIGHTRED_EX</span><span class="si">}</span><span class="s2">Error:</span><span class="si">{</span><span class="n">S</span><span class="o">.</span><span class="n">R</span><span class="si">}</span><span class="s2"> Entry must be a whole number greater than zero.&quot;</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="n">validEntry</span> <span class="o">==</span> <span class="kc">True</span> <span class="ow">and</span> <span class="n">numVideos</span> <span class="o">&gt;=</span> <span class="mi">100</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">validEntry</span> <span class="o">==</span> <span class="kc">True</span> <span class="ow">and</span> <span class="n">numVideos</span> <span class="o">&gt;=</span> <span class="mi">1000</span><span class="p">:</span>
           <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="si">{</span><span class="n">B</span><span class="o">.</span><span class="n">YELLOW</span><span class="si">}{</span><span class="n">F</span><span class="o">.</span><span class="n">BLACK</span><span class="si">}</span><span class="s2"> WARNING: </span><span class="si">{</span><span class="n">S</span><span class="o">.</span><span class="n">R</span><span class="si">}</span><span class="s2"> You have chosen to scan a large amount of videos. With the default API quota limit,&quot;</span><span class="p">)</span>
-          <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot; every 100 videos will use up 20% of the quota </span><span class="si">{</span><span class="n">F</span><span class="o">.</span><span class="n">YELLOW</span><span class="si">}</span><span class="s2">just from listing the videos alone, before any comment scanning.</span><span class="si">{</span><span class="n">S</span><span class="o">.</span><span class="n">R</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+          <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot; every 1000 videos will use up 20% of the quota </span><span class="si">{</span><span class="n">F</span><span class="o">.</span><span class="n">YELLOW</span><span class="si">}</span><span class="s2">just from listing the videos alone, before any comment scanning.</span><span class="si">{</span><span class="n">S</span><span class="o">.</span><span class="n">R</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
           <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;        &gt; Read more about the quota limits for this app here: </span><span class="si">{</span><span class="n">F</span><span class="o">.</span><span class="n">YELLOW</span><span class="si">}</span><span class="s2">TJoe.io/api-limit-info</span><span class="si">{</span><span class="n">S</span><span class="o">.</span><span class="n">R</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">validEntry</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span>
           <span class="c1"># Fetch recent videos and print titles to user for confirmation</span>
-          <span class="n">videosToScan</span> <span class="o">=</span> <span class="n">operations</span><span class="o">.</span><span class="n">get_recent_videos</span><span class="p">(</span><span class="n">channelID</span><span class="p">,</span> <span class="n">numVideos</span><span class="p">)</span>
+          <span class="n">videosToScan</span> <span class="o">=</span> <span class="n">operations</span><span class="o">.</span><span class="n">get_recent_videos</span><span class="p">(</span><span class="n">current</span><span class="p">,</span> <span class="n">channelID</span><span class="p">,</span> <span class="n">numVideos</span><span class="p">)</span>
           <span class="k">if</span> <span class="nb">str</span><span class="p">(</span><span class="n">videosToScan</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;MainMenu&quot;</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">True</span> <span class="c1"># Return to main menu</span>
           <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">videosToScan</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
@@ -3471,6 +3553,7 @@ main
       <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Retrieved </span><span class="si">{</span><span class="n">F</span><span class="o">.</span><span class="n">YELLOW</span><span class="si">}{</span><span class="nb">len</span><span class="p">(</span><span class="n">recentPostsListofDicts</span><span class="p">)</span><span class="si">}</span><span class="s2"> recent posts</span><span class="si">{</span><span class="n">S</span><span class="o">.</span><span class="n">R</span><span class="si">}</span><span class="s2"> from </span><span class="si">{</span><span class="n">F</span><span class="o">.</span><span class="n">LIGHTCYAN_EX</span><span class="si">}{</span><span class="n">channelTitle</span><span class="si">}{</span><span class="n">S</span><span class="o">.</span><span class="n">R</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
       <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">  Post Content Samples:&quot;</span><span class="p">)</span>
       <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">recentPostsListofDicts</span><span class="p">)):</span>
+        <span class="c1"># recentPostsListofDicts = {post id : post text} - Below prints sample of post text</span>
         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;    </span><span class="si">{</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s2">.&quot;</span><span class="o">.</span><span class="n">ljust</span><span class="p">(</span><span class="mi">9</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">)</span> <span class="o">+</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">list</span><span class="p">(</span><span class="n">recentPostsListofDicts</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">())[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">:</span><span class="mi">50</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
       <span class="k">if</span> <span class="n">userNotChannelOwner</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span>
@@ -3507,7 +3590,7 @@ main
 
     <span class="c1"># Create config file</span>
     <span class="k">elif</span> <span class="n">scanMode</span> <span class="o">==</span> <span class="s2">&quot;makeConfig&quot;</span><span class="p">:</span>
-      <span class="n">result</span> <span class="o">=</span> <span class="n">files</span><span class="o">.</span><span class="n">create_config_file</span><span class="p">()</span>
+      <span class="n">result</span> <span class="o">=</span> <span class="n">files</span><span class="o">.</span><span class="n">create_config_file</span><span class="p">(</span><span class="n">configDict</span><span class="o">=</span><span class="n">config</span><span class="p">)</span>
       <span class="k">if</span> <span class="nb">str</span><span class="p">(</span><span class="n">result</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;MainMenu&quot;</span><span class="p">:</span>
         <span class="k">return</span> <span class="kc">True</span>
 
@@ -3533,23 +3616,45 @@ main
 <span class="c1"># ====================================================================================================================================================================================================</span>
 <span class="c1"># ====================================================================================================================================================================================================</span>
 
+    <span class="c1"># Set Menu Colors</span>
+    <span class="n">autoSmartColor</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">YELLOW</span>
+    <span class="n">sensitiveColor</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">YELLOW</span>
+    <span class="n">IDColor</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">LIGHTRED_EX</span>
+    <span class="n">usernameColor</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">LIGHTBLUE_EX</span>
+    <span class="n">textColor</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">CYAN</span>
+    <span class="n">usernameTextColor</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">LIGHTBLUE_EX</span>
+    <span class="n">asciiColor</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">LIGHTMAGENTA_EX</span>
+    <span class="n">styleID</span> <span class="o">=</span> <span class="n">S</span><span class="o">.</span><span class="n">BRIGHT</span>
+    <span class="n">styleOther</span> <span class="o">=</span> <span class="n">S</span><span class="o">.</span><span class="n">BRIGHT</span>
+    <span class="n">a1</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+    <span class="n">a2</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+
+    <span class="c1"># Change menu display &amp; colors of some options depending on privileges</span>
+    <span class="k">if</span> <span class="n">userNotChannelOwner</span><span class="p">:</span>
+      <span class="n">styleOther</span> <span class="o">=</span> <span class="n">S</span><span class="o">.</span><span class="n">DIM</span>
+      <span class="n">a2</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">F</span><span class="o">.</span><span class="n">LIGHTRED_EX</span><span class="si">}</span><span class="s2">*</span><span class="si">{</span><span class="n">S</span><span class="o">.</span><span class="n">R</span><span class="si">}</span><span class="s2">&quot;</span> <span class="c1"># a = asterisk</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">moderator_mode</span> <span class="ow">and</span> <span class="n">userNotChannelOwner</span><span class="p">:</span>
+      <span class="n">styleID</span> <span class="o">=</span> <span class="n">S</span><span class="o">.</span><span class="n">DIM</span>
+      <span class="n">a1</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">F</span><span class="o">.</span><span class="n">LIGHTRED_EX</span><span class="si">}</span><span class="s2">*</span><span class="si">{</span><span class="n">S</span><span class="o">.</span><span class="n">R</span><span class="si">}</span><span class="s2">&quot;</span>
+
     <span class="c1"># User inputs filtering mode</span>
     <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">-------------------------------------------------------&quot;</span><span class="p">)</span>
     <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;~~~~~~~~~~~ Choose how to identify spammers ~~~~~~~~~~~&quot;</span><span class="p">)</span>
     <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-------------------------------------------------------&quot;</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot; 1. </span><span class="si">{</span><span class="n">F</span><span class="o">.</span><span class="n">BLACK</span><span class="si">}{</span><span class="n">B</span><span class="o">.</span><span class="n">LIGHTGREEN_EX</span><span class="si">}</span><span class="s2">(RECOMMENDED):</span><span class="si">{</span><span class="n">S</span><span class="o">.</span><span class="n">R</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">F</span><span class="o">.</span><span class="n">YELLOW</span><span class="si">}</span><span class="s2">Auto-Smart Mode</span><span class="si">{</span><span class="n">S</span><span class="o">.</span><span class="n">R</span><span class="si">}</span><span class="s2">: Automatically detects multiple spammer techniques&quot;</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot; 2. </span><span class="si">{</span><span class="n">F</span><span class="o">.</span><span class="n">YELLOW</span><span class="si">}</span><span class="s2">Sensitive-Smart Mode</span><span class="si">{</span><span class="n">S</span><span class="o">.</span><span class="n">R</span><span class="si">}</span><span class="s2">: Much more likely to catch all spammers, but with significantly more false positives&quot;</span><span class="p">)</span>  
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot; 3. Enter Spammer&#39;s </span><span class="si">{</span><span class="n">F</span><span class="o">.</span><span class="n">LIGHTRED_EX</span><span class="si">}</span><span class="s2">channel ID(s) or link(s)</span><span class="si">{</span><span class="n">S</span><span class="o">.</span><span class="n">R</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot; 4. Scan </span><span class="si">{</span><span class="n">F</span><span class="o">.</span><span class="n">LIGHTBLUE_EX</span><span class="si">}</span><span class="s2">usernames</span><span class="si">{</span><span class="n">S</span><span class="o">.</span><span class="n">R</span><span class="si">}</span><span class="s2"> for criteria you choose&quot;</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot; 5. Scan </span><span class="si">{</span><span class="n">F</span><span class="o">.</span><span class="n">CYAN</span><span class="si">}</span><span class="s2">comment text</span><span class="si">{</span><span class="n">S</span><span class="o">.</span><span class="n">R</span><span class="si">}</span><span class="s2"> for criteria you choose&quot;</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot; 6. Scan both </span><span class="si">{</span><span class="n">F</span><span class="o">.</span><span class="n">LIGHTBLUE_EX</span><span class="si">}</span><span class="s2">usernames</span><span class="si">{</span><span class="n">S</span><span class="o">.</span><span class="n">R</span><span class="si">}</span><span class="s2"> and </span><span class="si">{</span><span class="n">F</span><span class="o">.</span><span class="n">CYAN</span><span class="si">}</span><span class="s2">comment text</span><span class="si">{</span><span class="n">S</span><span class="o">.</span><span class="n">R</span><span class="si">}</span><span class="s2"> for criteria you choose&quot;</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot; 7. ASCII Mode: Scan usernames for </span><span class="si">{</span><span class="n">F</span><span class="o">.</span><span class="n">LIGHTMAGENTA_EX</span><span class="si">}</span><span class="s2">ANY non-ASCII special characters</span><span class="si">{</span><span class="n">S</span><span class="o">.</span><span class="n">R</span><span class="si">}</span><span class="s2"> (May cause collateral damage!)&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">S</span><span class="o">.</span><span class="n">BRIGHT</span><span class="si">}</span><span class="s2"> 1. </span><span class="si">{</span><span class="n">S</span><span class="o">.</span><span class="n">R</span><span class="si">}{</span><span class="n">F</span><span class="o">.</span><span class="n">BLACK</span><span class="si">}{</span><span class="n">B</span><span class="o">.</span><span class="n">LIGHTGREEN_EX</span><span class="si">}</span><span class="s2">(RECOMMENDED):</span><span class="si">{</span><span class="n">S</span><span class="o">.</span><span class="n">R</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">S</span><span class="o">.</span><span class="n">BRIGHT</span><span class="si">}{</span><span class="n">autoSmartColor</span><span class="si">}</span><span class="s2">Auto-Smart Mode</span><span class="si">{</span><span class="n">F</span><span class="o">.</span><span class="n">R</span><span class="si">}</span><span class="s2">: Automatically detects multiple spammer techniques</span><span class="si">{</span><span class="n">S</span><span class="o">.</span><span class="n">R</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">S</span><span class="o">.</span><span class="n">BRIGHT</span><span class="si">}</span><span class="s2"> 2. </span><span class="si">{</span><span class="n">sensitiveColor</span><span class="si">}</span><span class="s2">Sensitive-Smart Mode</span><span class="si">{</span><span class="n">F</span><span class="o">.</span><span class="n">R</span><span class="si">}</span><span class="s2">: Much more likely to catch all spammers, but with significantly more false positives</span><span class="si">{</span><span class="n">S</span><span class="o">.</span><span class="n">R</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>  
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">a1</span><span class="si">}{</span><span class="n">styleID</span><span class="si">}</span><span class="s2"> 3. Enter Spammer&#39;s </span><span class="si">{</span><span class="n">IDColor</span><span class="si">}</span><span class="s2">channel ID(s) or link(s)</span><span class="si">{</span><span class="n">F</span><span class="o">.</span><span class="n">R</span><span class="si">}{</span><span class="n">S</span><span class="o">.</span><span class="n">R</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">a2</span><span class="si">}{</span><span class="n">styleOther</span><span class="si">}</span><span class="s2"> 4. Scan </span><span class="si">{</span><span class="n">usernameColor</span><span class="si">}</span><span class="s2">usernames</span><span class="si">{</span><span class="n">F</span><span class="o">.</span><span class="n">R</span><span class="si">}</span><span class="s2"> for criteria you choose</span><span class="si">{</span><span class="n">S</span><span class="o">.</span><span class="n">R</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">a2</span><span class="si">}{</span><span class="n">styleOther</span><span class="si">}</span><span class="s2"> 5. Scan </span><span class="si">{</span><span class="n">textColor</span><span class="si">}</span><span class="s2">comment text</span><span class="si">{</span><span class="n">F</span><span class="o">.</span><span class="n">R</span><span class="si">}</span><span class="s2"> for criteria you choose</span><span class="si">{</span><span class="n">S</span><span class="o">.</span><span class="n">R</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">a2</span><span class="si">}{</span><span class="n">styleOther</span><span class="si">}</span><span class="s2"> 6. Scan both </span><span class="si">{</span><span class="n">usernameTextColor</span><span class="si">}</span><span class="s2">usernames</span><span class="si">{</span><span class="n">F</span><span class="o">.</span><span class="n">R</span><span class="si">}</span><span class="s2"> and </span><span class="si">{</span><span class="n">textColor</span><span class="si">}</span><span class="s2">comment text</span><span class="si">{</span><span class="n">F</span><span class="o">.</span><span class="n">R</span><span class="si">}</span><span class="s2"> for criteria you choose</span><span class="si">{</span><span class="n">S</span><span class="o">.</span><span class="n">R</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">a2</span><span class="si">}{</span><span class="n">styleOther</span><span class="si">}</span><span class="s2"> 7. ASCII Mode: Scan usernames for </span><span class="si">{</span><span class="n">asciiColor</span><span class="si">}</span><span class="s2">ANY non-ASCII special characters</span><span class="si">{</span><span class="n">F</span><span class="o">.</span><span class="n">R</span><span class="si">}</span><span class="s2"> (May cause collateral damage!)</span><span class="si">{</span><span class="n">S</span><span class="o">.</span><span class="n">R</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
 
     <span class="k">if</span> <span class="n">userNotChannelOwner</span> <span class="o">==</span> <span class="kc">True</span> <span class="ow">and</span> <span class="n">moderator_mode</span> <span class="o">==</span> <span class="kc">False</span><span class="p">:</span>
-      <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot; </span><span class="si">{</span><span class="n">F</span><span class="o">.</span><span class="n">LIGHTRED_EX</span><span class="si">}</span><span class="s2">Note: With &#39;Not Your Channel Mode&#39; enabled, you can only report matched comments while using &#39;Auto-Smart Mode&#39; </span><span class="se">\n</span><span class="s2"> or &#39;Sensitive-Smart Mode&#39;.</span><span class="si">{</span><span class="n">S</span><span class="o">.</span><span class="n">R</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span> <span class="c1"># Based on filterModesAllowedforNonOwners</span>
+      <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot; </span><span class="si">{</span><span class="n">F</span><span class="o">.</span><span class="n">LIGHTRED_EX</span><span class="si">}</span><span class="s2">*Note: With &#39;Not Your Channel Mode&#39; enabled, you can only report matched comments while using &#39;Auto-Smart Mode&#39; </span><span class="se">\n</span><span class="s2">        or &#39;Sensitive-Smart Mode&#39;.</span><span class="si">{</span><span class="n">S</span><span class="o">.</span><span class="n">R</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span> <span class="c1"># Based on filterModesAllowedforNonOwners</span>
     <span class="k">elif</span> <span class="n">userNotChannelOwner</span> <span class="o">==</span> <span class="kc">True</span> <span class="ow">and</span> <span class="n">moderator_mode</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span>
-      <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot; </span><span class="si">{</span><span class="n">F</span><span class="o">.</span><span class="n">LIGHTRED_EX</span><span class="si">}</span><span class="s2">Note: With &#39;Moderator Mode&#39;, you can hold for review using: &#39;Auto-Smart&#39;, &#39;Sensitive-Smart&#39;, and Channel ID modes.</span><span class="si">{</span><span class="n">S</span><span class="o">.</span><span class="n">R</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+      <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot; </span><span class="si">{</span><span class="n">F</span><span class="o">.</span><span class="n">LIGHTRED_EX</span><span class="si">}</span><span class="s2">*Note: With &#39;Moderator Mode&#39;, you can Hold and/or Report using: &#39;Auto-Smart&#39;, &#39;Sensitive-Smart&#39;, and Channel ID modes.</span><span class="si">{</span><span class="n">S</span><span class="o">.</span><span class="n">R</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
     <span class="c1"># Make sure input is valid, if not ask again</span>
     <span class="n">validFilterMode</span> <span class="o">=</span> <span class="kc">False</span>
     <span class="n">validFilterSubMode</span> <span class="o">=</span> <span class="kc">False</span>
@@ -3676,6 +3781,16 @@ main
         <span class="n">inputtedUsernameFilter</span> <span class="o">=</span> <span class="n">filterSettings</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
         <span class="n">inputtedCommentTextFilter</span> <span class="o">=</span> <span class="n">filterSettings</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 
+    <span class="c1"># Prepare scan mode info dictionary</span>
+    <span class="k">if</span> <span class="n">videosToScan</span><span class="p">:</span>
+      <span class="n">current</span><span class="o">.</span><span class="n">scannedThingsList</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">item</span><span class="p">[</span><span class="s1">&#39;videoID&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">videosToScan</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">recentPostsListofDicts</span><span class="p">:</span>
+     <span class="n">current</span><span class="o">.</span><span class="n">scannedThingsList</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">post</span><span class="o">.</span><span class="n">keys</span><span class="p">())[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">post</span> <span class="ow">in</span> <span class="n">recentPostsListofDicts</span><span class="p">)[</span><span class="mi">0</span><span class="p">:</span><span class="n">numRecentPosts</span><span class="p">]</span>
+    <span class="k">elif</span> <span class="n">postURL</span><span class="p">:</span>
+      <span class="n">current</span><span class="o">.</span><span class="n">scannedThingsList</span> <span class="o">=</span> <span class="p">[</span><span class="n">postURL</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+      <span class="n">current</span><span class="o">.</span><span class="n">scannedThingsList</span> <span class="o">=</span> <span class="p">[]</span>
+
     <span class="c1">##################### START SCANNING #####################</span>
     <span class="n">filtersDict</span> <span class="o">=</span> <span class="p">{</span> 
       <span class="s1">&#39;filterSettings&#39;</span><span class="p">:</span> <span class="n">filterSettings</span><span class="p">,</span>
@@ -3704,19 +3819,21 @@ main
             <span class="s1">&#39;authorChannelName&#39;</span><span class="p">:</span><span class="n">value</span><span class="p">[</span><span class="s1">&#39;authorName&#39;</span><span class="p">],</span> 
             <span class="s1">&#39;commentText&#39;</span><span class="p">:</span><span class="n">value</span><span class="p">[</span><span class="s1">&#39;commentText&#39;</span><span class="p">],</span>
             <span class="s1">&#39;commentID&#39;</span><span class="p">:</span><span class="n">key</span><span class="p">,</span>
+            <span class="c1">#&#39;originalCommentID&#39;: None</span>
             <span class="p">}</span>
           <span class="k">try</span><span class="p">:</span>
-            <span class="n">authorKeyAllCommentsDict</span><span class="p">[</span><span class="n">value</span><span class="p">[</span><span class="s1">&#39;authorChannelID&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">currentCommentDict</span><span class="p">)</span>
-          <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
-            <span class="n">authorKeyAllCommentsDict</span><span class="p">[</span><span class="n">value</span><span class="p">[</span><span class="s1">&#39;authorChannelID&#39;</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[</span><span class="n">currentCommentDict</span><span class="p">]</span>
-          <span class="k">except</span> <span class="ne">TypeError</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">value</span><span class="p">[</span><span class="s1">&#39;authorChannelID&#39;</span><span class="p">]</span> <span class="ow">in</span> <span class="n">authorKeyAllCommentsDict</span><span class="p">:</span>
+              <span class="n">authorKeyAllCommentsDict</span><span class="p">[</span><span class="n">value</span><span class="p">[</span><span class="s1">&#39;authorChannelID&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">currentCommentDict</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+              <span class="n">authorKeyAllCommentsDict</span><span class="p">[</span><span class="n">value</span><span class="p">[</span><span class="s1">&#39;authorChannelID&#39;</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[</span><span class="n">currentCommentDict</span><span class="p">]</span>
+          <span class="k">except</span> <span class="ne">TypeError</span><span class="p">:</span> <span class="c1"># Try/Except might not be necessary, might remove later</span>
             <span class="k">pass</span>
           <span class="n">operations</span><span class="o">.</span><span class="n">check_against_filter</span><span class="p">(</span><span class="n">current</span><span class="p">,</span> <span class="n">filtersDict</span><span class="p">,</span> <span class="n">miscData</span><span class="p">,</span> <span class="n">config</span><span class="p">,</span> <span class="n">currentCommentDict</span><span class="p">,</span> <span class="n">videoID</span><span class="o">=</span><span class="n">communityPostID</span><span class="p">)</span>
 
           <span class="c1"># Scam for spam threads</span>
-          <span class="k">if</span> <span class="n">config</span><span class="p">[</span><span class="s1">&#39;detect_spam_threads&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span>
+          <span class="k">if</span> <span class="p">(</span><span class="n">filtersDict</span><span class="p">[</span><span class="s1">&#39;filterMode&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;AutoSmart&quot;</span> <span class="ow">or</span> <span class="n">filtersDict</span><span class="p">[</span><span class="s1">&#39;filterMode&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;SensitiveSmart&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">config</span><span class="p">[</span><span class="s1">&#39;detect_spam_threads&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span>
             <span class="n">threadDict</span> <span class="o">=</span> <span class="n">operations</span><span class="o">.</span><span class="n">make_community_thread_dict</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">allCommunityCommentsDict</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">threadDict</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">threadDict</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">threadDict</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">7</span><span class="p">:</span> <span class="c1"># Only if more than 7 replies</span>
               <span class="n">parentCommentDict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">currentCommentDict</span><span class="p">)</span>
               <span class="n">parentCommentDict</span><span class="p">[</span><span class="s1">&#39;videoID&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">communityPostID</span>
               <span class="n">current</span> <span class="o">=</span> <span class="n">operations</span><span class="o">.</span><span class="n">check_spam_threads</span><span class="p">(</span><span class="n">current</span><span class="p">,</span> <span class="n">filtersDict</span><span class="p">,</span> <span class="n">miscData</span><span class="p">,</span> <span class="n">config</span><span class="p">,</span> <span class="n">parentCommentDict</span><span class="p">,</span> <span class="n">threadDict</span><span class="p">)</span>
@@ -3731,6 +3848,9 @@ main
         <span class="n">dupeCheckModes</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">string_to_list</span><span class="p">(</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;duplicate_check_modes&#39;</span><span class="p">])</span>
         <span class="k">if</span> <span class="n">filtersDict</span><span class="p">[</span><span class="s1">&#39;filterMode&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="n">dupeCheckModes</span><span class="p">:</span>
           <span class="n">operations</span><span class="o">.</span><span class="n">check_duplicates</span><span class="p">(</span><span class="n">current</span><span class="p">,</span> <span class="n">config</span><span class="p">,</span> <span class="n">miscData</span><span class="p">,</span> <span class="n">authorKeyAllCommentsDict</span><span class="p">,</span> <span class="n">communityPostID</span><span class="p">)</span>
+        <span class="c1"># repostCheckModes = utils.string_to_list(config[&#39;stolen_comments_check_modes&#39;])</span>
+        <span class="c1"># if filtersDict[&#39;filterMode&#39;].lower() in repostCheckModes:</span>
+        <span class="c1">#   operations.check_reposts(current, config, miscData, allCommunityCommentsDict, communityPostID)</span>
           <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;                                                                                                                       &quot;</span><span class="p">)</span>
 
       <span class="k">if</span> <span class="n">scanMode</span> <span class="o">==</span> <span class="s2">&quot;communityPost&quot;</span><span class="p">:</span>
@@ -3741,8 +3861,8 @@ main
 
         <span class="k">for</span> <span class="n">post</span> <span class="ow">in</span> <span class="n">recentPostsListofDicts</span><span class="p">:</span>
           <span class="n">postScanProgressDict</span><span class="p">[</span><span class="s1">&#39;scanned&#39;</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
-          <span class="nb">id</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">post</span><span class="o">.</span><span class="n">keys</span><span class="p">())[</span><span class="mi">0</span><span class="p">]</span> <span class="c1"># Each dict only has one key/value pair</span>
-          <span class="n">postText</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">post</span><span class="o">.</span><span class="n">values</span><span class="p">())[</span><span class="mi">0</span><span class="p">]</span>
+          <span class="nb">id</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">post</span><span class="o">.</span><span class="n">keys</span><span class="p">())[</span><span class="mi">0</span><span class="p">]</span> <span class="c1"># Each dict only has one key/value pair, so makes list of length 1, so id is in index 0</span>
+          <span class="n">postText</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">post</span><span class="o">.</span><span class="n">values</span><span class="p">())[</span><span class="mi">0</span><span class="p">]</span> <span class="c1"># Same as above but applies to values</span>
           <span class="n">current</span><span class="o">.</span><span class="n">vidTitleDict</span><span class="p">[</span><span class="nb">id</span><span class="p">]</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;[Community Post]: </span><span class="si">{</span><span class="n">postText</span><span class="si">}</span><span class="s2">&quot;</span>
 
           <span class="n">scan_community_post</span><span class="p">(</span><span class="n">current</span><span class="p">,</span> <span class="n">config</span><span class="p">,</span> <span class="nb">id</span><span class="p">,</span> <span class="n">maxScanNumber</span><span class="p">,</span> <span class="n">postScanProgressDict</span><span class="o">=</span><span class="n">postScanProgressDict</span><span class="p">,</span> <span class="n">postText</span><span class="o">=</span><span class="n">postText</span><span class="p">)</span>
@@ -3816,9 +3936,18 @@ main
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Error Code C-2: Invalid value for &#39;enable_logging&#39; in config file:  &quot;</span> <span class="o">+</span> <span class="n">logSetting</span><span class="p">)</span>
 
     <span class="c1"># Counts number of found spam comments and prints list</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">current</span><span class="o">.</span><span class="n">matchedCommentsDict</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">current</span><span class="o">.</span><span class="n">duplicateCommentsDict</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">current</span><span class="o">.</span><span class="n">spamThreadsDict</span><span class="p">:</span> <span class="c1"># If no spam comments found, exits</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">current</span><span class="o">.</span><span class="n">matchedCommentsDict</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">current</span><span class="o">.</span><span class="n">duplicateCommentsDict</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">current</span><span class="o">.</span><span class="n">spamThreadsDict</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">current</span><span class="o">.</span><span class="n">repostedCommentsDict</span><span class="p">:</span> <span class="c1"># If no spam comments found, exits</span>
       <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">B</span><span class="o">.</span><span class="n">RED</span><span class="si">}{</span><span class="n">F</span><span class="o">.</span><span class="n">BLACK</span><span class="si">}</span><span class="s2"> No matched comments or users found! </span><span class="si">{</span><span class="n">F</span><span class="o">.</span><span class="n">R</span><span class="si">}{</span><span class="n">B</span><span class="o">.</span><span class="n">R</span><span class="si">}{</span><span class="n">S</span><span class="o">.</span><span class="n">R</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
       <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;If you see missed spam or false positives, you can submit a filter suggestion here: </span><span class="si">{</span><span class="n">F</span><span class="o">.</span><span class="n">YELLOW</span><span class="si">}</span><span class="s2">TJoe.io/filter-feedback</span><span class="si">{</span><span class="n">S</span><span class="o">.</span><span class="n">R</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+      <span class="c1"># Can still log to json even though no comments</span>
+      <span class="k">if</span> <span class="n">config</span><span class="p">[</span><span class="s1">&#39;json_log_all_comments&#39;</span><span class="p">]</span> <span class="ow">and</span> <span class="n">config</span><span class="p">[</span><span class="s1">&#39;json_log&#39;</span><span class="p">]</span> <span class="ow">and</span> <span class="n">config</span><span class="p">[</span><span class="s1">&#39;enable_logging&#39;</span><span class="p">]</span> <span class="o">!=</span> <span class="kc">False</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Because you enabled &#39;</span><span class="si">{</span><span class="n">F</span><span class="o">.</span><span class="n">LIGHTCYAN_EX</span><span class="si">}</span><span class="s2">json_log_all_comments</span><span class="si">{</span><span class="n">S</span><span class="o">.</span><span class="n">R</span><span class="si">}</span><span class="s2">&#39; in config, </span><span class="si">{</span><span class="n">F</span><span class="o">.</span><span class="n">LIGHTCYAN_EX</span><span class="si">}</span><span class="s2">continuing on to log anyway</span><span class="si">{</span><span class="n">S</span><span class="o">.</span><span class="n">R</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
+        <span class="n">jsonSettingsDict</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">current</span><span class="p">,</span> <span class="n">logMode</span><span class="p">,</span> <span class="n">jsonSettingsDict</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">prepare_logFile_settings</span><span class="p">(</span><span class="n">current</span><span class="p">,</span> <span class="n">config</span><span class="p">,</span> <span class="n">miscData</span><span class="p">,</span> <span class="n">jsonSettingsDict</span><span class="p">,</span> <span class="n">filtersDict</span><span class="p">,</span> <span class="n">bypass</span><span class="p">)</span>
+        <span class="n">jsonDataDict</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">get_extra_json_data</span><span class="p">([],</span> <span class="n">jsonSettingsDict</span><span class="p">)</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">write_json_log</span><span class="p">(</span><span class="n">current</span><span class="p">,</span> <span class="n">config</span><span class="p">,</span> <span class="n">jsonSettingsDict</span><span class="p">,</span> <span class="p">{},</span> <span class="n">jsonDataDict</span><span class="p">)</span>
+
       <span class="k">if</span> <span class="n">config</span><span class="p">[</span><span class="s1">&#39;auto_close&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="kc">False</span><span class="p">:</span>
         <span class="nb">input</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Press Enter to return to main menu...&quot;</span><span class="p">)</span>
         <span class="k">return</span> <span class="kc">True</span>
@@ -3831,6 +3960,8 @@ main
       <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Number of </span><span class="si">{</span><span class="n">S</span><span class="o">.</span><span class="n">BRIGHT</span><span class="si">}{</span><span class="n">F</span><span class="o">.</span><span class="n">RED</span><span class="si">}</span><span class="s2">Spam Bot Threads</span><span class="si">{</span><span class="n">S</span><span class="o">.</span><span class="n">R</span><span class="si">}</span><span class="s2"> Found: </span><span class="si">{</span><span class="n">S</span><span class="o">.</span><span class="n">BRIGHT</span><span class="si">}{</span><span class="n">B</span><span class="o">.</span><span class="n">RED</span><span class="si">}{</span><span class="n">F</span><span class="o">.</span><span class="n">WHITE</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">current</span><span class="o">.</span><span class="n">spamThreadsDict</span><span class="p">))</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">F</span><span class="o">.</span><span class="n">R</span><span class="si">}{</span><span class="n">B</span><span class="o">.</span><span class="n">R</span><span class="si">}{</span><span class="n">S</span><span class="o">.</span><span class="n">R</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">current</span><span class="o">.</span><span class="n">duplicateCommentsDict</span><span class="p">:</span>
       <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Number of </span><span class="si">{</span><span class="n">S</span><span class="o">.</span><span class="n">BRIGHT</span><span class="si">}{</span><span class="n">F</span><span class="o">.</span><span class="n">LIGHTBLUE_EX</span><span class="si">}</span><span class="s2">Non-Matched But Duplicate</span><span class="si">{</span><span class="n">S</span><span class="o">.</span><span class="n">R</span><span class="si">}</span><span class="s2"> Comments Found: </span><span class="si">{</span><span class="n">S</span><span class="o">.</span><span class="n">BRIGHT</span><span class="si">}{</span><span class="n">F</span><span class="o">.</span><span class="n">WHITE</span><span class="si">}{</span><span class="n">B</span><span class="o">.</span><span class="n">BLUE</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">current</span><span class="o">.</span><span class="n">duplicateCommentsDict</span><span class="p">))</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">F</span><span class="o">.</span><span class="n">R</span><span class="si">}{</span><span class="n">B</span><span class="o">.</span><span class="n">R</span><span class="si">}{</span><span class="n">S</span><span class="o">.</span><span class="n">R</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">current</span><span class="o">.</span><span class="n">repostedCommentsDict</span><span class="p">:</span>
+      <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Number of </span><span class="si">{</span><span class="n">S</span><span class="o">.</span><span class="n">BRIGHT</span><span class="si">}{</span><span class="n">F</span><span class="o">.</span><span class="n">LIGHTBLUE_EX</span><span class="si">}</span><span class="s2">Non-Matched But Stolen &amp; Reposted</span><span class="si">{</span><span class="n">S</span><span class="o">.</span><span class="n">R</span><span class="si">}</span><span class="s2"> Comments Found: </span><span class="si">{</span><span class="n">S</span><span class="o">.</span><span class="n">BRIGHT</span><span class="si">}{</span><span class="n">F</span><span class="o">.</span><span class="n">WHITE</span><span class="si">}{</span><span class="n">B</span><span class="o">.</span><span class="n">BLUE</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">current</span><span class="o">.</span><span class="n">repostedCommentsDict</span><span class="p">))</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">F</span><span class="o">.</span><span class="n">R</span><span class="si">}{</span><span class="n">B</span><span class="o">.</span><span class="n">R</span><span class="si">}{</span><span class="n">S</span><span class="o">.</span><span class="n">R</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
     <span class="c1"># If spam comments were found, continue</span>
     <span class="k">if</span> <span class="n">bypass</span> <span class="o">==</span> <span class="kc">False</span><span class="p">:</span>
@@ -3844,7 +3975,7 @@ main
 
     <span class="c1"># Prepare log file and json log file settings - Location and names</span>
     <span class="n">jsonSettingsDict</span> <span class="o">=</span> <span class="p">{}</span>
-    <span class="k">if</span> <span class="n">loggingEnabled</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span>    
+    <span class="k">if</span> <span class="n">loggingEnabled</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span>
       <span class="n">current</span><span class="p">,</span> <span class="n">logMode</span><span class="p">,</span> <span class="n">jsonSettingsDict</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">prepare_logFile_settings</span><span class="p">(</span><span class="n">current</span><span class="p">,</span> <span class="n">config</span><span class="p">,</span> <span class="n">miscData</span><span class="p">,</span> <span class="n">jsonSettingsDict</span><span class="p">,</span> <span class="n">filtersDict</span><span class="p">,</span> <span class="n">bypass</span><span class="p">)</span>
       <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">-----------------------------------------------------------------------------------------------------------------</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
@@ -3859,19 +3990,8 @@ main
     <span class="c1"># Print comments  and write to log files</span>
     <span class="n">logFileContents</span><span class="p">,</span> <span class="n">logMode</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">print_comments</span><span class="p">(</span><span class="n">current</span><span class="p">,</span> <span class="n">config</span><span class="p">,</span> <span class="n">scanVideoID</span><span class="p">,</span> <span class="n">loggingEnabled</span><span class="p">,</span> <span class="n">scanMode</span><span class="p">,</span> <span class="n">logMode</span><span class="p">)</span>
 
-    <span class="k">if</span> <span class="n">loggingEnabled</span><span class="p">:</span>
-      <span class="n">logInfo</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="s1">&#39;logMode&#39;</span><span class="p">:</span> <span class="n">logMode</span><span class="p">,</span>
-        <span class="s1">&#39;logFileContents&#39;</span><span class="p">:</span> <span class="n">logFileContents</span><span class="p">,</span>
-        <span class="s1">&#39;jsonSettingsDict&#39;</span><span class="p">:</span> <span class="n">jsonSettingsDict</span><span class="p">,</span>
-        <span class="s1">&#39;filtersDict&#39;</span><span class="p">:</span> <span class="n">filtersDict</span><span class="p">,</span>
-      <span class="p">}</span>
-    <span class="k">else</span><span class="p">:</span>
-      <span class="n">logInfo</span> <span class="o">=</span> <span class="kc">None</span>
-
     <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="si">{</span><span class="n">F</span><span class="o">.</span><span class="n">WHITE</span><span class="si">}{</span><span class="n">B</span><span class="o">.</span><span class="n">RED</span><span class="si">}</span><span class="s2"> NOTE: </span><span class="si">{</span><span class="n">S</span><span class="o">.</span><span class="n">R</span><span class="si">}</span><span class="s2"> Check that all comments listed above are indeed spam.&quot;</span><span class="p">)</span>
     <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot; &gt; If you see missed spam or false positives, you can submit a filter suggestion here: </span><span class="si">{</span><span class="n">F</span><span class="o">.</span><span class="n">YELLOW</span><span class="si">}</span><span class="s2">TJoe.io/filter-feedback</span><span class="si">{</span><span class="n">S</span><span class="o">.</span><span class="n">R</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-
     <span class="nb">print</span><span class="p">()</span>
 
     <span class="c1">### ---------------- Decide whether to skip deletion ----------------</span>
@@ -3905,7 +4025,7 @@ main
       <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Defaulting to &#39;</span><span class="si">{</span><span class="n">F</span><span class="o">.</span><span class="n">YELLOW</span><span class="si">}</span><span class="s2">False</span><span class="si">{</span><span class="n">S</span><span class="o">.</span><span class="n">R</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
       <span class="nb">input</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Press Enter to continue...&quot;</span><span class="p">)</span>
 
-    <span class="c1">### ----------------------------------------------------------------  </span>
+    <span class="c1">### ----------------------------------------------------------------</span>
 
     <span class="c1">### ------------- Decide whether to ask before deleting -------------</span>
     <span class="c1"># Using config to determine deletion type, block invalid settings</span>
@@ -3962,7 +4082,7 @@ main
     <span class="k">if</span> <span class="n">returnToMenu</span> <span class="o">==</span> <span class="kc">False</span> <span class="ow">and</span> <span class="n">deletionEnabled</span> <span class="o">!=</span> <span class="s2">&quot;Allowed&quot;</span> <span class="ow">and</span> <span class="n">deletionEnabled</span> <span class="o">!=</span> <span class="kc">True</span><span class="p">:</span>
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">The deletion functionality was not enabled. Cannot delete or report comments.&quot;</span><span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Possible Cause: You&#39;re scanning someone elses video with a non-supported filter mode.</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;If you think this is a bug, you may report it on this project&#39;s GitHub page: https://github.com/ThioJoe/YT-Spammer-Purge/issues&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;If you think this is a bug, you may report it on this project&#39;s GitHub page: </span><span class="si">{</span><span class="n">F</span><span class="o">.</span><span class="n">YELLOW</span><span class="si">}</span><span class="s2">TJoe.io/bug-report</span><span class="si">{</span><span class="n">S</span><span class="o">.</span><span class="n">R</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">config</span><span class="p">[</span><span class="s1">&#39;auto_close&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span>
           <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Auto-close enabled in config. Exiting in 5 seconds...&quot;</span><span class="p">)</span>
           <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
@@ -4065,7 +4185,7 @@ main
           <span class="n">exclude</span> <span class="o">=</span> <span class="kc">True</span>
 
           <span class="c1"># Check that remaining comments list to remove is not empty</span>
-          <span class="k">if</span> <span class="ow">not</span> <span class="n">current</span><span class="o">.</span><span class="n">matchedCommentsDict</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">current</span><span class="o">.</span><span class="n">duplicateCommentsDict</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">current</span><span class="o">.</span><span class="n">spamThreadsDict</span><span class="p">:</span>
+          <span class="k">if</span> <span class="ow">not</span> <span class="n">current</span><span class="o">.</span><span class="n">matchedCommentsDict</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">current</span><span class="o">.</span><span class="n">duplicateCommentsDict</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">current</span><span class="o">.</span><span class="n">spamThreadsDict</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">current</span><span class="o">.</span><span class="n">repostedCommentsDict</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="si">{</span><span class="n">F</span><span class="o">.</span><span class="n">YELLOW</span><span class="si">}</span><span class="s2">All authors excluded, no comments left to remove!</span><span class="si">{</span><span class="n">S</span><span class="o">.</span><span class="n">R</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
             <span class="nb">input</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Press Enter to log and/or return to main menu...&quot;</span><span class="p">)</span>
             <span class="n">returnToMenu</span> <span class="o">=</span> <span class="kc">True</span>
@@ -4083,6 +4203,7 @@ main
     <span class="n">combinedCommentDict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">current</span><span class="o">.</span><span class="n">matchedCommentsDict</span><span class="p">)</span>
     <span class="n">combinedCommentDict</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">current</span><span class="o">.</span><span class="n">duplicateCommentsDict</span><span class="p">)</span>
     <span class="n">combinedCommentDict</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">current</span><span class="o">.</span><span class="n">spamThreadsDict</span><span class="p">)</span>
+    <span class="n">combinedCommentDict</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">current</span><span class="o">.</span><span class="n">repostedCommentsDict</span><span class="p">)</span>
     <span class="n">includeOtherAuthorComments</span> <span class="o">=</span> <span class="kc">False</span>
 
     <span class="n">banChoice</span> <span class="o">=</span> <span class="kc">False</span>
@@ -4161,16 +4282,16 @@ main
       <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;                               &quot;</span><span class="p">)</span>
 
       <span class="c1"># Write Json Log File</span>
-      <span class="k">if</span> <span class="n">config</span><span class="p">[</span><span class="s1">&#39;json_log&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="kc">True</span> <span class="ow">and</span> <span class="n">loggingEnabled</span> <span class="ow">and</span> <span class="n">current</span><span class="o">.</span><span class="n">matchedCommentsDict</span><span class="p">:</span>
+      <span class="k">if</span> <span class="n">config</span><span class="p">[</span><span class="s1">&#39;json_log&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="kc">True</span> <span class="ow">and</span> <span class="n">loggingEnabled</span> <span class="ow">and</span> <span class="p">(</span><span class="n">current</span><span class="o">.</span><span class="n">matchedCommentsDict</span> <span class="ow">or</span> <span class="n">current</span><span class="o">.</span><span class="n">duplicateCommentsDict</span> <span class="ow">or</span> <span class="n">current</span><span class="o">.</span><span class="n">spamThreadsDict</span> <span class="ow">or</span> <span class="n">current</span><span class="o">.</span><span class="n">repostedCommentsDict</span><span class="p">):</span>
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Writing JSON log file...&quot;</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">config</span><span class="p">[</span><span class="s1">&#39;json_extra_data&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span>
           <span class="k">if</span> <span class="n">current</span><span class="o">.</span><span class="n">errorOccurred</span> <span class="o">==</span> <span class="kc">False</span><span class="p">:</span>
             <span class="n">jsonDataDict</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">get_extra_json_data</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">current</span><span class="o">.</span><span class="n">matchSamplesDict</span><span class="o">.</span><span class="n">keys</span><span class="p">()),</span> <span class="n">jsonSettingsDict</span><span class="p">)</span>
-            <span class="n">logging</span><span class="o">.</span><span class="n">write_json_log</span><span class="p">(</span><span class="n">jsonSettingsDict</span><span class="p">,</span> <span class="n">combinedCommentDict</span><span class="p">,</span> <span class="n">jsonDataDict</span><span class="p">)</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">write_json_log</span><span class="p">(</span><span class="n">current</span><span class="p">,</span> <span class="n">config</span><span class="p">,</span> <span class="n">jsonSettingsDict</span><span class="p">,</span> <span class="n">combinedCommentDict</span><span class="p">,</span> <span class="n">jsonDataDict</span><span class="p">)</span>
           <span class="k">else</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="si">{</span><span class="n">F</span><span class="o">.</span><span class="n">LIGHTRED_EX</span><span class="si">}</span><span class="s2">NOTE:</span><span class="si">{</span><span class="n">S</span><span class="o">.</span><span class="n">R</span><span class="si">}</span><span class="s2"> Extra JSON data collection disabled due to error during scanning&quot;</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-          <span class="n">logging</span><span class="o">.</span><span class="n">write_json_log</span><span class="p">(</span><span class="n">jsonSettingsDict</span><span class="p">,</span> <span class="n">combinedCommentDict</span><span class="p">)</span>
+          <span class="n">logging</span><span class="o">.</span><span class="n">write_json_log</span><span class="p">(</span><span class="n">current</span><span class="p">,</span> <span class="n">config</span><span class="p">,</span> <span class="n">jsonSettingsDict</span><span class="p">,</span> <span class="n">combinedCommentDict</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">returnToMenu</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span>
           <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">JSON Operation Finished.&quot;</span><span class="p">)</span>
     <span class="c1">### ---------------- Reporting / Deletion Begin  ----------------</span>
@@ -4309,10 +4430,10 @@ main
     <div class="md-dialog" data-md-component="dialog">
       <div class="md-dialog__inner md-typeset"></div>
     </div>
-    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.tabs"], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../../assets/javascripts/workers/search.092fa1f6.min.js"}</script>
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.tabs"], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../../assets/javascripts/workers/search.bd0b6b67.min.js"}</script>
     
     
-      <script src="../../assets/javascripts/bundle.5a9542cf.min.js"></script>
+      <script src="../../assets/javascripts/bundle.8aa65030.min.js"></script>
       
     
   </body>
