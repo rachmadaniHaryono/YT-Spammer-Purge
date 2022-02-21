@@ -1333,19 +1333,19 @@ check_existing_save
 
         <details class="quote">
           <summary>Source code in <code>Scripts/files.py</code></summary>
-          <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1102</span>
-<span class="normal">1103</span>
-<span class="normal">1104</span>
-<span class="normal">1105</span>
-<span class="normal">1106</span>
-<span class="normal">1107</span>
-<span class="normal">1108</span>
-<span class="normal">1109</span>
-<span class="normal">1110</span>
-<span class="normal">1111</span>
-<span class="normal">1112</span>
-<span class="normal">1113</span>
-<span class="normal">1114</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">check_existing_save</span><span class="p">():</span>
+          <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1113</span>
+<span class="normal">1114</span>
+<span class="normal">1115</span>
+<span class="normal">1116</span>
+<span class="normal">1117</span>
+<span class="normal">1118</span>
+<span class="normal">1119</span>
+<span class="normal">1120</span>
+<span class="normal">1121</span>
+<span class="normal">1122</span>
+<span class="normal">1123</span>
+<span class="normal">1124</span>
+<span class="normal">1125</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">check_existing_save</span><span class="p">():</span>
   <span class="n">relativeSaveDir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">RESOURCES_FOLDER_NAME</span><span class="p">,</span> <span class="s2">&quot;Removal_List_Progress&quot;</span><span class="p">)</span>
   <span class="n">savesList</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
   <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">relativeSaveDir</span><span class="p">):</span>
@@ -2643,7 +2643,18 @@ create_config_file
 <span class="normal">883</span>
 <span class="normal">884</span>
 <span class="normal">885</span>
-<span class="normal">886</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">create_config_file</span><span class="p">(</span><span class="n">updating</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">dontWarn</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">configFileName</span><span class="o">=</span><span class="s2">&quot;SpamPurgeConfig.ini&quot;</span><span class="p">,</span> <span class="n">configDict</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="normal">886</span>
+<span class="normal">887</span>
+<span class="normal">888</span>
+<span class="normal">889</span>
+<span class="normal">890</span>
+<span class="normal">891</span>
+<span class="normal">892</span>
+<span class="normal">893</span>
+<span class="normal">894</span>
+<span class="normal">895</span>
+<span class="normal">896</span>
+<span class="normal">897</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">create_config_file</span><span class="p">(</span><span class="n">updating</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">dontWarn</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">configFileName</span><span class="o">=</span><span class="s2">&quot;SpamPurgeConfig.ini&quot;</span><span class="p">,</span> <span class="n">configDict</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
   <span class="k">def</span> <span class="nf">config_path</span><span class="p">(</span><span class="n">relative_path</span><span class="p">):</span>
     <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">sys</span><span class="p">,</span> <span class="s1">&#39;_MEIPASS&#39;</span><span class="p">):</span> <span class="c1"># If running as a pyinstaller bundle</span>
         <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">_MEIPASS</span><span class="p">,</span> <span class="n">relative_path</span><span class="p">)</span>
@@ -2712,6 +2723,13 @@ create_config_file
   <span class="n">attempts</span> <span class="o">=</span> <span class="mi">0</span>
   <span class="n">success</span> <span class="o">=</span> <span class="kc">False</span>
   <span class="k">while</span> <span class="n">success</span> <span class="o">==</span> <span class="kc">False</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">dirPath</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">dirPath</span><span class="p">):</span>
+      <span class="k">try</span><span class="p">:</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">dirPath</span><span class="p">)</span>
+      <span class="k">except</span><span class="p">:</span>
+        <span class="n">traceback</span><span class="o">.</span><span class="n">print_exc</span><span class="p">()</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">B</span><span class="o">.</span><span class="n">RED</span><span class="si">}{</span><span class="n">F</span><span class="o">.</span><span class="n">WHITE</span><span class="si">}</span><span class="s2">Error Code: F-3</span><span class="si">{</span><span class="n">S</span><span class="o">.</span><span class="n">R</span><span class="si">}</span><span class="s2"> - Problem creating &#39;configs&#39; folder! Try creating the folder yourself.&quot;</span><span class="p">)</span>
+        <span class="nb">input</span><span class="p">(</span><span class="s2">&quot;Then Press Enter to Continue...&quot;</span><span class="p">)</span>
     <span class="k">try</span><span class="p">:</span>
       <span class="n">attempts</span> <span class="o">+=</span> <span class="mi">1</span>
       <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">configFilePathWithName</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">configFile</span><span class="p">:</span>
@@ -2738,7 +2756,11 @@ create_config_file
       <span class="n">parser</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">&quot;SpamPurgeConfig.ini&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span>
       <span class="k">if</span> <span class="n">parser</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;info&quot;</span><span class="p">,</span> <span class="s2">&quot;config_version&quot;</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">updating</span> <span class="o">==</span> <span class="kc">False</span><span class="p">:</span>
-          <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="si">{</span><span class="n">B</span><span class="o">.</span><span class="n">GREEN</span><span class="si">}{</span><span class="n">F</span><span class="o">.</span><span class="n">BLACK</span><span class="si">}</span><span class="s2"> SUCCESS! </span><span class="si">{</span><span class="n">S</span><span class="o">.</span><span class="n">R</span><span class="si">}</span><span class="s2">  </span><span class="si">{</span><span class="n">F</span><span class="o">.</span><span class="n">YELLOW</span><span class="si">}{</span><span class="n">configFileName</span><span class="si">}{</span><span class="n">S</span><span class="o">.</span><span class="n">R</span><span class="si">}</span><span class="s2"> file created successfully.&quot;</span><span class="p">)</span>
+          <span class="k">if</span> <span class="n">dirPath</span><span class="p">:</span>
+            <span class="n">dirString</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">F</span><span class="o">.</span><span class="n">YELLOW</span><span class="si">}{</span><span class="nb">str</span><span class="p">(</span><span class="n">dirPath</span><span class="p">)</span><span class="si">}{</span><span class="n">S</span><span class="o">.</span><span class="n">R</span><span class="si">}</span><span class="s2">&quot;</span>
+          <span class="k">else</span><span class="p">:</span>
+            <span class="n">dirString</span> <span class="o">=</span> <span class="s2">&quot;current&quot;</span>
+          <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="si">{</span><span class="n">B</span><span class="o">.</span><span class="n">GREEN</span><span class="si">}{</span><span class="n">F</span><span class="o">.</span><span class="n">BLACK</span><span class="si">}</span><span class="s2"> SUCCESS! </span><span class="si">{</span><span class="n">S</span><span class="o">.</span><span class="n">R</span><span class="si">}</span><span class="s2">  </span><span class="si">{</span><span class="n">F</span><span class="o">.</span><span class="n">YELLOW</span><span class="si">}{</span><span class="n">configFileName</span><span class="si">}{</span><span class="n">S</span><span class="o">.</span><span class="n">R</span><span class="si">}</span><span class="s2"> file created successfully in </span><span class="si">{</span><span class="n">dirString</span><span class="si">}</span><span class="s2"> folder.&quot;</span><span class="p">)</span>
           <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">You can now edit the file to your liking. You can also </span><span class="si">{</span><span class="n">F</span><span class="o">.</span><span class="n">YELLOW</span><span class="si">}</span><span class="s2">create additional</span><span class="si">{</span><span class="n">S</span><span class="o">.</span><span class="n">R</span><span class="si">}</span><span class="s2"> configs using this same menu.</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
           <span class="nb">input</span><span class="p">(</span><span class="s2">&quot;Press Enter to return to main menu...&quot;</span><span class="p">)</span>
           <span class="k">return</span> <span class="s2">&quot;MainMenu&quot;</span>
@@ -3378,18 +3400,7 @@ parse_comment_list
 
         <details class="quote">
           <summary>Source code in <code>Scripts/files.py</code></summary>
-          <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 895</span>
-<span class="normal"> 896</span>
-<span class="normal"> 897</span>
-<span class="normal"> 898</span>
-<span class="normal"> 899</span>
-<span class="normal"> 900</span>
-<span class="normal"> 901</span>
-<span class="normal"> 902</span>
-<span class="normal"> 903</span>
-<span class="normal"> 904</span>
-<span class="normal"> 905</span>
-<span class="normal"> 906</span>
+          <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 906</span>
 <span class="normal"> 907</span>
 <span class="normal"> 908</span>
 <span class="normal"> 909</span>
@@ -3490,7 +3501,18 @@ parse_comment_list
 <span class="normal">1004</span>
 <span class="normal">1005</span>
 <span class="normal">1006</span>
-<span class="normal">1007</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">parse_comment_list</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="n">recovery</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">removal</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">returnFileName</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="normal">1007</span>
+<span class="normal">1008</span>
+<span class="normal">1009</span>
+<span class="normal">1010</span>
+<span class="normal">1011</span>
+<span class="normal">1012</span>
+<span class="normal">1013</span>
+<span class="normal">1014</span>
+<span class="normal">1015</span>
+<span class="normal">1016</span>
+<span class="normal">1017</span>
+<span class="normal">1018</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">parse_comment_list</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="n">recovery</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">removal</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">returnFileName</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
   <span class="k">if</span> <span class="n">recovery</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span>
     <span class="n">actionVerb</span> <span class="o">=</span> <span class="s2">&quot;recover&quot;</span>
     <span class="n">actionNoun</span> <span class="o">=</span> <span class="s2">&quot;recovery&quot;</span>
@@ -3631,18 +3653,7 @@ read_dict_pickle_file
 
         <details class="quote">
           <summary>Source code in <code>Scripts/files.py</code></summary>
-          <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1056</span>
-<span class="normal">1057</span>
-<span class="normal">1058</span>
-<span class="normal">1059</span>
-<span class="normal">1060</span>
-<span class="normal">1061</span>
-<span class="normal">1062</span>
-<span class="normal">1063</span>
-<span class="normal">1064</span>
-<span class="normal">1065</span>
-<span class="normal">1066</span>
-<span class="normal">1067</span>
+          <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1067</span>
 <span class="normal">1068</span>
 <span class="normal">1069</span>
 <span class="normal">1070</span>
@@ -3659,7 +3670,18 @@ read_dict_pickle_file
 <span class="normal">1081</span>
 <span class="normal">1082</span>
 <span class="normal">1083</span>
-<span class="normal">1084</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">read_dict_pickle_file</span><span class="p">(</span><span class="n">fileNameNoPath</span><span class="p">,</span> <span class="n">relativeFolderPath</span><span class="o">=</span><span class="n">RESOURCES_FOLDER_NAME</span><span class="p">):</span>
+<span class="normal">1084</span>
+<span class="normal">1085</span>
+<span class="normal">1086</span>
+<span class="normal">1087</span>
+<span class="normal">1088</span>
+<span class="normal">1089</span>
+<span class="normal">1090</span>
+<span class="normal">1091</span>
+<span class="normal">1092</span>
+<span class="normal">1093</span>
+<span class="normal">1094</span>
+<span class="normal">1095</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">read_dict_pickle_file</span><span class="p">(</span><span class="n">fileNameNoPath</span><span class="p">,</span> <span class="n">relativeFolderPath</span><span class="o">=</span><span class="n">RESOURCES_FOLDER_NAME</span><span class="p">):</span>
   <span class="n">failedAttemptCount</span> <span class="o">=</span> <span class="mi">0</span>
   <span class="n">fileNameWithPath</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">relativeFolderPath</span><span class="p">,</span> <span class="n">fileNameNoPath</span><span class="p">)</span>
   <span class="k">while</span> <span class="kc">True</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">failedAttemptCount</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">:</span>
@@ -3714,19 +3736,19 @@ try_remove_file
 
         <details class="quote">
           <summary>Source code in <code>Scripts/files.py</code></summary>
-          <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1087</span>
-<span class="normal">1088</span>
-<span class="normal">1089</span>
-<span class="normal">1090</span>
-<span class="normal">1091</span>
-<span class="normal">1092</span>
-<span class="normal">1093</span>
-<span class="normal">1094</span>
-<span class="normal">1095</span>
-<span class="normal">1096</span>
-<span class="normal">1097</span>
-<span class="normal">1098</span>
-<span class="normal">1099</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">try_remove_file</span><span class="p">(</span><span class="n">fileNameWithPath</span><span class="p">):</span>
+          <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1098</span>
+<span class="normal">1099</span>
+<span class="normal">1100</span>
+<span class="normal">1101</span>
+<span class="normal">1102</span>
+<span class="normal">1103</span>
+<span class="normal">1104</span>
+<span class="normal">1105</span>
+<span class="normal">1106</span>
+<span class="normal">1107</span>
+<span class="normal">1108</span>
+<span class="normal">1109</span>
+<span class="normal">1110</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">try_remove_file</span><span class="p">(</span><span class="n">fileNameWithPath</span><span class="p">):</span>
   <span class="n">attempts</span> <span class="o">=</span> <span class="mi">1</span>
   <span class="k">while</span> <span class="n">attempts</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="p">:</span>
     <span class="k">try</span><span class="p">:</span>
@@ -3770,18 +3792,7 @@ write_dict_pickle_file
 
         <details class="quote">
           <summary>Source code in <code>Scripts/files.py</code></summary>
-          <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1011</span>
-<span class="normal">1012</span>
-<span class="normal">1013</span>
-<span class="normal">1014</span>
-<span class="normal">1015</span>
-<span class="normal">1016</span>
-<span class="normal">1017</span>
-<span class="normal">1018</span>
-<span class="normal">1019</span>
-<span class="normal">1020</span>
-<span class="normal">1021</span>
-<span class="normal">1022</span>
+          <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1022</span>
 <span class="normal">1023</span>
 <span class="normal">1024</span>
 <span class="normal">1025</span>
@@ -3812,7 +3823,18 @@ write_dict_pickle_file
 <span class="normal">1050</span>
 <span class="normal">1051</span>
 <span class="normal">1052</span>
-<span class="normal">1053</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">write_dict_pickle_file</span><span class="p">(</span><span class="n">dictToWrite</span><span class="p">,</span> <span class="n">fileName</span><span class="p">,</span> <span class="n">relativeFolderPath</span><span class="o">=</span><span class="n">RESOURCES_FOLDER_NAME</span><span class="p">,</span> <span class="n">forceOverwrite</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="normal">1053</span>
+<span class="normal">1054</span>
+<span class="normal">1055</span>
+<span class="normal">1056</span>
+<span class="normal">1057</span>
+<span class="normal">1058</span>
+<span class="normal">1059</span>
+<span class="normal">1060</span>
+<span class="normal">1061</span>
+<span class="normal">1062</span>
+<span class="normal">1063</span>
+<span class="normal">1064</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">write_dict_pickle_file</span><span class="p">(</span><span class="n">dictToWrite</span><span class="p">,</span> <span class="n">fileName</span><span class="p">,</span> <span class="n">relativeFolderPath</span><span class="o">=</span><span class="n">RESOURCES_FOLDER_NAME</span><span class="p">,</span> <span class="n">forceOverwrite</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 
   <span class="n">fileNameWithPath</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">relativeFolderPath</span><span class="p">,</span> <span class="n">fileName</span><span class="p">)</span>
 

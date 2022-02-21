@@ -1207,11 +1207,7 @@ delete_comment_list
 
         <details class="quote">
           <summary>Source code in <code>Scripts/prepare_modes.py</code></summary>
-          <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">463</span>
-<span class="normal">464</span>
-<span class="normal">465</span>
-<span class="normal">466</span>
-<span class="normal">467</span>
+          <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">467</span>
 <span class="normal">468</span>
 <span class="normal">469</span>
 <span class="normal">470</span>
@@ -1433,7 +1429,11 @@ delete_comment_list
 <span class="normal">686</span>
 <span class="normal">687</span>
 <span class="normal">688</span>
-<span class="normal">689</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">delete_comment_list</span><span class="p">(</span><span class="n">config</span><span class="p">):</span>
+<span class="normal">689</span>
+<span class="normal">690</span>
+<span class="normal">691</span>
+<span class="normal">692</span>
+<span class="normal">693</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">delete_comment_list</span><span class="p">(</span><span class="n">config</span><span class="p">):</span>
   <span class="n">progressFileFolder</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">RESOURCES_FOLDER_NAME</span><span class="p">,</span> <span class="s2">&quot;Removal_List_Progress&quot;</span><span class="p">)</span>
   <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n\n</span><span class="s2">-------------------- </span><span class="si">{</span><span class="n">F</span><span class="o">.</span><span class="n">LIGHTRED_EX</span><span class="si">}</span><span class="s2">Delete Using a List / Log</span><span class="si">{</span><span class="n">S</span><span class="o">.</span><span class="n">R</span><span class="si">}</span><span class="s2"> --------------------&quot;</span><span class="p">)</span>
   <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
@@ -2334,7 +2334,11 @@ prepare_filter_mode_smart
 <span class="normal">436</span>
 <span class="normal">437</span>
 <span class="normal">438</span>
-<span class="normal">439</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">prepare_filter_mode_smart</span><span class="p">(</span><span class="n">scanMode</span><span class="p">,</span> <span class="n">config</span><span class="p">,</span> <span class="n">miscData</span><span class="p">,</span> <span class="n">sensitive</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="normal">439</span>
+<span class="normal">440</span>
+<span class="normal">441</span>
+<span class="normal">442</span>
+<span class="normal">443</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">prepare_filter_mode_smart</span><span class="p">(</span><span class="n">scanMode</span><span class="p">,</span> <span class="n">config</span><span class="p">,</span> <span class="n">miscData</span><span class="p">,</span> <span class="n">sensitive</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
   <span class="n">rootDomainList</span> <span class="o">=</span> <span class="n">miscData</span><span class="o">.</span><span class="n">resources</span><span class="p">[</span><span class="s1">&#39;rootDomainList&#39;</span><span class="p">]</span>
   <span class="n">spamDomainsList</span> <span class="o">=</span> <span class="n">miscData</span><span class="o">.</span><span class="n">spamLists</span><span class="p">[</span><span class="s1">&#39;spamDomainsList&#39;</span><span class="p">]</span> <span class="c1"># List of domains from crowd sourced list</span>
   <span class="c1">#spamThreadsList = miscData.spamLists[&#39;spamThreadsList&#39;] # List of filters associated with spam threads from crowd sourced list</span>
@@ -2401,6 +2405,8 @@ prepare_filter_mode_smart
   <span class="n">regexTest2</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;[+] ?[</span><span class="si">{</span><span class="n">z</span><span class="si">}</span><span class="s2">]&quot;</span>
   <span class="n">regexTest3</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;[</span><span class="si">{</span><span class="n">y</span><span class="si">}</span><span class="s2">] ?[</span><span class="si">{</span><span class="n">z</span><span class="si">}</span><span class="s2">]&quot;</span>
   <span class="n">compiledNumRegex</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;(</span><span class="si">{</span><span class="n">regexTest1</span><span class="si">}</span><span class="s2">|</span><span class="si">{</span><span class="n">regexTest2</span><span class="si">}</span><span class="s2">|</span><span class="si">{</span><span class="n">regexTest3</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">)</span>
+  <span class="n">compiledAllNumRegex</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s2">&quot;|&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">filter</span><span class="o">.</span><span class="n">spamNums</span><span class="p">)))</span>
+  <span class="n">phoneRegexCompiled</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="nb">filter</span><span class="o">.</span><span class="n">phoneRegex</span><span class="p">)</span>
 
   <span class="c1"># Prepare Filters for Type 2 Spammers</span>
   <span class="n">redAdEmojiSet</span> <span class="o">=</span> <span class="n">make_char_set</span><span class="p">(</span><span class="nb">filter</span><span class="o">.</span><span class="n">redAdEmoji</span><span class="p">)</span>
@@ -2479,7 +2485,9 @@ prepare_filter_mode_smart
   <span class="n">filterSettings</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s1">&#39;spammerNumbersSet&#39;</span><span class="p">:</span> <span class="n">spammerNumbersSet</span><span class="p">,</span>
     <span class="s1">&#39;compiledNumRegex&#39;</span><span class="p">:</span> <span class="n">compiledNumRegex</span><span class="p">,</span>
+    <span class="s1">&#39;compiledAllNumRegex&#39;</span><span class="p">:</span> <span class="n">compiledAllNumRegex</span><span class="p">,</span>
     <span class="s1">&#39;minNumbersMatchCount&#39;</span><span class="p">:</span> <span class="n">minNumbersMatchCount</span><span class="p">,</span>
+    <span class="s1">&#39;phoneRegexCompiled&#39;</span><span class="p">:</span> <span class="n">phoneRegexCompiled</span><span class="p">,</span>
     <span class="c1">#&#39;usernameBlackCharsSet&#39;: usernameBlackCharsSet,</span>
     <span class="s1">&#39;spamGenEmojiSet&#39;</span><span class="p">:</span> <span class="n">spamGenEmojiSet</span><span class="p">,</span>
     <span class="s1">&#39;redAdEmojiSet&#39;</span><span class="p">:</span> <span class="n">redAdEmojiSet</span><span class="p">,</span>
@@ -2652,18 +2660,18 @@ recover_deleted_comments
 
         <details class="quote">
           <summary>Source code in <code>Scripts/prepare_modes.py</code></summary>
-          <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">449</span>
-<span class="normal">450</span>
-<span class="normal">451</span>
-<span class="normal">452</span>
-<span class="normal">453</span>
+          <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">453</span>
 <span class="normal">454</span>
 <span class="normal">455</span>
 <span class="normal">456</span>
 <span class="normal">457</span>
 <span class="normal">458</span>
 <span class="normal">459</span>
-<span class="normal">460</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">recover_deleted_comments</span><span class="p">(</span><span class="n">config</span><span class="p">):</span>
+<span class="normal">460</span>
+<span class="normal">461</span>
+<span class="normal">462</span>
+<span class="normal">463</span>
+<span class="normal">464</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">recover_deleted_comments</span><span class="p">(</span><span class="n">config</span><span class="p">):</span>
   <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n\n</span><span class="s2">-------------------- </span><span class="si">{</span><span class="n">F</span><span class="o">.</span><span class="n">LIGHTGREEN_EX</span><span class="si">}</span><span class="s2">Comment Recovery Mode</span><span class="si">{</span><span class="n">S</span><span class="o">.</span><span class="n">R</span><span class="si">}</span><span class="s2"> --------------------</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
   <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;&gt; Believe it or not, the YouTube API actually allows you to re-instate </span><span class="se">\&quot;</span><span class="s2">deleted</span><span class="se">\&quot;</span><span class="s2"> comments.&quot;</span><span class="p">)</span>
   <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&gt; This is </span><span class="si">{</span><span class="n">F</span><span class="o">.</span><span class="n">YELLOW</span><span class="si">}</span><span class="s2">only possible if you have stored the comment IDs</span><span class="si">{</span><span class="n">S</span><span class="o">.</span><span class="n">R</span><span class="si">}</span><span class="s2"> of the deleted comments, </span><span class="se">\n</span><span class="s2">   such as </span><span class="si">{</span><span class="n">F</span><span class="o">.</span><span class="n">YELLOW</span><span class="si">}</span><span class="s2">having kept the log file</span><span class="si">{</span><span class="n">S</span><span class="o">.</span><span class="n">R</span><span class="si">}</span><span class="s2"> of that session.&quot;</span><span class="p">)</span>

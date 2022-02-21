@@ -1188,7 +1188,7 @@ version
   </span>
 
 <a href="#YTSpammerPurge.version" class="headerlink" title="Permanent link">&para;</a></h2>
-<div class="highlight"><pre><span></span><code><span class="n">version</span> <span class="o">=</span> <span class="s1">&#39;2.16.0&#39;</span>
+<div class="highlight"><pre><span></span><code><span class="n">version</span> <span class="o">=</span> <span class="s1">&#39;2.16.3&#39;</span>
 </code></pre></div>
 
     <div class="doc doc-contents ">
@@ -2783,7 +2783,9 @@ main
 <span class="normal">1642</span>
 <span class="normal">1643</span>
 <span class="normal">1644</span>
-<span class="normal">1645</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+<span class="normal">1645</span>
+<span class="normal">1646</span>
+<span class="normal">1647</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
   <span class="c1"># Fix issue with unassigned variables</span>
   <span class="k">global</span> <span class="n">S</span>
   <span class="k">global</span> <span class="n">B</span>
@@ -2812,6 +2814,9 @@ main
   <span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="n">clear_command</span><span class="p">)</span>
 
   <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Loading YT Spammer Purge @ &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">version</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;...&quot;</span><span class="p">)</span>
+
+  <span class="c1"># Authenticate with the Google API - If token expired and invalid, deletes and re-authenticates</span>
+  <span class="n">YOUTUBE</span> <span class="o">=</span> <span class="n">auth</span><span class="o">.</span><span class="n">first_authentication</span><span class="p">()</span>
 
            <span class="c1">#### Prepare Resources ####</span>
   <span class="n">resourceFolder</span> <span class="o">=</span> <span class="n">RESOURCES_FOLDER_NAME</span>
@@ -2986,8 +2991,7 @@ main
 
   <span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="n">clear_command</span><span class="p">)</span>
 
-  <span class="c1"># Authenticate with the Google API - If token expired and invalid, deletes and re-authenticates</span>
-  <span class="n">YOUTUBE</span> <span class="o">=</span> <span class="n">auth</span><span class="o">.</span><span class="n">first_authentication</span><span class="p">()</span>
+
 
   <span class="c1">#----------------------------------- Begin Showing Program ---------------------------------</span>
   <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">F</span><span class="o">.</span><span class="n">LIGHTYELLOW_EX</span><span class="si">}</span><span class="se">\n</span><span class="s2">===================== YOUTUBE SPAMMER PURGE v&quot;</span> <span class="o">+</span> <span class="n">version</span> <span class="o">+</span> <span class="sa">f</span><span class="s2">&quot; =====================</span><span class="si">{</span><span class="n">S</span><span class="o">.</span><span class="n">R</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
@@ -3080,14 +3084,14 @@ main
     <span class="k">if</span> <span class="n">updateAvailable</span> <span class="o">!=</span> <span class="kc">False</span><span class="p">:</span>
       <span class="n">updateStringLabel</span> <span class="o">=</span> <span class="s2">&quot;Update Available: &quot;</span>
       <span class="k">if</span> <span class="n">updateAvailable</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span> <span class="c1"># Stable update available</span>
-        <span class="n">updateString</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">F</span><span class="o">.</span><span class="n">LIGHTGREEN_EX</span><span class="si">}</span><span class="s2">Yes</span><span class="si">{</span><span class="n">S</span><span class="o">.</span><span class="n">R</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="n">updateString</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">B</span><span class="o">.</span><span class="n">LIGHTGREEN_EX</span><span class="si">}{</span><span class="n">F</span><span class="o">.</span><span class="n">BLACK</span><span class="si">}</span><span class="s2"> Yes </span><span class="si">{</span><span class="n">S</span><span class="o">.</span><span class="n">R</span><span class="si">}</span><span class="s2">&quot;</span>
 
       <span class="k">elif</span> <span class="n">updateAvailable</span> <span class="o">==</span> <span class="s2">&quot;beta&quot;</span><span class="p">:</span> <span class="c1"># Beta Update Available</span>
         <span class="k">if</span> <span class="n">updateReleaseChannel</span> <span class="o">==</span> <span class="s2">&quot;stable&quot;</span><span class="p">:</span>
           <span class="n">updateStringLabel</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
           <span class="n">updateString</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
         <span class="k">else</span><span class="p">:</span>
-          <span class="n">updateString</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">F</span><span class="o">.</span><span class="n">CYAN</span><span class="si">}</span><span class="s2">Beta</span><span class="si">{</span><span class="n">S</span><span class="o">.</span><span class="n">R</span><span class="si">}</span><span class="s2">&quot;</span>
+          <span class="n">updateString</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">B</span><span class="o">.</span><span class="n">LIGHTCYAN_EX</span><span class="si">}{</span><span class="n">F</span><span class="o">.</span><span class="n">BLACK</span><span class="si">}</span><span class="s2"> Beta </span><span class="si">{</span><span class="n">S</span><span class="o">.</span><span class="n">R</span><span class="si">}</span><span class="s2">&quot;</span>
       <span class="k">elif</span> <span class="n">updateAvailable</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">updateString</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">F</span><span class="o">.</span><span class="n">LIGHTRED_EX</span><span class="si">}</span><span class="s2">Error</span><span class="si">{</span><span class="n">S</span><span class="o">.</span><span class="n">R</span><span class="si">}</span><span class="s2">&quot;</span>
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;&gt; Note: Error during check for updates. Select &#39;Check For Updates&#39; for details.&quot;</span><span class="p">)</span>  
@@ -3101,7 +3105,7 @@ main
         <span class="n">updateString</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
 
     <span class="c1"># User selects scanning mode,  while Loop to get scanning mode, so if invalid input, it will keep asking until valid input</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="si">{:&lt;59}{:&lt;18}{:&gt;5}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s2">&quot;&gt; At any prompt, enter &#39;X&#39; to return here&quot;</span><span class="p">,</span> <span class="n">updateStringLabel</span><span class="p">,</span> <span class="n">updateString</span><span class="p">))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="si">{:&lt;59}{:&lt;18}{:&gt;7}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s2">&quot;&gt; At any prompt, enter &#39;X&#39; to return here&quot;</span><span class="p">,</span> <span class="n">updateStringLabel</span><span class="p">,</span> <span class="n">updateString</span><span class="p">))</span>
     <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;&gt; Enter &#39;Q&#39; now to quit&quot;</span><span class="p">)</span>
 
     <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n\n</span><span class="s2">-------------------------------- </span><span class="si">{</span><span class="n">F</span><span class="o">.</span><span class="n">YELLOW</span><span class="si">}</span><span class="s2">Scanning Options</span><span class="si">{</span><span class="n">S</span><span class="o">.</span><span class="n">R</span><span class="si">}</span><span class="s2"> --------------------------------&quot;</span><span class="p">)</span>

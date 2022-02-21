@@ -1336,8 +1336,8 @@
 
           <details class="quote">
             <summary>Source code in <code>Scripts/operations.py</code></summary>
-            <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1096</span>
-<span class="normal">1097</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">CommentFoundError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+            <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1105</span>
+<span class="normal">1106</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">CommentFoundError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
     <span class="k">pass</span>
 </code></pre></div>
 </td></tr></table>
@@ -1371,8 +1371,8 @@
 
           <details class="quote">
             <summary>Source code in <code>Scripts/operations.py</code></summary>
-            <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1167</span>
-<span class="normal">1168</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">CommentNotFoundError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+            <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1176</span>
+<span class="normal">1177</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">CommentNotFoundError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
   <span class="k">pass</span>
 </code></pre></div>
 </td></tr></table>
@@ -1410,7 +1410,8 @@ add_spam
 
         <details class="quote">
           <summary>Source code in <code>Scripts/operations.py</code></summary>
-          <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">514</span>
+          <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">513</span>
+<span class="normal">514</span>
 <span class="normal">515</span>
 <span class="normal">516</span>
 <span class="normal">517</span>
@@ -1451,8 +1452,7 @@ add_spam
 <span class="normal">552</span>
 <span class="normal">553</span>
 <span class="normal">554</span>
-<span class="normal">555</span>
-<span class="normal">556</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">add_spam</span><span class="p">(</span><span class="n">current</span><span class="p">,</span> <span class="n">config</span><span class="p">,</span> <span class="n">miscData</span><span class="p">,</span> <span class="n">currentCommentDict</span><span class="p">,</span> <span class="n">videoID</span><span class="p">,</span> <span class="n">matchReason</span><span class="o">=</span><span class="s2">&quot;Filter Match&quot;</span><span class="p">):</span>
+<span class="normal">555</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">add_spam</span><span class="p">(</span><span class="n">current</span><span class="p">,</span> <span class="n">config</span><span class="p">,</span> <span class="n">miscData</span><span class="p">,</span> <span class="n">currentCommentDict</span><span class="p">,</span> <span class="n">videoID</span><span class="p">,</span> <span class="n">matchReason</span><span class="o">=</span><span class="s2">&quot;Filter Match&quot;</span><span class="p">):</span>
   <span class="k">if</span> <span class="n">matchReason</span> <span class="o">==</span> <span class="s2">&quot;Filter Match&quot;</span><span class="p">:</span>
     <span class="n">dictToUse</span> <span class="o">=</span> <span class="n">current</span><span class="o">.</span><span class="n">matchedCommentsDict</span>
   <span class="k">elif</span> <span class="n">matchReason</span> <span class="o">==</span> <span class="s2">&quot;Duplicate&quot;</span><span class="p">:</span>
@@ -1529,7 +1529,8 @@ check_against_filter
 
         <details class="quote">
           <summary>Source code in <code>Scripts/operations.py</code></summary>
-          <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 723</span>
+          <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 722</span>
+<span class="normal"> 723</span>
 <span class="normal"> 724</span>
 <span class="normal"> 725</span>
 <span class="normal"> 726</span>
@@ -1817,7 +1818,16 @@ check_against_filter
 <span class="normal">1008</span>
 <span class="normal">1009</span>
 <span class="normal">1010</span>
-<span class="normal">1011</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">check_against_filter</span><span class="p">(</span><span class="n">current</span><span class="p">,</span> <span class="n">filtersDict</span><span class="p">,</span> <span class="n">miscData</span><span class="p">,</span> <span class="n">config</span><span class="p">,</span> <span class="n">currentCommentDict</span><span class="p">,</span> <span class="n">videoID</span><span class="p">,</span> <span class="n">allThreadAuthorNames</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="normal">1011</span>
+<span class="normal">1012</span>
+<span class="normal">1013</span>
+<span class="normal">1014</span>
+<span class="normal">1015</span>
+<span class="normal">1016</span>
+<span class="normal">1017</span>
+<span class="normal">1018</span>
+<span class="normal">1019</span>
+<span class="normal">1020</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">check_against_filter</span><span class="p">(</span><span class="n">current</span><span class="p">,</span> <span class="n">filtersDict</span><span class="p">,</span> <span class="n">miscData</span><span class="p">,</span> <span class="n">config</span><span class="p">,</span> <span class="n">currentCommentDict</span><span class="p">,</span> <span class="n">videoID</span><span class="p">,</span> <span class="n">allThreadAuthorNames</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
   <span class="c1"># Retrieve Data from currentCommentDict</span>
   <span class="n">commentID</span> <span class="o">=</span> <span class="n">currentCommentDict</span><span class="p">[</span><span class="s1">&#39;commentID&#39;</span><span class="p">]</span>
   <span class="n">authorChannelName</span> <span class="o">=</span> <span class="n">currentCommentDict</span><span class="p">[</span><span class="s1">&#39;authorChannelName&#39;</span><span class="p">]</span>
@@ -1923,6 +1933,8 @@ check_against_filter
       <span class="n">preciseRegexDict</span> <span class="o">=</span> <span class="n">smartFilter</span><span class="p">[</span><span class="s1">&#39;preciseRegexDict&#39;</span><span class="p">]</span>
       <span class="n">numberFilterSet</span> <span class="o">=</span> <span class="n">smartFilter</span><span class="p">[</span><span class="s1">&#39;spammerNumbersSet&#39;</span><span class="p">]</span>
       <span class="n">compiledNumRegex</span> <span class="o">=</span> <span class="n">smartFilter</span><span class="p">[</span><span class="s1">&#39;compiledNumRegex&#39;</span><span class="p">]</span>
+      <span class="n">compiledAllNumRegex</span> <span class="o">=</span> <span class="n">smartFilter</span><span class="p">[</span><span class="s1">&#39;compiledAllNumRegex&#39;</span><span class="p">]</span>
+      <span class="n">phoneRegexCompiled</span> <span class="o">=</span> <span class="n">smartFilter</span><span class="p">[</span><span class="s1">&#39;phoneRegexCompiled&#39;</span><span class="p">]</span>
       <span class="n">minNumbersMatchCount</span> <span class="o">=</span> <span class="n">smartFilter</span><span class="p">[</span><span class="s1">&#39;minNumbersMatchCount&#39;</span><span class="p">]</span>
       <span class="n">bufferChars</span> <span class="o">=</span> <span class="n">compiledRegexDict</span><span class="p">[</span><span class="s1">&#39;bufferChars&#39;</span><span class="p">]</span>
       <span class="c1">#usernameBlackCharsSet = smartFilter[&#39;usernameBlackCharsSet&#39;]</span>
@@ -1946,24 +1958,29 @@ check_against_filter
         <span class="n">rootDomainRegex</span> <span class="o">=</span> <span class="n">smartFilter</span><span class="p">[</span><span class="s1">&#39;sensitiveRootDomainRegex&#39;</span><span class="p">]</span>
 
       <span class="c1"># Functions --------------------------------------------------------------</span>
-      <span class="k">def</span> <span class="nf">findObf</span><span class="p">(</span><span class="n">expression</span><span class="p">,</span> <span class="n">chars</span><span class="p">,</span> <span class="n">stringToSearch</span><span class="p">):</span>
+      <span class="k">def</span> <span class="nf">findObf</span><span class="p">(</span><span class="n">expression</span><span class="p">,</span> <span class="n">chars</span><span class="p">,</span> <span class="n">stringToSearch</span><span class="p">,</span> <span class="n">findall</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
         <span class="c1"># Confusable thinks s and f look similar, have to compensate to avoid false positive</span>
         <span class="n">ignoredConfusablesConverter</span> <span class="o">=</span> <span class="p">{</span><span class="nb">ord</span><span class="p">(</span><span class="s1">&#39;f&#39;</span><span class="p">):</span><span class="nb">ord</span><span class="p">(</span><span class="s1">&#39;s&#39;</span><span class="p">),</span><span class="nb">ord</span><span class="p">(</span><span class="s1">&#39;s&#39;</span><span class="p">):</span><span class="nb">ord</span><span class="p">(</span><span class="s1">&#39;f&#39;</span><span class="p">)}</span>
-        <span class="n">result</span> <span class="o">=</span> <span class="n">expression</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">stringToSearch</span><span class="o">.</span><span class="n">lower</span><span class="p">())</span>
+        <span class="k">if</span> <span class="n">findall</span><span class="p">:</span>
+          <span class="n">result</span> <span class="o">=</span> <span class="n">expression</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">stringToSearch</span><span class="o">.</span><span class="n">lower</span><span class="p">())</span>
+        <span class="k">else</span><span class="p">:</span>
+          <span class="n">result</span> <span class="o">=</span> <span class="n">expression</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">stringToSearch</span><span class="o">.</span><span class="n">lower</span><span class="p">())</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">result</span><span class="p">:</span>
           <span class="k">return</span> <span class="kc">False</span>
         <span class="k">else</span><span class="p">:</span>
           <span class="k">for</span> <span class="n">match</span> <span class="ow">in</span> <span class="n">result</span><span class="p">:</span>
-            <span class="n">lowerChars</span> <span class="o">=</span> <span class="n">chars</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
-            <span class="c1"># Strips off buffer characters and specified unicode categories</span>
-            <span class="k">for</span> <span class="n">bufferChar</span> <span class="ow">in</span> <span class="n">compiledRegexDict</span><span class="p">[</span><span class="s1">&#39;bufferChars&#39;</span><span class="p">]:</span>
-              <span class="n">match</span> <span class="o">=</span> <span class="n">match</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="n">bufferChar</span><span class="p">)</span>
-            <span class="k">while</span> <span class="n">unicodedata</span><span class="o">.</span><span class="n">category</span><span class="p">(</span><span class="n">match</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="ow">in</span> <span class="n">smartFilter</span><span class="p">[</span><span class="s1">&#39;unicodeCategoriesStrip&#39;</span><span class="p">]:</span>
-              <span class="n">match</span> <span class="o">=</span> <span class="n">match</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
-            <span class="k">while</span> <span class="n">unicodedata</span><span class="o">.</span><span class="n">category</span><span class="p">(</span><span class="n">match</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span> <span class="ow">in</span> <span class="n">smartFilter</span><span class="p">[</span><span class="s1">&#39;unicodeCategoriesStrip&#39;</span><span class="p">]:</span>
-              <span class="n">match</span> <span class="o">=</span> <span class="n">match</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
-            <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">char</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">lowerChars</span> <span class="k">for</span> <span class="n">char</span> <span class="ow">in</span> <span class="n">match</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">any</span><span class="p">(</span><span class="n">char</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">lowerChars</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">ignoredConfusablesConverter</span><span class="p">)</span> <span class="k">for</span> <span class="n">char</span> <span class="ow">in</span> <span class="n">match</span><span class="p">):</span>
-              <span class="k">return</span> <span class="kc">True</span>
+            <span class="k">if</span> <span class="n">match</span> <span class="o">!=</span> <span class="s1">&#39;&#39;</span><span class="p">:</span>
+              <span class="n">lowerChars</span> <span class="o">=</span> <span class="n">chars</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+              <span class="c1"># Strips off buffer characters and specified unicode categories</span>
+              <span class="k">while</span> <span class="n">match</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">in</span> <span class="n">compiledRegexDict</span><span class="p">[</span><span class="s1">&#39;bufferChars&#39;</span><span class="p">]</span> <span class="ow">or</span> <span class="n">match</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="ow">in</span> <span class="n">compiledRegexDict</span><span class="p">[</span><span class="s1">&#39;bufferChars&#39;</span><span class="p">]:</span>
+                <span class="k">for</span> <span class="n">bufferChar</span> <span class="ow">in</span> <span class="n">compiledRegexDict</span><span class="p">[</span><span class="s1">&#39;bufferChars&#39;</span><span class="p">]:</span>
+                  <span class="n">match</span> <span class="o">=</span> <span class="n">match</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="n">bufferChar</span><span class="p">)</span>
+              <span class="k">while</span> <span class="n">unicodedata</span><span class="o">.</span><span class="n">category</span><span class="p">(</span><span class="n">match</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="ow">in</span> <span class="n">smartFilter</span><span class="p">[</span><span class="s1">&#39;unicodeCategoriesStrip&#39;</span><span class="p">]:</span>
+                <span class="n">match</span> <span class="o">=</span> <span class="n">match</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
+              <span class="k">while</span> <span class="n">unicodedata</span><span class="o">.</span><span class="n">category</span><span class="p">(</span><span class="n">match</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span> <span class="ow">in</span> <span class="n">smartFilter</span><span class="p">[</span><span class="s1">&#39;unicodeCategoriesStrip&#39;</span><span class="p">]:</span>
+                <span class="n">match</span> <span class="o">=</span> <span class="n">match</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+              <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">char</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">lowerChars</span> <span class="k">for</span> <span class="n">char</span> <span class="ow">in</span> <span class="n">match</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">any</span><span class="p">(</span><span class="n">char</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">lowerChars</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">ignoredConfusablesConverter</span><span class="p">)</span> <span class="k">for</span> <span class="n">char</span> <span class="ow">in</span> <span class="n">match</span><span class="p">):</span>
+                <span class="k">return</span> <span class="kc">True</span>
 
       <span class="k">def</span> <span class="nf">remove_unicode_categories</span><span class="p">(</span><span class="n">string</span><span class="p">):</span>
         <span class="k">return</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">char</span> <span class="k">for</span> <span class="n">char</span> <span class="ow">in</span> <span class="n">string</span> <span class="k">if</span> <span class="n">unicodedata</span><span class="o">.</span><span class="n">category</span><span class="p">(</span><span class="n">char</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">smartFilter</span><span class="p">[</span><span class="s1">&#39;unicodeCategoriesStrip&#39;</span><span class="p">])</span>
@@ -1980,9 +1997,9 @@ check_against_filter
       <span class="c1"># ------------------------------------------------------------------------</span>
 
       <span class="c1"># Normalize usernames and text, remove multiple whitespace and invisible chars</span>
-      <span class="n">commentTextNormalized</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39; +&#39;</span><span class="p">,</span> <span class="s1">&#39; &#39;</span><span class="p">,</span> <span class="n">commentText</span><span class="p">)</span>
+      <span class="n">commentText</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39; +&#39;</span><span class="p">,</span> <span class="s1">&#39; &#39;</span><span class="p">,</span> <span class="n">commentText</span><span class="p">)</span>
       <span class="c1"># https://stackoverflow.com/a/49695605/17312053</span>
-      <span class="n">commentTextNormalized</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">k</span> <span class="k">if</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">bufferChars</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span><span class="n">v</span> <span class="ow">in</span> <span class="n">itertools</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">commentText</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">c</span><span class="p">:</span> <span class="n">c</span><span class="p">))</span>
+      <span class="n">commentText</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">k</span> <span class="k">if</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">bufferChars</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span><span class="n">v</span> <span class="ow">in</span> <span class="n">itertools</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">commentText</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">c</span><span class="p">:</span> <span class="n">c</span><span class="p">))</span>
       <span class="n">commentTextNormalized</span> <span class="o">=</span> <span class="n">remove_unicode_categories</span><span class="p">(</span><span class="n">commentText</span><span class="p">)</span>
 
       <span class="n">authorChannelName</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39; +&#39;</span><span class="p">,</span> <span class="s1">&#39; &#39;</span><span class="p">,</span> <span class="n">authorChannelName</span><span class="p">)</span>
@@ -1990,6 +2007,7 @@ check_against_filter
 
       <span class="c1"># Processed Variables</span>
       <span class="n">combinedString</span> <span class="o">=</span> <span class="n">authorChannelName</span> <span class="o">+</span> <span class="n">commentText</span>
+      <span class="n">combinedStringNormalized</span> <span class="o">=</span> <span class="n">authorChannelName</span> <span class="o">+</span> <span class="n">commentTextNormalized</span>
       <span class="n">combinedSet</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">make_char_set</span><span class="p">(</span><span class="n">combinedString</span><span class="p">,</span> <span class="n">stripLettersNumbers</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">stripPunctuation</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
       <span class="c1"># UpLow Text Set</span>
       <span class="n">index</span> <span class="o">=</span> <span class="n">commentText</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">rfind</span><span class="p">(</span><span class="n">miscData</span><span class="o">.</span><span class="n">channelOwnerName</span><span class="o">.</span><span class="n">lower</span><span class="p">())</span>
@@ -2002,7 +2020,9 @@ check_against_filter
       <span class="c1"># Run Checks</span>
       <span class="k">if</span> <span class="n">authorChannelID</span> <span class="o">==</span> <span class="n">parentAuthorChannelID</span><span class="p">:</span>
         <span class="k">pass</span>
-      <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">numberFilterSet</span><span class="o">.</span><span class="n">intersection</span><span class="p">(</span><span class="n">combinedSet</span><span class="p">))</span> <span class="o">&gt;=</span> <span class="n">minNumbersMatchCount</span><span class="p">:</span>
+      <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">compiledAllNumRegex</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">combinedString</span><span class="p">))</span> <span class="o">&gt;=</span> <span class="n">minNumbersMatchCount</span><span class="p">:</span>
+        <span class="n">add_spam</span><span class="p">(</span><span class="n">current</span><span class="p">,</span> <span class="n">config</span><span class="p">,</span> <span class="n">miscData</span><span class="p">,</span> <span class="n">currentCommentDict</span><span class="p">,</span> <span class="n">videoID</span><span class="p">)</span>
+      <span class="k">elif</span> <span class="n">findObf</span><span class="p">(</span><span class="n">phoneRegexCompiled</span><span class="p">,</span> <span class="s1">&#39;0123456789+-() &#39;</span><span class="p">,</span> <span class="n">combinedString</span><span class="p">):</span>
         <span class="n">add_spam</span><span class="p">(</span><span class="n">current</span><span class="p">,</span> <span class="n">config</span><span class="p">,</span> <span class="n">miscData</span><span class="p">,</span> <span class="n">currentCommentDict</span><span class="p">,</span> <span class="n">videoID</span><span class="p">)</span>
       <span class="k">elif</span> <span class="n">compiledNumRegex</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">combinedString</span><span class="p">):</span>
         <span class="n">add_spam</span><span class="p">(</span><span class="n">current</span><span class="p">,</span> <span class="n">config</span><span class="p">,</span> <span class="n">miscData</span><span class="p">,</span> <span class="n">currentCommentDict</span><span class="p">,</span> <span class="n">videoID</span><span class="p">)</span>
@@ -2025,7 +2045,7 @@ check_against_filter
         <span class="n">add_spam</span><span class="p">(</span><span class="n">current</span><span class="p">,</span> <span class="n">config</span><span class="p">,</span> <span class="n">miscData</span><span class="p">,</span> <span class="n">currentCommentDict</span><span class="p">,</span> <span class="n">videoID</span><span class="p">)</span>
       <span class="k">elif</span> <span class="nb">any</span><span class="p">(</span><span class="n">findObf</span><span class="p">(</span><span class="n">expressionPair</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">expressionPair</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">authorChannelName</span><span class="p">)</span> <span class="k">for</span> <span class="n">expressionPair</span> <span class="ow">in</span> <span class="n">compiledObfuRegexDict</span><span class="p">[</span><span class="s1">&#39;usernameObfuBlackWords&#39;</span><span class="p">]):</span>  
         <span class="n">add_spam</span><span class="p">(</span><span class="n">current</span><span class="p">,</span> <span class="n">config</span><span class="p">,</span> <span class="n">miscData</span><span class="p">,</span> <span class="n">currentCommentDict</span><span class="p">,</span> <span class="n">videoID</span><span class="p">)</span>
-      <span class="k">elif</span> <span class="n">spamListCombinedRegex</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">combinedString</span><span class="o">.</span><span class="n">lower</span><span class="p">()):</span>
+      <span class="k">elif</span> <span class="n">spamListCombinedRegex</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">combinedStringNormalized</span><span class="o">.</span><span class="n">lower</span><span class="p">()):</span>
         <span class="n">add_spam</span><span class="p">(</span><span class="n">current</span><span class="p">,</span> <span class="n">config</span><span class="p">,</span> <span class="n">miscData</span><span class="p">,</span> <span class="n">currentCommentDict</span><span class="p">,</span> <span class="n">videoID</span><span class="p">)</span>
       <span class="k">elif</span> <span class="n">config</span><span class="p">[</span><span class="s1">&#39;detect_link_spam&#39;</span><span class="p">]</span> <span class="ow">and</span> <span class="n">check_if_only_link</span><span class="p">(</span><span class="n">commentTextNormalized</span><span class="o">.</span><span class="n">strip</span><span class="p">()):</span>
         <span class="n">add_spam</span><span class="p">(</span><span class="n">current</span><span class="p">,</span> <span class="n">config</span><span class="p">,</span> <span class="n">miscData</span><span class="p">,</span> <span class="n">currentCommentDict</span><span class="p">,</span> <span class="n">videoID</span><span class="p">)</span>
@@ -2045,7 +2065,7 @@ check_against_filter
             <span class="n">languageCount</span> <span class="o">+=</span> <span class="mi">1</span>
 
         <span class="c1"># Yellow Tests</span>
-        <span class="k">if</span> <span class="n">compiledRegexDict</span><span class="p">[</span><span class="s1">&#39;yellowAdWords&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">combinedString</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">compiledRegexDict</span><span class="p">[</span><span class="s1">&#39;yellowAdWords&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">combinedStringNormalized</span><span class="p">):</span>
           <span class="n">yellowCount</span> <span class="o">+=</span> <span class="mi">1</span>
 
         <span class="n">hrtTest</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">hrtSet</span><span class="o">.</span><span class="n">intersection</span><span class="p">(</span><span class="n">combinedSet</span><span class="p">))</span>
@@ -2066,24 +2086,24 @@ check_against_filter
         <span class="k">if</span> <span class="ow">not</span> <span class="n">sensitive</span> <span class="ow">and</span> <span class="nb">any</span><span class="p">(</span><span class="n">emoji</span> <span class="ow">in</span> <span class="n">authorChannelName</span> <span class="k">for</span> <span class="n">emoji</span> <span class="ow">in</span> <span class="n">spamGenEmojiSet</span><span class="p">):</span>
           <span class="n">redCount</span> <span class="o">+=</span> <span class="mi">1</span>
 
-        <span class="k">if</span> <span class="n">combinedString</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="s1">&#39;#&#39;</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">5</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">commentTextRaw</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="s1">&#39;#&#39;</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">5</span><span class="p">:</span>
           <span class="n">yellowCount</span> <span class="o">+=</span> <span class="mi">1</span>
 
-        <span class="k">if</span> <span class="n">combinedString</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">10</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">commentTextRaw</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">10</span><span class="p">:</span>
           <span class="n">yellowCount</span> <span class="o">+=</span> <span class="mi">1</span>
 
         <span class="k">if</span> <span class="n">languageCount</span> <span class="o">&gt;=</span> <span class="mi">2</span><span class="p">:</span>
           <span class="n">yellowCount</span> <span class="o">+=</span> <span class="mi">1</span>
 
-        <span class="k">if</span> <span class="n">rootDomainRegex</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">combinedString</span><span class="o">.</span><span class="n">lower</span><span class="p">()):</span>
+        <span class="k">if</span> <span class="n">rootDomainRegex</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">combinedStringNormalized</span><span class="o">.</span><span class="n">lower</span><span class="p">()):</span>
           <span class="n">yellowCount</span> <span class="o">+=</span> <span class="mi">1</span>
 
         <span class="c1"># Red Tests</span>
         <span class="c1">#if any(foundObfuscated(re.findall(expression[1], combinedString), expression[0]) for expression in compiledRegexDict[&#39;redAdWords&#39;]):</span>
-        <span class="k">if</span> <span class="n">compiledRegexDict</span><span class="p">[</span><span class="s1">&#39;redAdWords&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">combinedString</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">compiledRegexDict</span><span class="p">[</span><span class="s1">&#39;redAdWords&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">combinedStringNormalized</span><span class="p">):</span>
           <span class="n">redCount</span> <span class="o">+=</span> <span class="mi">1</span>
 
-        <span class="k">if</span> <span class="n">preciseRegexDict</span><span class="p">[</span><span class="s1">&#39;exactRedAdWords&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">combinedString</span><span class="o">.</span><span class="n">lower</span><span class="p">()):</span>
+        <span class="k">if</span> <span class="n">preciseRegexDict</span><span class="p">[</span><span class="s1">&#39;exactRedAdWords&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">combinedStringNormalized</span><span class="o">.</span><span class="n">lower</span><span class="p">()):</span>
           <span class="n">redCount</span> <span class="o">+=</span> <span class="mi">1</span>
 
         <span class="k">if</span> <span class="n">redAdEmojiSet</span><span class="o">.</span><span class="n">intersection</span><span class="p">(</span><span class="n">combinedSet</span><span class="p">):</span>
@@ -2132,16 +2152,7 @@ check_deleted_comments
 
         <details class="quote">
           <summary>Source code in <code>Scripts/operations.py</code></summary>
-          <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1100</span>
-<span class="normal">1101</span>
-<span class="normal">1102</span>
-<span class="normal">1103</span>
-<span class="normal">1104</span>
-<span class="normal">1105</span>
-<span class="normal">1106</span>
-<span class="normal">1107</span>
-<span class="normal">1108</span>
-<span class="normal">1109</span>
+          <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1109</span>
 <span class="normal">1110</span>
 <span class="normal">1111</span>
 <span class="normal">1112</span>
@@ -2196,7 +2207,16 @@ check_deleted_comments
 <span class="normal">1161</span>
 <span class="normal">1162</span>
 <span class="normal">1163</span>
-<span class="normal">1164</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">check_deleted_comments</span><span class="p">(</span><span class="n">commentInput</span><span class="p">):</span>
+<span class="normal">1164</span>
+<span class="normal">1165</span>
+<span class="normal">1166</span>
+<span class="normal">1167</span>
+<span class="normal">1168</span>
+<span class="normal">1169</span>
+<span class="normal">1170</span>
+<span class="normal">1171</span>
+<span class="normal">1172</span>
+<span class="normal">1173</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">check_deleted_comments</span><span class="p">(</span><span class="n">commentInput</span><span class="p">):</span>
     <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span> <span class="c1"># Count number of remaining comments</span>
     <span class="n">j</span> <span class="o">=</span> <span class="mi">1</span> <span class="c1"># Count number of checked</span>
     <span class="n">total</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">commentInput</span><span class="p">)</span>
@@ -2289,7 +2309,8 @@ check_duplicates
 
         <details class="quote">
           <summary>Source code in <code>Scripts/operations.py</code></summary>
-          <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">581</span>
+          <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">580</span>
+<span class="normal">581</span>
 <span class="normal">582</span>
 <span class="normal">583</span>
 <span class="normal">584</span>
@@ -2357,8 +2378,7 @@ check_duplicates
 <span class="normal">646</span>
 <span class="normal">647</span>
 <span class="normal">648</span>
-<span class="normal">649</span>
-<span class="normal">650</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">check_duplicates</span><span class="p">(</span><span class="n">current</span><span class="p">,</span> <span class="n">config</span><span class="p">,</span> <span class="n">miscData</span><span class="p">,</span> <span class="n">allVideoCommentsDict</span><span class="p">,</span> <span class="n">videoID</span><span class="p">):</span>
+<span class="normal">649</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">check_duplicates</span><span class="p">(</span><span class="n">current</span><span class="p">,</span> <span class="n">config</span><span class="p">,</span> <span class="n">miscData</span><span class="p">,</span> <span class="n">allVideoCommentsDict</span><span class="p">,</span> <span class="n">videoID</span><span class="p">):</span>
   <span class="n">domainList</span> <span class="o">=</span>  <span class="n">miscData</span><span class="o">.</span><span class="n">resources</span><span class="p">[</span><span class="s1">&#39;rootDomainList&#39;</span><span class="p">]</span>
 
   <span class="c1"># Get Lenvenshtein Distance Setting - Does not need to be validated here, because that happens at beginning of program</span>
@@ -2454,16 +2474,7 @@ check_recovered_comments
 
         <details class="quote">
           <summary>Source code in <code>Scripts/operations.py</code></summary>
-          <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1170</span>
-<span class="normal">1171</span>
-<span class="normal">1172</span>
-<span class="normal">1173</span>
-<span class="normal">1174</span>
-<span class="normal">1175</span>
-<span class="normal">1176</span>
-<span class="normal">1177</span>
-<span class="normal">1178</span>
-<span class="normal">1179</span>
+          <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1179</span>
 <span class="normal">1180</span>
 <span class="normal">1181</span>
 <span class="normal">1182</span>
@@ -2490,7 +2501,16 @@ check_recovered_comments
 <span class="normal">1203</span>
 <span class="normal">1204</span>
 <span class="normal">1205</span>
-<span class="normal">1206</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">check_recovered_comments</span><span class="p">(</span><span class="n">commentsList</span><span class="p">):</span>
+<span class="normal">1206</span>
+<span class="normal">1207</span>
+<span class="normal">1208</span>
+<span class="normal">1209</span>
+<span class="normal">1210</span>
+<span class="normal">1211</span>
+<span class="normal">1212</span>
+<span class="normal">1213</span>
+<span class="normal">1214</span>
+<span class="normal">1215</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">check_recovered_comments</span><span class="p">(</span><span class="n">commentsList</span><span class="p">):</span>
   <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span> <span class="c1"># Count number of remaining comments</span>
   <span class="n">j</span> <span class="o">=</span> <span class="mi">1</span> <span class="c1"># Count number of checked</span>
   <span class="n">total</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">commentsList</span><span class="p">)</span>
@@ -2555,7 +2575,8 @@ check_reposts
 
         <details class="quote">
           <summary>Source code in <code>Scripts/operations.py</code></summary>
-          <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">654</span>
+          <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">653</span>
+<span class="normal">654</span>
 <span class="normal">655</span>
 <span class="normal">656</span>
 <span class="normal">657</span>
@@ -2615,8 +2636,7 @@ check_reposts
 <span class="normal">711</span>
 <span class="normal">712</span>
 <span class="normal">713</span>
-<span class="normal">714</span>
-<span class="normal">715</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">check_reposts</span><span class="p">(</span><span class="n">current</span><span class="p">,</span> <span class="n">config</span><span class="p">,</span> <span class="n">miscData</span><span class="p">,</span> <span class="n">allVideoCommentsDict</span><span class="p">,</span> <span class="n">videoID</span><span class="p">):</span>
+<span class="normal">714</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">check_reposts</span><span class="p">(</span><span class="n">current</span><span class="p">,</span> <span class="n">config</span><span class="p">,</span> <span class="n">miscData</span><span class="p">,</span> <span class="n">allVideoCommentsDict</span><span class="p">,</span> <span class="n">videoID</span><span class="p">):</span>
   <span class="c1"># Get Lenvenshtein Distance Setting</span>
   <span class="k">if</span> <span class="n">config</span><span class="p">[</span><span class="s1">&#39;fuzzy_stolen_comment_detection&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span>
     <span class="k">try</span><span class="p">:</span>
@@ -2711,7 +2731,8 @@ check_spam_threads
 
         <details class="quote">
           <summary>Source code in <code>Scripts/operations.py</code></summary>
-          <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">289</span>
+          <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">288</span>
+<span class="normal">289</span>
 <span class="normal">290</span>
 <span class="normal">291</span>
 <span class="normal">292</span>
@@ -2916,8 +2937,7 @@ check_spam_threads
 <span class="normal">491</span>
 <span class="normal">492</span>
 <span class="normal">493</span>
-<span class="normal">494</span>
-<span class="normal">495</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">check_spam_threads</span><span class="p">(</span><span class="n">current</span><span class="p">,</span> <span class="n">filtersDict</span><span class="p">,</span> <span class="n">miscData</span><span class="p">,</span> <span class="n">config</span><span class="p">,</span> <span class="n">parentCommentDict</span><span class="p">,</span> <span class="n">threadDict</span><span class="p">):</span>
+<span class="normal">494</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">check_spam_threads</span><span class="p">(</span><span class="n">current</span><span class="p">,</span> <span class="n">filtersDict</span><span class="p">,</span> <span class="n">miscData</span><span class="p">,</span> <span class="n">config</span><span class="p">,</span> <span class="n">parentCommentDict</span><span class="p">,</span> <span class="n">threadDict</span><span class="p">):</span>
   <span class="c1"># Note For Debugging: Parent Comment Author ID = parentCommentDict[&#39;authorChannelID&#39;]</span>
   <span class="n">threadWordsRegex</span> <span class="o">=</span> <span class="n">filtersDict</span><span class="p">[</span><span class="s1">&#39;CustomCommentTextFilter&#39;</span><span class="p">][</span><span class="s1">&#39;threadFiltersDict&#39;</span><span class="p">][</span><span class="s1">&#39;threadWordsRegex&#39;</span><span class="p">]</span>
   <span class="n">threadPhrasesRegex</span> <span class="o">=</span> <span class="n">filtersDict</span><span class="p">[</span><span class="s1">&#39;CustomCommentTextFilter&#39;</span><span class="p">][</span><span class="s1">&#39;threadFiltersDict&#39;</span><span class="p">][</span><span class="s1">&#39;threadPhrasesRegex&#39;</span><span class="p">]</span>
@@ -3156,16 +3176,7 @@ delete_found_comments
 
         <details class="quote">
           <summary>Source code in <code>Scripts/operations.py</code></summary>
-          <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1019</span>
-<span class="normal">1020</span>
-<span class="normal">1021</span>
-<span class="normal">1022</span>
-<span class="normal">1023</span>
-<span class="normal">1024</span>
-<span class="normal">1025</span>
-<span class="normal">1026</span>
-<span class="normal">1027</span>
-<span class="normal">1028</span>
+          <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1028</span>
 <span class="normal">1029</span>
 <span class="normal">1030</span>
 <span class="normal">1031</span>
@@ -3230,7 +3241,16 @@ delete_found_comments
 <span class="normal">1090</span>
 <span class="normal">1091</span>
 <span class="normal">1092</span>
-<span class="normal">1093</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">delete_found_comments</span><span class="p">(</span><span class="n">commentsList</span><span class="p">,</span> <span class="n">banChoice</span><span class="p">,</span> <span class="n">deletionMode</span><span class="p">,</span> <span class="n">recoveryMode</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">skipCheck</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+<span class="normal">1093</span>
+<span class="normal">1094</span>
+<span class="normal">1095</span>
+<span class="normal">1096</span>
+<span class="normal">1097</span>
+<span class="normal">1098</span>
+<span class="normal">1099</span>
+<span class="normal">1100</span>
+<span class="normal">1101</span>
+<span class="normal">1102</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">delete_found_comments</span><span class="p">(</span><span class="n">commentsList</span><span class="p">,</span> <span class="n">banChoice</span><span class="p">,</span> <span class="n">deletionMode</span><span class="p">,</span> <span class="n">recoveryMode</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">skipCheck</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
   <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
   <span class="k">if</span> <span class="n">deletionMode</span> <span class="o">==</span> <span class="s2">&quot;rejected&quot;</span><span class="p">:</span>
     <span class="n">actionPresent</span> <span class="o">=</span> <span class="s2">&quot;Deleting&quot;</span>
@@ -3342,16 +3362,7 @@ exclude_authors
 
         <details class="quote">
           <summary>Source code in <code>Scripts/operations.py</code></summary>
-          <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1209</span>
-<span class="normal">1210</span>
-<span class="normal">1211</span>
-<span class="normal">1212</span>
-<span class="normal">1213</span>
-<span class="normal">1214</span>
-<span class="normal">1215</span>
-<span class="normal">1216</span>
-<span class="normal">1217</span>
-<span class="normal">1218</span>
+          <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1218</span>
 <span class="normal">1219</span>
 <span class="normal">1220</span>
 <span class="normal">1221</span>
@@ -3476,7 +3487,16 @@ exclude_authors
 <span class="normal">1340</span>
 <span class="normal">1341</span>
 <span class="normal">1342</span>
-<span class="normal">1343</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">exclude_authors</span><span class="p">(</span><span class="n">current</span><span class="p">,</span> <span class="n">config</span><span class="p">,</span> <span class="n">miscData</span><span class="p">,</span> <span class="n">excludedCommentsDict</span><span class="p">,</span> <span class="n">authorsToExcludeSet</span><span class="p">,</span> <span class="n">commentIDExcludeSet</span><span class="p">,</span> <span class="n">displayString</span><span class="p">,</span> <span class="n">inputtedString</span><span class="p">,</span> <span class="n">logInfo</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">only</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="normal">1343</span>
+<span class="normal">1344</span>
+<span class="normal">1345</span>
+<span class="normal">1346</span>
+<span class="normal">1347</span>
+<span class="normal">1348</span>
+<span class="normal">1349</span>
+<span class="normal">1350</span>
+<span class="normal">1351</span>
+<span class="normal">1352</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">exclude_authors</span><span class="p">(</span><span class="n">current</span><span class="p">,</span> <span class="n">config</span><span class="p">,</span> <span class="n">miscData</span><span class="p">,</span> <span class="n">excludedCommentsDict</span><span class="p">,</span> <span class="n">authorsToExcludeSet</span><span class="p">,</span> <span class="n">commentIDExcludeSet</span><span class="p">,</span> <span class="n">displayString</span><span class="p">,</span> <span class="n">inputtedString</span><span class="p">,</span> <span class="n">logInfo</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">only</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
   <span class="n">plaintextFormattedExcludes</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
   <span class="n">rtfFormattedExcludes</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
 
@@ -3639,7 +3659,8 @@ get_all_author_comments
 
         <details class="quote">
           <summary>Source code in <code>Scripts/operations.py</code></summary>
-          <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">558</span>
+          <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">557</span>
+<span class="normal">558</span>
 <span class="normal">559</span>
 <span class="normal">560</span>
 <span class="normal">561</span>
@@ -3657,8 +3678,7 @@ get_all_author_comments
 <span class="normal">573</span>
 <span class="normal">574</span>
 <span class="normal">575</span>
-<span class="normal">576</span>
-<span class="normal">577</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">get_all_author_comments</span><span class="p">(</span><span class="n">current</span><span class="p">,</span> <span class="n">config</span><span class="p">,</span> <span class="n">miscData</span><span class="p">,</span> <span class="n">allCommentsDict</span><span class="p">):</span>
+<span class="normal">576</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">get_all_author_comments</span><span class="p">(</span><span class="n">current</span><span class="p">,</span> <span class="n">config</span><span class="p">,</span> <span class="n">miscData</span><span class="p">,</span> <span class="n">allCommentsDict</span><span class="p">):</span>
   <span class="c1"># Make set of all matched author IDs</span>
   <span class="nb">print</span><span class="p">(</span><span class="s2">&quot; Finding all other comments by authors...&quot;</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\r</span><span class="s2">&quot;</span><span class="p">)</span>
   <span class="n">totalCommentsAmount</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">allCommentsDict</span><span class="p">)</span>
@@ -3713,7 +3733,8 @@ get_comments
 
         <details class="quote">
           <summary>Source code in <code>Scripts/operations.py</code></summary>
-          <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 24</span>
+          <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 23</span>
+<span class="normal"> 24</span>
 <span class="normal"> 25</span>
 <span class="normal"> 26</span>
 <span class="normal"> 27</span>
@@ -3853,8 +3874,7 @@ get_comments
 <span class="normal">161</span>
 <span class="normal">162</span>
 <span class="normal">163</span>
-<span class="normal">164</span>
-<span class="normal">165</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">get_comments</span><span class="p">(</span><span class="n">current</span><span class="p">,</span> <span class="n">filtersDict</span><span class="p">,</span> <span class="n">miscData</span><span class="p">,</span> <span class="n">config</span><span class="p">,</span> <span class="n">allVideoCommentsDict</span><span class="p">,</span> <span class="n">scanVideoID</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">nextPageToken</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">videosToScan</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>  <span class="c1"># None are set as default if no parameters passed into function</span>
+<span class="normal">164</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">get_comments</span><span class="p">(</span><span class="n">current</span><span class="p">,</span> <span class="n">filtersDict</span><span class="p">,</span> <span class="n">miscData</span><span class="p">,</span> <span class="n">config</span><span class="p">,</span> <span class="n">allVideoCommentsDict</span><span class="p">,</span> <span class="n">scanVideoID</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">nextPageToken</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">videosToScan</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>  <span class="c1"># None are set as default if no parameters passed into function</span>
   <span class="c1"># Initialize some variables</span>
   <span class="n">authorChannelName</span> <span class="o">=</span> <span class="kc">None</span>
   <span class="n">commentText</span> <span class="o">=</span> <span class="kc">None</span>
@@ -4022,16 +4042,7 @@ get_recent_videos
 
         <details class="quote">
           <summary>Source code in <code>Scripts/operations.py</code></summary>
-          <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1348</span>
-<span class="normal">1349</span>
-<span class="normal">1350</span>
-<span class="normal">1351</span>
-<span class="normal">1352</span>
-<span class="normal">1353</span>
-<span class="normal">1354</span>
-<span class="normal">1355</span>
-<span class="normal">1356</span>
-<span class="normal">1357</span>
+          <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1357</span>
 <span class="normal">1358</span>
 <span class="normal">1359</span>
 <span class="normal">1360</span>
@@ -4085,7 +4096,16 @@ get_recent_videos
 <span class="normal">1408</span>
 <span class="normal">1409</span>
 <span class="normal">1410</span>
-<span class="normal">1411</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">get_recent_videos</span><span class="p">(</span><span class="n">current</span><span class="p">,</span> <span class="n">channel_id</span><span class="p">,</span> <span class="n">numVideosTotal</span><span class="p">):</span>
+<span class="normal">1411</span>
+<span class="normal">1412</span>
+<span class="normal">1413</span>
+<span class="normal">1414</span>
+<span class="normal">1415</span>
+<span class="normal">1416</span>
+<span class="normal">1417</span>
+<span class="normal">1418</span>
+<span class="normal">1419</span>
+<span class="normal">1420</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">get_recent_videos</span><span class="p">(</span><span class="n">current</span><span class="p">,</span> <span class="n">channel_id</span><span class="p">,</span> <span class="n">numVideosTotal</span><span class="p">):</span>
   <span class="k">def</span> <span class="nf">get_block_of_videos</span><span class="p">(</span><span class="n">nextPageToken</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">numVideosBlock</span> <span class="o">=</span> <span class="mi">50</span><span class="p">):</span>
     <span class="n">result</span> <span class="o">=</span> <span class="n">auth</span><span class="o">.</span><span class="n">YOUTUBE</span><span class="o">.</span><span class="n">search</span><span class="p">()</span><span class="o">.</span><span class="n">list</span><span class="p">(</span>
       <span class="n">part</span><span class="o">=</span><span class="s2">&quot;snippet&quot;</span><span class="p">,</span>
@@ -4187,7 +4207,8 @@ get_replies
 
         <details class="quote">
           <summary>Source code in <code>Scripts/operations.py</code></summary>
-          <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">173</span>
+          <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">172</span>
+<span class="normal">173</span>
 <span class="normal">174</span>
 <span class="normal">175</span>
 <span class="normal">176</span>
@@ -4298,8 +4319,7 @@ get_replies
 <span class="normal">281</span>
 <span class="normal">282</span>
 <span class="normal">283</span>
-<span class="normal">284</span>
-<span class="normal">285</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">get_replies</span><span class="p">(</span><span class="n">current</span><span class="p">,</span> <span class="n">filtersDict</span><span class="p">,</span> <span class="n">miscData</span><span class="p">,</span> <span class="n">config</span><span class="p">,</span> <span class="n">parent_id</span><span class="p">,</span> <span class="n">videoID</span><span class="p">,</span> <span class="n">parentAuthorChannelID</span><span class="p">,</span> <span class="n">videosToScan</span><span class="p">,</span> <span class="n">allVideoCommentsDict</span><span class="p">,</span> <span class="n">parentCommentDict</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">repliesList</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="normal">284</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">get_replies</span><span class="p">(</span><span class="n">current</span><span class="p">,</span> <span class="n">filtersDict</span><span class="p">,</span> <span class="n">miscData</span><span class="p">,</span> <span class="n">config</span><span class="p">,</span> <span class="n">parent_id</span><span class="p">,</span> <span class="n">videoID</span><span class="p">,</span> <span class="n">parentAuthorChannelID</span><span class="p">,</span> <span class="n">videosToScan</span><span class="p">,</span> <span class="n">allVideoCommentsDict</span><span class="p">,</span> <span class="n">parentCommentDict</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">repliesList</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
   <span class="c1"># Initialize some variables</span>
   <span class="n">authorChannelName</span> <span class="o">=</span> <span class="kc">None</span>
   <span class="n">commentText</span> <span class="o">=</span> <span class="kc">None</span>
@@ -4440,14 +4460,14 @@ make_community_thread_dict
 
         <details class="quote">
           <summary>Source code in <code>Scripts/operations.py</code></summary>
-          <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">499</span>
+          <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">498</span>
+<span class="normal">499</span>
 <span class="normal">500</span>
 <span class="normal">501</span>
 <span class="normal">502</span>
 <span class="normal">503</span>
 <span class="normal">504</span>
-<span class="normal">505</span>
-<span class="normal">506</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">make_community_thread_dict</span><span class="p">(</span><span class="n">commentID</span><span class="p">,</span> <span class="n">allCommunityCommentsDict</span><span class="p">):</span>
+<span class="normal">505</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">make_community_thread_dict</span><span class="p">(</span><span class="n">commentID</span><span class="p">,</span> <span class="n">allCommunityCommentsDict</span><span class="p">):</span>
   <span class="n">threadDict</span> <span class="o">=</span> <span class="p">{}</span>
   <span class="k">if</span> <span class="s2">&quot;.&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">commentID</span><span class="p">:</span> <span class="c1"># Checks if is top level comment or reply</span>
     <span class="k">for</span> <span class="nb">id</span> <span class="ow">in</span> <span class="n">allCommunityCommentsDict</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
@@ -4481,16 +4501,7 @@ print_count_stats
 
         <details class="quote">
           <summary>Source code in <code>Scripts/operations.py</code></summary>
-          <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1416</span>
-<span class="normal">1417</span>
-<span class="normal">1418</span>
-<span class="normal">1419</span>
-<span class="normal">1420</span>
-<span class="normal">1421</span>
-<span class="normal">1422</span>
-<span class="normal">1423</span>
-<span class="normal">1424</span>
-<span class="normal">1425</span>
+          <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1425</span>
 <span class="normal">1426</span>
 <span class="normal">1427</span>
 <span class="normal">1428</span>
@@ -4500,7 +4511,16 @@ print_count_stats
 <span class="normal">1432</span>
 <span class="normal">1433</span>
 <span class="normal">1434</span>
-<span class="normal">1435</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">print_count_stats</span><span class="p">(</span><span class="n">current</span><span class="p">,</span> <span class="n">miscData</span><span class="p">,</span> <span class="n">videosToScan</span><span class="p">,</span> <span class="n">final</span><span class="p">):</span>
+<span class="normal">1435</span>
+<span class="normal">1436</span>
+<span class="normal">1437</span>
+<span class="normal">1438</span>
+<span class="normal">1439</span>
+<span class="normal">1440</span>
+<span class="normal">1441</span>
+<span class="normal">1442</span>
+<span class="normal">1443</span>
+<span class="normal">1444</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">print_count_stats</span><span class="p">(</span><span class="n">current</span><span class="p">,</span> <span class="n">miscData</span><span class="p">,</span> <span class="n">videosToScan</span><span class="p">,</span> <span class="n">final</span><span class="p">):</span>
   <span class="c1"># Use videosToScan (list of dictionaries) to retrieve total number of comments</span>
   <span class="k">if</span> <span class="n">videosToScan</span> <span class="ow">and</span> <span class="n">miscData</span><span class="o">.</span><span class="n">totalCommentCount</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
     <span class="n">totalComments</span> <span class="o">=</span> <span class="n">miscData</span><span class="o">.</span><span class="n">totalCommentCount</span>
