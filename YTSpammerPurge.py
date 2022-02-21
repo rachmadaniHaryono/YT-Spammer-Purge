@@ -36,7 +36,7 @@
 ### IMPORTANT:  I OFFER NO WARRANTY OR GUARANTEE FOR THIS SCRIPT. USE AT YOUR OWN RISK.
 ###             I tested it on my own and implemented some failsafes as best as I could,
 ###             but there could always be some kind of bug. You should inspect the code yourself.
-version = "2.16.0"
+version = "2.16.3"
 configVersion = 31
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 print("Importing Script Modules...")
@@ -112,6 +112,9 @@ def main():
     os.system(clear_command)
 
     print("\nLoading YT Spammer Purge @ " + str(version) + "...")
+
+    # Authenticate with the Google API - If token expired and invalid, deletes and re-authenticates
+    YOUTUBE = auth.first_authentication()
 
     #### Prepare Resources ####
     resourceFolder = RESOURCES_FOLDER_NAME
@@ -344,9 +347,6 @@ def main():
     else:
         moderator_mode = False
 
-    # Authenticate with the Google API - If token expired and invalid, deletes and re-authenticates
-    YOUTUBE = auth.first_authentication()
-
     # ----------------------------------- Begin Showing Program ---------------------------------
     print(
         f"{F.LIGHTYELLOW_EX}\n===================== YOUTUBE SPAMMER PURGE v"
@@ -456,14 +456,14 @@ def main():
         if updateAvailable != False:
             updateStringLabel = "Update Available: "
             if updateAvailable == True:  # Stable update available
-                updateString = f"{F.LIGHTGREEN_EX}Yes{S.R}"
+                updateString = f"{B.LIGHTGREEN_EX}{F.BLACK} Yes {S.R}"
 
             elif updateAvailable == "beta":  # Beta Update Available
                 if updateReleaseChannel == "stable":
                     updateStringLabel = ""
                     updateString = ""
                 else:
-                    updateString = f"{F.CYAN}Beta{S.R}"
+                    updateString = f"{B.LIGHTCYAN_EX}{F.BLACK} Beta {S.R}"
             elif updateAvailable == None:
                 updateString = f"{F.LIGHTRED_EX}Error{S.R}"
                 print(
@@ -480,7 +480,7 @@ def main():
 
         # User selects scanning mode,  while Loop to get scanning mode, so if invalid input, it will keep asking until valid input
         print(
-            "\n{:<59}{:<18}{:>5}".format(
+            "\n{:<59}{:<18}{:>7}".format(
                 "> At any prompt, enter 'X' to return here",
                 updateStringLabel,
                 updateString,
@@ -820,12 +820,12 @@ def main():
                         return True  # Return to main menu
                 try:
                     numVideos = int(numVideos)
-                    if numVideos > 0 and numVideos <= 500:
+                    if numVideos > 0 and numVideos <= 5000:
                         validEntry = True
                         validConfigSetting = True
                     else:
                         print(
-                            "Error: Entry must be from 1 to 500 (the YouTube API Limit)"
+                            "Error: Entry must be from 1 to 5000 (the YouTube API Limit)"
                         )
                         validEntry = False
                         validConfigSetting = False
@@ -834,12 +834,12 @@ def main():
                         f"{F.LIGHTRED_EX}Error:{S.R} Entry must be a whole number greater than zero."
                     )
 
-                if validEntry == True and numVideos >= 100:
+                if validEntry == True and numVideos >= 1000:
                     print(
                         f"\n{B.YELLOW}{F.BLACK} WARNING: {S.R} You have chosen to scan a large amount of videos. With the default API quota limit,"
                     )
                     print(
-                        f" every 100 videos will use up 20% of the quota {F.YELLOW}just from listing the videos alone, before any comment scanning.{S.R}"
+                        f" every 1000 videos will use up 20% of the quota {F.YELLOW}just from listing the videos alone, before any comment scanning.{S.R}"
                     )
                     print(
                         f"        > Read more about the quota limits for this app here: {F.YELLOW}TJoe.io/api-limit-info{S.R}"

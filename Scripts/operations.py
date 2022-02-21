@@ -12,8 +12,6 @@ import unicodedata
 import time
 import itertools
 from datetime import datetime
-
-# from collections import Counter
 from Levenshtein import ratio
 from googleapiclient.errors import HttpError
 
@@ -1132,6 +1130,8 @@ def check_against_filter(
             preciseRegexDict = smartFilter["preciseRegexDict"]
             numberFilterSet = smartFilter["spammerNumbersSet"]
             compiledNumRegex = smartFilter["compiledNumRegex"]
+            compiledAllNumRegex = smartFilter["compiledAllNumRegex"]
+            phoneRegexCompiled = smartFilter["phoneRegexCompiled"]
             minNumbersMatchCount = smartFilter["minNumbersMatchCount"]
             bufferChars = compiledRegexDict["bufferChars"]
             # usernameBlackCharsSet = smartFilter['usernameBlackCharsSet']
@@ -1155,34 +1155,42 @@ def check_against_filter(
                 rootDomainRegex = smartFilter["sensitiveRootDomainRegex"]
 
             # Functions --------------------------------------------------------------
-            def findObf(expression, chars, stringToSearch):
+            def findObf(expression, chars, stringToSearch, findall=True):
                 # Confusable thinks s and f look similar, have to compensate to avoid false positive
                 ignoredConfusablesConverter = {ord("f"): ord("s"), ord("s"): ord("f")}
-                result = expression.findall(stringToSearch.lower())
+                if findall:
+                    result = expression.findall(stringToSearch.lower())
+                else:
+                    result = expression.search(stringToSearch.lower())
                 if not result:
                     return False
                 else:
                     for match in result:
-                        lowerChars = chars.lower()
-                        # Strips off buffer characters and specified unicode categories
-                        for bufferChar in compiledRegexDict["bufferChars"]:
-                            match = match.strip(bufferChar)
-                        while (
-                            unicodedata.category(match[0])
-                            in smartFilter["unicodeCategoriesStrip"]
-                        ):
-                            match = match[1:]
-                        while (
-                            unicodedata.category(match[-1])
-                            in smartFilter["unicodeCategoriesStrip"]
-                        ):
-                            match = match[:-1]
-                        if any(char not in lowerChars for char in match) and any(
-                            char
-                            not in lowerChars.translate(ignoredConfusablesConverter)
-                            for char in match
-                        ):
-                            return True
+                        if match != "":
+                            lowerChars = chars.lower()
+                            # Strips off buffer characters and specified unicode categories
+                            while (
+                                match[0] in compiledRegexDict["bufferChars"]
+                                or match[-1] in compiledRegexDict["bufferChars"]
+                            ):
+                                for bufferChar in compiledRegexDict["bufferChars"]:
+                                    match = match.strip(bufferChar)
+                            while (
+                                unicodedata.category(match[0])
+                                in smartFilter["unicodeCategoriesStrip"]
+                            ):
+                                match = match[1:]
+                            while (
+                                unicodedata.category(match[-1])
+                                in smartFilter["unicodeCategoriesStrip"]
+                            ):
+                                match = match[:-1]
+                            if any(char not in lowerChars for char in match) and any(
+                                char
+                                not in lowerChars.translate(ignoredConfusablesConverter)
+                                for char in match
+                            ):
+                                return True
 
             def remove_unicode_categories(string):
                 return "".join(
@@ -1204,9 +1212,9 @@ def check_against_filter(
             # ------------------------------------------------------------------------
 
             # Normalize usernames and text, remove multiple whitespace and invisible chars
-            commentTextNormalized = re.sub(" +", " ", commentText)
+            commentText = re.sub(" +", " ", commentText)
             # https://stackoverflow.com/a/49695605/17312053
-            commentTextNormalized = "".join(
+            commentText = "".join(
                 k if k in bufferChars else "".join(v)
                 for k, v in itertools.groupby(commentText, lambda c: c)
             )
@@ -1217,6 +1225,7 @@ def check_against_filter(
 
             # Processed Variables
             combinedString = authorChannelName + commentText
+            combinedStringNormalized = authorChannelName + commentTextNormalized
             combinedSet = utils.make_char_set(
                 combinedString, stripLettersNumbers=True, stripPunctuation=True
             )
@@ -1233,7 +1242,11 @@ def check_against_filter(
             # Run Checks
             if authorChannelID == parentAuthorChannelID:
                 pass
-            elif len(numberFilterSet.intersection(combinedSet)) >= minNumbersMatchCount:
+            elif (
+                len(compiledAllNumRegex.findall(combinedString)) >= minNumbersMatchCount
+            ):
+                add_spam(current, config, miscData, currentCommentDict, videoID)
+            elif findObf(phoneRegexCompiled, "0123456789+-() ", combinedString):
                 add_spam(current, config, miscData, currentCommentDict, videoID)
             elif compiledNumRegex.search(combinedString):
                 add_spam(current, config, miscData, currentCommentDict, videoID)
@@ -1268,7 +1281,7 @@ def check_against_filter(
                 for expressionPair in compiledObfuRegexDict["usernameObfuBlackWords"]
             ):
                 add_spam(current, config, miscData, currentCommentDict, videoID)
-            elif spamListCombinedRegex.search(combinedString.lower()):
+            elif spamListCombinedRegex.search(combinedStringNormalized.lower()):
                 add_spam(current, config, miscData, currentCommentDict, videoID)
             elif config["detect_link_spam"] and check_if_only_link(
                 commentTextNormalized.strip()
@@ -1299,7 +1312,7 @@ def check_against_filter(
                         languageCount += 1
 
                 # Yellow Tests
-                if compiledRegexDict["yellowAdWords"].search(combinedString):
+                if compiledRegexDict["yellowAdWords"].search(combinedStringNormalized):
                     yellowCount += 1
 
                 hrtTest = len(hrtSet.intersection(combinedSet))
@@ -1324,24 +1337,26 @@ def check_against_filter(
                 ):
                     redCount += 1
 
-                if combinedString.count("#") >= 5:
+                if commentTextRaw.count("#") >= 5:
                     yellowCount += 1
 
-                if combinedString.count("\n") >= 10:
+                if commentTextRaw.count("\n") >= 10:
                     yellowCount += 1
 
                 if languageCount >= 2:
                     yellowCount += 1
 
-                if rootDomainRegex.search(combinedString.lower()):
+                if rootDomainRegex.search(combinedStringNormalized.lower()):
                     yellowCount += 1
 
                 # Red Tests
                 # if any(foundObfuscated(re.findall(expression[1], combinedString), expression[0]) for expression in compiledRegexDict['redAdWords']):
-                if compiledRegexDict["redAdWords"].search(combinedString):
+                if compiledRegexDict["redAdWords"].search(combinedStringNormalized):
                     redCount += 1
 
-                if preciseRegexDict["exactRedAdWords"].search(combinedString.lower()):
+                if preciseRegexDict["exactRedAdWords"].search(
+                    combinedStringNormalized.lower()
+                ):
                     redCount += 1
 
                 if redAdEmojiSet.intersection(combinedSet):
@@ -1876,7 +1891,7 @@ def exclude_authors(
 ################################# Get Most Recent Videos #####################################
 # Returns a list of lists
 def get_recent_videos(current, channel_id, numVideosTotal):
-    def get_block_of_videos(nextPageToken, j, k, numVideosBlock=5):
+    def get_block_of_videos(nextPageToken, j, k, numVideosBlock=50):
         result = (
             auth.YOUTUBE.search()
             .list(
@@ -1956,13 +1971,13 @@ def get_recent_videos(current, channel_id, numVideosTotal):
                 end="\r",
             )
             remainingVideos = numVideosTotal - k
-            if remainingVideos <= 5:
+            if remainingVideos <= 50:
                 nextPageToken, j, k, abortCheck = get_block_of_videos(
                     nextPageToken, j, k, numVideosBlock=remainingVideos
                 )
             else:
                 nextPageToken, j, k, abortCheck = get_block_of_videos(
-                    nextPageToken, j, k, numVideosBlock=5
+                    nextPageToken, j, k, numVideosBlock=50
                 )
             if str(nextPageToken[0]) == "MainMenu":
                 return "MainMenu"
