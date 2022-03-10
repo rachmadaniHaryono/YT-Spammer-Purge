@@ -1567,7 +1567,7 @@ def check_deleted_comments(commentInput):
                 .list(
                     part="snippet",
                     id=commentID,
-                    maxResults=1,
+                    # maxResults=1, #Cannot be used with 'id' parameter
                     fields="items",
                     textFormat="plainText",
                 )
@@ -1598,7 +1598,25 @@ def check_deleted_comments(commentInput):
             elif type(commentInput) == list:
                 print("Possible Issue Deleting Comment: " + str(commentID))
             i += 1
-            unsuccessfulResults.append(results)
+            pass
+        except HttpError as hx:
+            try:
+                reason = str(hx.error_details[0]["reason"])
+            except:
+                reason = "Not Given"
+            if type(commentInput) == dict:
+                print(
+                    f"HttpError '{reason}' While Deleting Comment: "
+                    + str(commentID)
+                    + " |  Check Here: "
+                    + "https://www.youtube.com/watch?v="
+                    + str(commentInput[commentID]["videoID"])
+                    + "&lc="
+                    + str(commentID)
+                )
+            elif type(commentInput) == list:
+                print(f"HttpError '{reason}' While Deleting Comment: " + str(commentID))
+            i += 1
             pass
         except Exception:
             if type(commentInput) == dict:
@@ -1614,7 +1632,6 @@ def check_deleted_comments(commentInput):
             elif type(commentInput) == list:
                 print("Unhandled Exception While Deleting Comment: " + str(commentID))
             i += 1
-            unsuccessfulResults.append(results)
             pass
 
     if i == 0:
@@ -1625,14 +1642,6 @@ def check_deleted_comments(commentInput):
             + str(i)
             + " comments may remain. Check links above or try running the program again. An error log file has been created: 'Deletion_Error_Log.txt'"
         )
-        # Write error log
-        with open("Deletion_Error_Log.txt", "a", encoding="utf-8") as f:
-            f.write(
-                "----- YT Spammer Purge Error Log: Possible Issue Deleting Comments ------\n\n"
-            )
-            f.write(str(unsuccessfulResults))
-            f.write("\n\n")
-            f.close()
     else:
         print(
             "\n\nSomething strange happened... The comments may or may have not been deleted."
@@ -1659,7 +1668,7 @@ def check_recovered_comments(commentsList):
                 .list(
                     part="snippet",
                     id=comment,
-                    maxResults=1,
+                    # maxResults=1, # Cannot be used with 'id' parameter
                     fields="items",
                     textFormat="plainText",
                 )
